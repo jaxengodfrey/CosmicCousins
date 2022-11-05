@@ -1,3 +1,39 @@
-version: 0.3.1
+version: 0.4.1
 
-
+dependencies:
+  src/tex/ms.tex:
+    - src/tex/intro.tex
+    - src/tex/methods.tex
+    - src/tex/results.tex
+    - src/tex/conclusion.tex
+  src/scripts/mass_distribution_plot.py: 
+    - src/data/bsplines_64m1_18q_iid18mag_iid18tilt_pl18z_ppds.h5
+    - src/data/o1o2o3_mass_c_iid_mag_iid_tilt_powerlaw_redshift_mass_data.h5
+    
+datasets:
+  10.5072/zenodo.1114865: # This is Cover Your Basis Data Release
+    contents:
+      bsplines_64m1_18q_iid18mag_iid18tilt_pl18z_posterior_samples.h5: src/data/bsplines_64m1_18q_iid18mag_iid18tilt_pl18z_posterior_samples.h5
+      bsplines_64m1_18q_ind18mag_ind18tilt_pl18z_posterior_samples.h5: src/data/bsplines_64m1_18q_ind18mag_ind18tilt_pl18z_posterior_samples.h5
+      bsplines_64m1_18q_iid18mag_iid18tilt_pl18z_ppds.h5: src/data/bsplines_64m1_18q_iid18mag_iid18tilt_pl18z_ppds.h5
+      bsplines_64m1_18q_ind18mag_ind18tilt_pl18z_ppds.h5: src/data/bsplines_64m1_18q_ind18mag_ind18tilt_pl18z_ppds.h5
+      bsplines_64m1_18q_iid18mag_iid18tilt_pl18z_prior_samples.h5: src/data/bsplines_64m1_18q_iid18mag_iid18tilt_pl18z_prior_samples.h5
+      bsplines_64m1_18q_ind18mag_ind18tilt_pl18z_prior_samples.h5: src/data/bsplines_64m1_18q_ind18mag_ind18tilt_pl18z_prior_samples.h5
+      bsplines_64m1_18q_iid18mag_iid18tilt_pl18z_prior_ppds.h5: src/data/bsplines_64m1_18q_iid18mag_iid18tilt_pl18z_prior_ppds.h5
+      bsplines_64m1_18q_ind18mag_ind18tilt_pl18z_prior_ppds.h5: src/data/bsplines_64m1_18q_ind18mag_ind18tilt_pl18z_prior_ppds.h5
+  10.5281/zenodo.5655785: # This is LVK O3b Pop Paper Data Release
+      contents:
+        GWTC-3-population-data.tar.gz:
+          GWTC-3-population-data:
+            analyses:
+              GaussianSpin:
+                gaussian-spin-xeff-xp-ppd-data.json: src/data/gaussian-spin-xeff-xp-ppd-data.json
+              PowerLawSpline:
+                o1o2o3:
+                  spline_20n_mass_m_iid_mag_iid_tilt_powerlaw_redshift_mass_data.h5: src/data/spline_20n_mass_m_iid_mag_iid_tilt_powerlaw_redshift_mass_data.h5
+              PowerLawPeak:
+                o1o2o3_mass_c_iid_mag_iid_tilt_powerlaw_redshift_result.json: src/data/o1o2o3_mass_c_iid_mag_iid_tilt_powerlaw_redshift_result.json
+                o1o2o3_mass_c_iid_mag_iid_tilt_powerlaw_redshift_mass_data.h5: src/data/o1o2o3_mass_c_iid_mag_iid_tilt_powerlaw_redshift_mass_data.h5
+                o1o2o3_mass_c_iid_mag_iid_tilt_powerlaw_redshift_magnitude_data.h5: src/data/o1o2o3_mass_c_iid_mag_iid_tilt_powerlaw_redshift_magnitude_data.h5
+                o1o2o3_mass_c_iid_mag_iid_tilt_powerlaw_redshift_orientation_data.h5: src/data/o1o2o3_mass_c_iid_mag_iid_tilt_powerlaw_redshift_orientation_data.h5
+                o1o2o3_mass_c_iid_mag_iid_tilt_powerlaw_redshift_samples.hdf5: src/data/o1o2o3_mass_c_iid_mag_iid_tilt_powerlaw_redshift_samples.hdf5
