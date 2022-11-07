@@ -1,6 +1,14 @@
+channels:
+  - defaults
+  - conda-forge
 dependencies:
-  - numpy=1.19.2
-  - pip=21.0.1
+  - pip
   - python=3.9
   - pip:
-      - matplotlib==3.4.3
+      - numpy==1.23.3
+      - matplotlib==3.6.1
+      - deepdish==0.3.7
+      - scipy==1.9.1
+      - gwpopulation==0.7.0
+      - json2latex==0.0.2
+      - numpyro==0.10.1

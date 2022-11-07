@@ -5,7 +5,6 @@
 \newcommand{\bruce}[1]{\textcolor{blue}{BE: #1}}
 \newcommand{\jaxen}[1]{\textcolor{purple}{JG: #1}}
 \newcommand{\NewChange}[1]{\textcolor{green}{#1}}
-
 \newcommand{\CIPlusMinus}[1]{{#1[median]^{+#1[error plus]}_{-#1[error minus]}}}
 \newcommand{\CIBoundsBracket}[1]{{[#1[5th percentile], #1[95th percentile]]}}
 \newcommand{\CIBoundsDash}[1]{{#1[5th percentile]\textendash#1[95th percentile]}}
@@ -17,36 +16,20 @@
 \usepackage{amsmath}
 \usepackage{appendix}
 
-
 \begin{document}
-
-\title{Paper Title test}
+\title{Identification of a Subpopulation of Binary Black Holes Formed Through Isolated Binary Evolution}
 
 \author{Jaxen Godfrey}
 \email{jaxeng@uoregon.edu}
-
 \affiliation{Institute  for  Fundamental  Science, Department of Physics, University of Oregon, Eugene, OR 97403, USA}
-
 \author{Bruce Edelman}
 \affiliation{Institute  for  Fundamental  Science, Department of Physics, University of Oregon, Eugene, OR 97403, USA}
-
 \author{Ben Farr}
 \affiliation{Institute  for  Fundamental  Science, Department of Physics, University of Oregon, Eugene, OR 97403, USA}
 
 % Abstract with filler text
 \begin{abstract}
-    Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
-    Ut purus elit, vestibulum ut, placerat ac, adipiscing vitae, felis.
-    Curabitur dictum gravida mauris, consectetuer id, vulputate a, magna.
-    Donec vehicula augue eu neque, morbi tristique senectus et netus et.
-    Mauris ut leo, cras viverra metus rhoncus sem, nulla et lectus vestibulum.
-    Phasellus eu tellus sit amet tortor gravida placerat.
-    Integer sapien est, iaculis in, pretium quis, viverra ac, nunc.
-    Praesent eget sem vel leo ultrices bibendum.
-    Aenean faucibus, morbi dolor nulla, malesuada eu, pulvinar at, mollis ac.
-    Curabitur auctor semper nulla donec varius orci eget risus.
-    Duis nibh mi, congue eu, accumsan eleifend, sagittis quis, diam.
-    Duis eget orci sit amet orci dignissim rutrum.
+    Observations of gravitational waves (GWs) from merging compact binaries are becoming a regular occurrence now producing catalogs of over 80 such mergers. Formation of compact binaries with small enough orbital separations such that the energy loss due to gravitational radiation is negligible is a challenging problem in astrophysics. The most common expected formation channels of merging compact binaries fall into two main categories, isolated formation and dynamical assembly. Through characterization of the compact object population, we can begin to determine the prevalence of these two formation categories. Recent studies looking at the population in GWTC-3 have shown that there is a non-negligible contribution due to a dynamical assembly, with large uncertainties. In this work, we look for subpopulations in the catalog by applying discrete latent variables in the hierarchical Bayesian inference framework to probabilistically assign each compact binary observation into separate categories, which have distinctly different population distributions. By incorporating knowledge of the formation channels into of our subpopulation models allows us to infer contributions from each category and get posterior distributions on each observed compact binary's association with each subpopulation. Though looking at the subtle mass-spin correlations between the subpopulations we find the over density of mergers with a primary mass of $\sim10\msun$ is confidently associated with isolated binary formation. This low-mass subpopulation has a spin magnitude distribution peaking at $a_\mathrm{peak}=XX$ while exhibiting spins preferentially aligned with the binary's orbital angular momentum. We find that this subpopulation is constrained by $XX \pm XX$ of our observations, and contributes to $XX\%$ of the overall population of merging compact binaries. This work is a first step in gaining a deeper understanding of compact binary formation and evolution, and will be useful in future studies with larger catalogs of observations. 
 \end{abstract}
 
 \input{intro.tex}
@@ -55,15 +38,14 @@
 \input{conclusion.tex}
 
 \section{Acknowledgements}\label{sec:acknowledments}
-We thank Will Farr, Tom Callister, Amanda Farah and Maya Fishbach for useful discussions during the preparation this manuscript, 
-along with helpful comments on an early draft by Tom Callister.
 This research has made use of data, software and/or web tools obtained from the Gravitational Wave Open Science Center 
 (\url{https://www.gw-openscience.org/}), a service of LIGO Laboratory, the LIGO Scientific Collaboration and the Virgo Collaboration. 
 The authors are grateful for computational resources provided by the LIGO Laboratory and supported by National Science Foundation Grants PHY-0757058 and PHY-0823459.  
 This work benefited from access to the University of Oregon high performance computer, Talapas. This material is based upon work supported 
-in part by the National Science Foundation under Grant PHY-1807046 and work supported by NSF’s LIGO Laboratory which is a major facility 
+in part by the National Science Foundation under Grant PHY-1807046 and work supported by NSF's LIGO Laboratory which is a major facility 
 fully funded by the National Science Foundation.
 \software{
+\textsc{Showyourwork}~\citep{Luger2021},
 \textsc{Astropy}~\citep{2018AJ....156..123A},
 \textsc{NumPy}~\citep{harris2020array},
 \textsc{SciPy}~\citep{2020SciPy-NMeth},
