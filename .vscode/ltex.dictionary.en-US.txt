@@ -6,3 +6,6 @@ Astropy
 Jax
 NumPyro
 Showyourwork
+LIGO-Virgo-KAGRA
+BBHs
+comoving

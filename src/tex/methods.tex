@@ -1,17 +1,45 @@
 \section{Methods} \label{sec:methods}
 
+\subsection{Statistical Framework} \label{sec:statistical_framework}
+
 \begin{itemize}
     \item VERY quick basic point to hierarchical Bayesian inference details
     \item Introduce discrete latent variables / marginalized mixture models
     \item describe equivalence of fitting discrete latent variables to marginalized mixture models
-    \item point out GWInferno and code etc
-    \item describe the specific models we use in the paper
 \end{itemize}
 
-To infer the population properties we are interested in, we employ the typical hierarchical Bayesian inference framework used in compact object population studies. In particular, we formulate the total hyper-posterior following the same prescriptions in \citet{2210.12834} Appendix C as:
+We employ the typical hierarchical Bayesian inference framework to infer the properties of the population of merging compact binaries given a catalog of observations. The rate of compact binary mergers are modeled as an inhomogeneous Poisson point process, with the merger rate per comoving volume \citep{astro-ph/9905116} and source-frame time and binary parameters, $\theta$ defined as: 
 
-\begin{align}
-    \text{log} \quad p(\Lambda, \lambda | {d_i}) \propto \sum_{i=1}{N_\text{obs}} log \left[ \frac{1}{K_i} \sum_{j=1}^{K_i} \frac{p(\theta^{i,j} | \Lambda^q) p(z^{i,j} | \lambda)}{\pi (\theta^{i,j}, z^{i,j})} \right] \\ - N_\text{obs} \text{log} \mu(\Lambda, \lambda) + \frac{3N_\text{obs}+N^2_{\text{obs}}}{2N_{\text{eff}}} + \mathbb{O}(N^{-2}_{\text{eff}})
-\end{align}
+\begin{equation} \label{eq:rate}
+    \frac{dN}{dV_cdt_\mathrm{src}d\theta} = \frac{dN}{dV_cdt_\mathrm{src}} p(\theta | \Lambda) = \mathcal{R} p(\theta | \Lambda)
+\end{equation}
 
-though with some slight differences to account for our latent variable formalism. 
+\noindent with $p(\theta | \Lambda)$ the population model, $\mathcal{R}$ the merger rate, and $\Lambda$ the set of hyperparameters. Following other population studies \citep{10.1093/mnras/stz896,2007.05579,2010.14533,2111.03634}, we use the hierarchical likelihood that incorporates selection effects and marginalizes over the merger rate as: 
+
+\begin{equation} \label{eq:likelihood}
+    \mathcal{L}(\bm{d} | \Lambda) \propto \frac{1}{\xi(\Lambda)} \prod_{i=1}^{N_\mathrm{det}} \int d\theta \mathcal{L}(d_i | \theta) p(\theta | \Lambda)
+\end{equation}
+
+\noindent Above, $\bm{d}$ is the set of data containing $N_\mathrm{det}$ observed events, $\mathcal{L}(d_i | \theta)$ is the individual event likelihood function for the $i$th event given parameters $\theta$ and $\xi(\Lambda)$ is the fraction of merging binaries we expect to detect, given a population described by $\Lambda$. The integral of the individual event likelihoods marginalizes over the uncertainty in each event's binary parameter estimation, and is calculated with Monte Carlo integration and by importance sampling, reweighing each set of posterior samples to the likelihood. The detection fraction is calculated with:
+
+\begin{equation} \label{eq:detfrac}
+    \xi(\Lambda) = \int d\theta p_\mathrm{det}(\theta) p(\theta | \Lambda)
+\end{equation}
+
+\noindent with $p_\mathrm{det}(\theta)$ the probability of detecting a binary merger with parameters $\theta$. We calculate this fraction using simulated compact merger signals that were evaluated with the same search algorithms that produced the catalog of observations. With the signals that were successfully detected, we again use Monte Carlo integration to get the overall detection efficiency, $\xi(\Lambda)$.
+
+
+To model different subpopulations that could exist in the population, we use discrete latent variables that probabilistically associate each binary merger with different models. To model $K$ subpopulations in a catalog of $N_\mathrm{det}$ detections, we add a latent variable $q_i$ for each merger that can be $K$ different discrete values, each associated with a separate model, $p_{k}(\theta | \Lambda)$, and hyperparameters, $\Lambda_k$. Evaluating the model (or hyper-prior) for the $i^\mathrm{th}$ event with binary parameters, $\theta_i$, given latent variable $q_i$ and hyperparameters $\Lambda_k$, we have:
+
+\begin{equation} \label{eq:latent}
+    p(\theta_i | \Lambda, q_i) = p_{k=q_i}(\theta_i | \Lambda_{k=q_i})
+\end{equation}
+
+\noindent To construct our probabilistic model, we first sample parameters $p_k \sim \mathcal{D}(K)$, representing the astrophysical branching ratios of each subpopulation. Then each of the $N_\mathrm{det}$ variables are sampled from a categorical distribution with category $k$ having probability, $p_k$. Within the \textsc{NumPyro} probabilistic programming language \citep{1912.11554}, we use the implementation of the \texttt{DiscreteHMCGibbs} to sample the discrete latent variables, while using the \texttt{NUTS} sampler for continuous variables. While this approach may seem computationally expensive, we find that the conditional distributions over discrete latent variables enable the Gibbs sampler to provide similar costs and speeds to the equivalent approach that marginalizes over each discrete latent variable, $q_i$. We find the same results with either approach and only slight performance differences with different model specifications, and thus opt for the approach without marginalization giving us posterior distributions on each event's subpopulation assignment in less steps.
+
+\subsection{Astrophysical Mixture Models} \label{sec:astromodels}
+
+\begin{itemize}
+    \item describe the specific models we use in the paper
+    \item point towards implementations in GWInferno and code etc
+\end{itemize}
