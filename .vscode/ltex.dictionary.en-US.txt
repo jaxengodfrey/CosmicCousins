@@ -9,3 +9,5 @@ Showyourwork
 LIGO-Virgo-KAGRA
 BBHs
 comoving
+DiscreteHMCGibbs
+GWInferno
