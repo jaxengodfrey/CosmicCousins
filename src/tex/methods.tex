@@ -2,13 +2,13 @@
 
 \subsection{Statistical Framework} \label{sec:statistical_framework}
 
-We employ the typical hierarchical Bayesian inference framework to infer the properties of the population of merging compact binaries given a catalog of observations. The rate of compact binary mergers are modeled as an inhomogeneous Poisson point process \citep{10.1093/mnras/stz896}, with the merger rate per comoving volume \citep{astro-ph/9905116} and source-frame time and binary parameters, $\theta$ defined as: 
+We employ the typical hierarchical Bayesian inference framework to infer the properties of the population of merging compact binaries given a catalog of observations. The rate of compact binary mergers is modeled as an inhomogeneous Poisson point process \citep{10.1093/mnras/stz896}, with the merger rate per comoving volume $V_c$ \citep{astro-ph/9905116}, source-frame time $T_\text{src}$ and binary parameters $\theta$ defined as: 
 
 \begin{equation} \label{eq:rate}
     \frac{dN}{dV_cdt_\mathrm{src}d\theta} = \frac{dN}{dV_cdt_\mathrm{src}} p(\theta | \Lambda) = \mathcal{R} p(\theta | \Lambda)
 \end{equation}
 
-\noindent with $p(\theta | \Lambda)$ the population model, $\mathcal{R}$ the merger rate, and $\Lambda$ the set of hyperparameters. Following other population studies \citep{10.1093/mnras/stz896,2007.05579,2010.14533,2111.03634}, we use the hierarchical likelihood that incorporates selection effects and marginalizes over the merger rate as: 
+\noindent with $p(\theta | \Lambda)$ the population model, $\mathcal{R}$ the merger rate, and $\Lambda$ the set of population hyperparameters. Following other population studies \citep{10.1093/mnras/stz896,2007.05579,2010.14533,2111.03634}, we use the hierarchical likelihood that incorporates selection effects and marginalizes over the merger rate as: 
 
 \begin{equation} \label{eq:likelihood}
     \mathcal{L}(\bm{d} | \Lambda) \propto \frac{1}{\xi(\Lambda)} \prod_{i=1}^{N_\mathrm{det}} \int d\theta \mathcal{L}(d_i | \theta) p(\theta | \Lambda)
