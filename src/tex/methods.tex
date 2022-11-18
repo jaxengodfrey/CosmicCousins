@@ -23,13 +23,13 @@ We employ the typical hierarchical Bayesian inference framework to infer the pro
 \noindent with $p_\mathrm{det}(\theta)$ the probability of detecting a binary merger with parameters $\theta$. We calculate this fraction using simulated compact merger signals that were evaluated with the same search algorithms that produced the catalog of observations. With the signals that were successfully detected, we again use Monte Carlo integration to get the overall detection efficiency, $\xi(\Lambda)$.
 
 
-To model different subpopulations that could exist in the population, we use discrete latent variables that probabilistically associate each binary merger with different models. To model $K$ subpopulations in a catalog of $N_\mathrm{det}$ detections, we add a latent variable $q_i$ for each merger that can be $K$ different discrete values, each associated with a separate model, $p_{k}(\theta | \Lambda)$, and hyperparameters, $\Lambda_k$. Evaluating the model (or hyper-prior) for the $i^\mathrm{th}$ event with binary parameters, $\theta_i$, given latent variable $q_i$ and hyperparameters $\Lambda_k$, we have:
+To model different subpopulations that could exist in the population, we use discrete latent variables that probabilistically associate each binary merger with different models. To model $M$ subpopulations in a catalog of $N_\mathrm{det}$ detections, we add a latent variable $q_i$ for each merger that can be $M$ different discrete values, each associated with a separate model, $p_{M}(\theta | \Lambda)$, and hyperparameters, $\Lambda_M$. Evaluating the model (or hyper-prior) for the $i^\mathrm{th}$ event with binary parameters, $\theta_i$, given latent variable $q_i$ and hyperparameters $\Lambda_M$, we have:
 
 \begin{equation} \label{eq:latent}
-    p(\theta_i | \Lambda, q_i) = p_{k=q_i}(\theta_i | \Lambda_{k=q_i})
+    p(\theta_i | \Lambda, q_i) = p_{M=q_i}(\theta_i | \Lambda_{M=q_i})
 \end{equation}
 
-\noindent To construct our probabilistic model, we first sample $p_k \sim \mathcal{D}(K)$, from a K-dimensional Dirichlet distribution of equal weights, representing the astrophysical branching ratios of each subpopulation. Then each of the $N_\mathrm{det}$ discrete latent variables are sampled from a categorical distribution with each category $k$ having probability, $p_k$. Within the \textsc{NumPyro} \citep{1810.09538,1912.11554} probabilistic programming language, we use the implementation of the \texttt{DiscreteHMCGibbs} \citep{Liu1996PeskunsTA} to sample the discrete latent variables, while using the \texttt{NUTS} \citep{1111.4246} sampler for continuous variables. While this approach may seem computationally expensive, we find that the conditional distributions over discrete latent variables enable Gibbs sampling with similar costs and speeds to the equivalent approach that marginalizes over each discrete latent variable, $q_i$. We find the same results with either approach and only slight performance differences that depend on specific model specifications, and thus opt for the approach without marginalization. This method also has the advantage that we get posterior distributions on each event's subpopulation assignment without extra steps.
+\noindent To construct our probabilistic model, we first sample $p_M \sim \mathcal{D}(M)$, from an M-dimensional Dirichlet distribution of equal weights, representing the astrophysical branching ratios of each subpopulation. Then each of the $N_\mathrm{det}$ discrete latent variables are sampled from a categorical distribution with each category $M$ having probability, $p_M$. Within the \textsc{NumPyro} \citep{1810.09538,1912.11554} probabilistic programming language, we use the implementation of the \texttt{DiscreteHMCGibbs} \citep{Liu1996PeskunsTA} to sample the discrete latent variables, while using the \texttt{NUTS} \citep{1111.4246} sampler for continuous variables. While this approach may seem computationally expensive, we find that the conditional distributions over discrete latent variables enable Gibbs sampling with similar costs and speeds to the equivalent approach that marginalizes over each discrete latent variable, $q_i$. We find the same results with either approach and only slight performance differences that depend on specific model specifications, and thus opt for the approach without marginalization. This method also has the advantage that we get posterior distributions on each event's subpopulation assignment without extra steps.
 
 \subsection{Astrophysical Mixture Models} \label{sec:astromodels}
 
@@ -38,10 +38,60 @@ To model different subpopulations that could exist in the population, we use dis
     \item point towards implementations in GWInferno and code etc
 \end{itemize}
 
-For this study, we focus on one collection of primary mass and spin models to break the BBH population into three different subpopulations. Throughout this work, we refer to these three different subpopulations by their mass models as \textsc{Low-Mass Peak}, \textsc{Mid-Mass Peak}, and \textsc{Continuum}. 
+For this study, we focus on one collection of primary mass and spin models to divide the BBH population into $M=3$ potential subpopulations. Throughout this work, we refer to these three categories by their mass models as \textsc{Low-Mass Peak}, \textsc{Mid-Mass Peak}, and \textsc{Continuum}. For all three categories, the spin magnitude and tilt distributions of each component are assumed to be independtly and identically distributed (IID), i.e. we use a single model and parameters for each binary spin per category. To reduce the number of free parameters and thus computational cost, we fix the redshift to 1 and use the same mass ratio model across all categories. We make use of the mass and spin basis spline (B-spline) models developed by \cite{2022arXiv221012834E}. All of the models and formalism used in our analysis are available in the \textsc{GWInferno} python library \jaxen{CITE THIS}, as well as example scripts. 
 
-\subsubsection{Mass Models}
+Given the recent evidence for a $~10 M_{\odot}$ and $~35 M_{\odot}$ peak in the BBH primary mass distribution \citep{2111.03634, 2022ApJ...928..155T, 10.3847/2041-8213/aa9bf6, 10.3847/1538-4357/aab34c, 10.3847/2041-8213/ab3800, 2021ApJ...913L...7A}, we chose to use a similar primary mass model to the \textsc{Multi Peak} model in \cite{2021ApJ...913L...7A}, except we replace their power law component with a non-parametric basis spline function (b-spline) . We did this in order to avoid the model dependent biases on our resulting total distribution that we noticed were present when we used a power law.
 
-We chose to model the primary mass as two truncated gaussian peaks plus a basis spline (b-spline) function, a similar model to the \textsc{Mulit Peak} mass model in . 
+We infer the mean $\mu_M$ and standard deviation $\sigma_M$ of each gaussian peak. $M=0$ denotes the peak with the lowest mean, \textsc{Low-Mass Peak}, and $M=1$ denotes the one with the larger mean, \textsc{Mid-Mass Peak}. To keep the ordering of the peaks consistent during inference, we use a unique prior to draw the peak means $\mu_0,1$. In particular, we sample from a 3-dimensional Dirchlet distribution $\mathcal{D}(3)$ with equal weights, then cumulatively sum the sampled array. We discard the last value, since it is always 1, and the remaining two values are rescaled to primary mass $m_1$ and assigned to $\mu_0$ and $\mu_1$. 
 
-Given the recent evidence for a $~10 M_{\odot}$ and $~35 M_{\odot}$ peak in the BBH primary mass distribution \citep{2111.03634, 2022ApJ...928..155T, 10.3847/2041-8213/aa9bf6, 10.3847/1538-4357/aab34c, 10.3847/2041-8213/ab3800, 2021ApJ...913L...7A}, we chose to use a similar primary mass model to the \textsc{Multi Peak} model in \cite{2021ApJ...913L...7A}, except we replace their power law component with a basis spline function (b-spline), which is a non-parametric model. We did this in order to avoid the model dependent biases on our resulting total distribution that we noticed occurred when we used a power law.  
+\begin{itemize}
+    \item \textsc{Low-Mass Peak}, $M=0$ (\jaxen{NUMBER} parameters). This category assumes a truncated gaussian model in primary mass, a B-spline model in spin magnitude $a_i$, and a B-spline model in $cos(\theta_{\text{tilt}})$. 
+    \begin{equation} \label{eq:lowmass}
+        p_{m,0}(m_1| \Lambda_{m,0}) = G(m_1 | \mu_{m,0}, \sigma_{m,0}),
+    \end{equation}
+
+    \begin{equation} \label{eq:lowspin}
+        p_{a,0}(a_i| \Lambda_{a,0}) = B_k(a_i | \mathbf{c}_{a,0})
+    \end{equation}
+
+    \begin{equation} \label{eq:lowtilt}
+        p_{\theta,0}(cos(\theta_i)| \Lambda_{\theta,0}) = B_k( cos(\theta_i) | \mathbf{c}_{\theta,0})
+    \end{equation}
+\end{itemize}
+
+\begin{itemize}
+    \item \textsc{Mid-Mass Peak}, $M=1$ (\jaxen{NUMBER} parameters). Same form as \textsc{Low-Mass Peak}, except the mean $\mu_{m,1}$ of the primary mass truncated gaussian model is required to be larger than $\mu_{m,0}$.
+    \begin{equation} \label{eq:midmass}
+        p_{m,1}(m_1| \Lambda_{m,1}) = G(m_1 | \mu_{m,1}, \sigma_{m,1}),
+    \end{equation}
+
+    \begin{equation} \label{eq:midspin}
+        p_{a,1}(a_i| \Lambda_{a,1}) = B_k(a_i | \mathbf{c}_{a,1})
+    \end{equation}
+
+    \begin{equation} \label{eq:midtilt}
+        p_{\theta,1}(cos(\theta_i)| \Lambda_{\theta,1}) = B_k( cos(\theta_i) | \mathbf{c}_{\theta,1})
+    \end{equation}
+    
+\end{itemize}
+
+\begin{itemize}
+    \item \textsc{Continuum}, $M=2$ (\jaxen{NUMBER} parameters). The spin models are the same as the previous two categories, but now the primary mass is modeled with a B-spline function. 
+
+    \begin{equation} \label{eq:contmass}
+        \text{log} p_{m,2}(m_1| \Lambda_{m,2}) = B_k(m_1 | \mathbf{c}_{m, 2})
+    \end{equation}
+
+    \begin{equation} \label{eq:contspin}
+        p_{a,2}(a_i| \Lambda_{a,2}) = B_k(a_i | \mathbf{c}_{a,2})
+    \end{equation}
+
+    \begin{equation} \label{eq:conttilt}
+        p_{\theta,2}(cos(\theta_i)| \Lambda_{\theta,2}) = B_k( cos(\theta_i) | \mathbf{c}_{\theta,2})
+    \end{equation}
+    
+\end{itemize}
+
+
+
+
