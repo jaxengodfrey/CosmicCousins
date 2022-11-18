@@ -37,3 +37,11 @@ To model different subpopulations that could exist in the population, we use dis
     \item describe the specific models we use in the paper
     \item point towards implementations in GWInferno and code etc
 \end{itemize}
+
+For this study, we focus on one collection of primary mass and spin models to break the BBH population into three different subpopulations. Throughout this work, we refer to these three different subpopulations by their mass models as \textsc{Low-Mass Peak}, \textsc{Mid-Mass Peak}, and \textsc{Continuum}. 
+
+\subsubsection{Mass Models}
+
+We chose to model the primary mass as two truncated gaussian peaks plus a basis spline (b-spline) function, a similar model to the \textsc{Mulit Peak} mass model in . 
+
+Given the recent evidence for a $~10 M_{\odot}$ and $~35 M_{\odot}$ peak in the BBH primary mass distribution \citep{2111.03634, 2022ApJ...928..155T, 10.3847/2041-8213/aa9bf6, 10.3847/1538-4357/aab34c, 10.3847/2041-8213/ab3800, 2021ApJ...913L...7A}, we chose to use a similar primary mass model to the \textsc{Multi Peak} model in \cite{2021ApJ...913L...7A}, except we replace their power law component with a basis spline function (b-spline), which is a non-parametric model. We did this in order to avoid the model dependent biases on our resulting total distribution that we noticed occurred when we used a power law.  
