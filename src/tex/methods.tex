@@ -33,65 +33,32 @@ To model different subpopulations that could exist in the population, we use dis
 
 \subsection{Astrophysical Mixture Models} \label{sec:astromodels}
 
-\begin{itemize}
-    \item describe the specific models we use in the paper
-    \item point towards implementations in GWInferno and code etc
-\end{itemize}
+For this study, we focus on one collection of primary mass and spin models to divide the BBH population into $M=3$ potential subpopulations. Throughout this work, we refer to these three categories by their mass models as \textsc{Low-Mass Peak}, \textsc{Mid-Mass Peak}, and \textsc{Continuum}. For all three categories, the spin magnitude and tilt distributions of each component are assumed to be independently and identically distributed (IID), i.e. we use a single model and parameters for each binary spin per category. To reduce the number of free parameters and thus computational cost, we fix the power law slope of the merger rate with redshift to $\lambda_z=2.7$ and use the same mass ratio model across all categories. We make use of the mass and spin basis spline (B-Spline) models from \cite{2022arXiv221012834E}. All the models and formalism used in our analysis are available in the \href{https://git.ligo.org/bruce.edelman/gwinferno}{GWInferno} python library, along with the code and data to reproduce this study in this GitHub \href{https://github.com/jaxeng/paper}{repository}. 
 
-For this study, we focus on one collection of primary mass and spin models to divide the BBH population into $M=3$ potential subpopulations. Throughout this work, we refer to these three categories by their mass models as \textsc{Low-Mass Peak}, \textsc{Mid-Mass Peak}, and \textsc{Continuum}. For all three categories, the spin magnitude and tilt distributions of each component are assumed to be independtly and identically distributed (IID), i.e. we use a single model and parameters for each binary spin per category. To reduce the number of free parameters and thus computational cost, we fix the redshift to 1 and use the same mass ratio model across all categories. We make use of the mass and spin basis spline (B-spline) models developed by \cite{2022arXiv221012834E}. All of the models and formalism used in our analysis are available in the \textsc{GWInferno} python library \jaxen{CITE THIS}, as well as example scripts. 
+Given the recent evidence for a $~10 M_{\odot}$ and $~35 M_{\odot}$ peak in the BBH primary mass distribution \citep{2111.03634, 2022ApJ...928..155T, 10.3847/2041-8213/aa9bf6, 10.3847/1538-4357/aab34c, 10.3847/2041-8213/ab3800, 2021ApJ...913L...7A}, we chose to use a similar primary mass model to the \textsc{Multi Peak} and \textsc{Multi Spin} models in \cite{2021ApJ...913L...7A}, except we replace their power law mass component and parametric spin description with a non-parametric B-Spline functions. We did this in order to avoid the model dependent biases on our resulting total distribution that we noticed were present when we used a power law.
 
-Given the recent evidence for a $~10 M_{\odot}$ and $~35 M_{\odot}$ peak in the BBH primary mass distribution \citep{2111.03634, 2022ApJ...928..155T, 10.3847/2041-8213/aa9bf6, 10.3847/1538-4357/aab34c, 10.3847/2041-8213/ab3800, 2021ApJ...913L...7A}, we chose to use a similar primary mass model to the \textsc{Multi Peak} model in \cite{2021ApJ...913L...7A}, except we replace their power law component with a non-parametric basis spline function (b-spline) . We did this in order to avoid the model dependent biases on our resulting total distribution that we noticed were present when we used a power law.
-
-We infer the mean $\mu_M$ and standard deviation $\sigma_M$ of each gaussian peak. $M=0$ denotes the peak with the lowest mean, \textsc{Low-Mass Peak}, and $M=1$ denotes the one with the larger mean, \textsc{Mid-Mass Peak}. To keep the ordering of the peaks consistent during inference, we use a unique prior to draw the peak means $\mu_0,1$. In particular, we sample from a 3-dimensional Dirchlet distribution $\mathcal{D}(3)$ with equal weights, then cumulatively sum the sampled array. We discard the last value, since it is always 1, and the remaining two values are rescaled to primary mass $m_1$ and assigned to $\mu_0$ and $\mu_1$. 
+We infer the mean $\mu_M$ and standard deviation $\sigma_M$ of each Gaussian peak. $M=0$ denotes the peak with the lowest mean, \textsc{Low-Mass Peak}, and $M=1$ denotes the one with the larger mean, \textsc{Mid-Mass Peak}. To keep the ordering of the peaks consistent during inference, we use a unique prior to draw the peak means $\mu_0,1$. In particular, we sample from a 3-dimensional Dirichlet distribution $\mathcal{D}(3)$ with equal weights, then cumulatively sum the sampled array. We discard the last value, since it is always 1, and the remaining two values are rescaled to primary mass $m_1$ and assigned to $\mu_0$ and $\mu_1$. 
 
 \begin{itemize}
-    \item \textsc{Low-Mass Peak}, $M=0$ (\jaxen{NUMBER} parameters). This category assumes a truncated gaussian model in primary mass, a B-spline model in spin magnitude $a_i$, and a B-spline model in $cos(\theta_{\text{tilt}})$. 
-    \begin{equation} \label{eq:lowmass}
-        p_{m,0}(m_1| \Lambda_{m,0}) = G(m_1 | \mu_{m,0}, \sigma_{m,0}),
-    \end{equation}
-
-    \begin{equation} \label{eq:lowspin}
-        p_{a,0}(a_i| \Lambda_{a,0}) = B_k(a_i | \mathbf{c}_{a,0})
-    \end{equation}
-
-    \begin{equation} \label{eq:lowtilt}
+    \item \textsc{Low-Mass Peak}, $M=0$ (\jaxen{NUMBER} parameters). This category assumes a truncated Gaussian model in primary mass, a B-spline model in spin magnitude $a_i$, and a B-spline model in $cos(\theta_{\text{tilt}})$. 
+    \begin{eqnarray} \label{eq:lowmass}
+        p_{m,0}(m_1| \Lambda_{m,0}) = G(m_1 | \mu_{m,0}, \sigma_{m,0}) \\
+        p_{a,0}(a_i| \Lambda_{a,0}) = B_k(a_i | \mathbf{c}_{a,0}) \\
         p_{\theta,0}(cos(\theta_i)| \Lambda_{\theta,0}) = B_k( cos(\theta_i) | \mathbf{c}_{\theta,0})
-    \end{equation}
-\end{itemize}
+    \end{eqnarray}
 
-\begin{itemize}
-    \item \textsc{Mid-Mass Peak}, $M=1$ (\jaxen{NUMBER} parameters). Same form as \textsc{Low-Mass Peak}, except the mean $\mu_{m,1}$ of the primary mass truncated gaussian model is required to be larger than $\mu_{m,0}$.
-    \begin{equation} \label{eq:midmass}
-        p_{m,1}(m_1| \Lambda_{m,1}) = G(m_1 | \mu_{m,1}, \sigma_{m,1}),
-    \end{equation}
-
-    \begin{equation} \label{eq:midspin}
-        p_{a,1}(a_i| \Lambda_{a,1}) = B_k(a_i | \mathbf{c}_{a,1})
-    \end{equation}
-
-    \begin{equation} \label{eq:midtilt}
+    \item \textsc{Mid-Mass Peak}, $M=1$ (\jaxen{NUMBER} parameters). Same form as \textsc{Low-Mass Peak}, except the mean $\mu_{m,1}$ of the primary mass truncated Gaussian model is required to be larger than $\mu_{m,0}$.
+    \begin{eqnarray} \label{eq:midmass}
+        p_{m,1}(m_1| \Lambda_{m,1}) = G(m_1 | \mu_{m,1}, \sigma_{m,1}) \\
+        p_{a,1}(a_i| \Lambda_{a,1}) = B_k(a_i | \mathbf{c}_{a,1}) \\
         p_{\theta,1}(cos(\theta_i)| \Lambda_{\theta,1}) = B_k( cos(\theta_i) | \mathbf{c}_{\theta,1})
-    \end{equation}
-    
-\end{itemize}
+    \end{eqnarray}
 
-\begin{itemize}
     \item \textsc{Continuum}, $M=2$ (\jaxen{NUMBER} parameters). The spin models are the same as the previous two categories, but now the primary mass is modeled with a B-spline function. 
-
-    \begin{equation} \label{eq:contmass}
-        \text{log} p_{m,2}(m_1| \Lambda_{m,2}) = B_k(m_1 | \mathbf{c}_{m, 2})
-    \end{equation}
-
-    \begin{equation} \label{eq:contspin}
-        p_{a,2}(a_i| \Lambda_{a,2}) = B_k(a_i | \mathbf{c}_{a,2})
-    \end{equation}
-
-    \begin{equation} \label{eq:conttilt}
+    \begin{eqnarray} \label{eq:contmass}
+        \text{log} p_{m,2}(m_1| \Lambda_{m,2}) = B_k(m_1 | \mathbf{c}_{m, 2}) \\
+        p_{a,2}(a_i| \Lambda_{a,2}) = B_k(a_i | \mathbf{c}_{a,2}) \\
         p_{\theta,2}(cos(\theta_i)| \Lambda_{\theta,2}) = B_k( cos(\theta_i) | \mathbf{c}_{\theta,2})
-    \end{equation}
+    \end{eqnarray}
     
 \end{itemize}
-
-
-
-
