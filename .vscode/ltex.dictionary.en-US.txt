@@ -11,3 +11,8 @@ BBHs
 comoving
 DiscreteHMCGibbs
 GWInferno
+coalescences
+CBCs
+inspiral
+isotropically
+IID
