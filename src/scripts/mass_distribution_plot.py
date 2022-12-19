@@ -3,16 +3,22 @@
 import paths
 import numpy as np
 import matplotlib.pyplot as plt
-from utils import plot_mean_and_90CI, load_bsplinemass_ppd, plot_o3b_res
+from utils import plot_mean_and_90CI, load_bsplinemass_ppd, plot_o3b_res, load_subpop_ppds
 from matplotlib.ticker import ScalarFormatter
 
-mmin = 5.5
+mmin = 5.0
 mmax = 100
 figx, figy = 14, 5
 fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(figx,figy))
 bspl_ms, bspl_mpdfs, bspl_qs, bspl_qpdfs = load_bsplinemass_ppd()
+subpop_ppds = load_subpop_ppds()
+tot_subpops = subpop_ppds['peak_1_mass_pdfs'] + subpop_ppds['peak_2_mass_pdfs'] + subpop_ppds['continuum_mass_pdfs']
 ax = plot_o3b_res(ax,'o1o2o3_mass_c_iid_mag_iid_tilt_powerlaw_redshift_mass_data.h5', lab='PP', col='tab:blue', bounds=False)
-ax = plot_mean_and_90CI(ax, bspl_ms, bspl_mpdfs, color='tab:red', label='B-Spline', bounds=True)
+ax = plot_mean_and_90CI(ax, bspl_ms, bspl_mpdfs, color='tab:red', label='B-Spline',bounds=False)
+ax = plot_mean_and_90CI(ax, subpop_ppds['mass_1'], tot_subpops, color ='black', label='Total', bounds = True)
+ax = plot_mean_and_90CI(ax, subpop_ppds['mass_1'], subpop_ppds['peak_1_mass_pdfs'], color ='tab:cyan', label='Low-Mass Peak', bounds = True, alpha = 0.75, line_style = '--', lw = 3)
+ax = plot_mean_and_90CI(ax, subpop_ppds['mass_1'], subpop_ppds['peak_2_mass_pdfs'], color ='tab:purple', label='High-Mass Peak', bounds = True, alpha = 0.75, line_style = '--', lw = 3)
+ax = plot_mean_and_90CI(ax, subpop_ppds['mass_1'], subpop_ppds['continuum_mass_pdfs'], color ='tab:pink', label='Continuum', bounds = True, alpha = 0.75, line_style = '--', lw = 3)
 ax.legend(frameon=False, fontsize=14);
 ax.set_xlabel(r'$m_1 \,\,[M_\odot]$', fontsize=18)
 ax.set_ylabel(r'$p(m_1) \,\,[M_\odot^{-1}]$', fontsize=18)

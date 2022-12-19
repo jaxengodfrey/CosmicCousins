@@ -27,14 +27,14 @@ def load_mass_ppd():
     datadict = dd.io.load(paths.data / 'bsplines_64m1_18q_iid18mag_iid18tilt_pl18z_ppds.h5')
     return datadict['m1s'], datadict['dRdm1'], datadict['qs'], datadict['dRdq']
 
-def plot_mean_and_90CI(ax, xs, ar, color, label, bounds=True, CI=90, traces=None, tracecolor='k', fill_alpha=0.08, median=False, mean=True):
+def plot_mean_and_90CI(ax, xs, ar, color, label, bounds=True, CI=90, traces=None, lw = 5, tracecolor='k', alpha = 0.75, line_style = '-', fill_alpha=0.08, median=False, mean=True):
 
     if mean:
         me = np.mean(ar, axis=0)    
-        ax.plot(xs, me, color=color, label=label, lw=5, alpha=0.75)
+        ax.plot(xs, me, color=color, label=label, lw=lw, alpha=alpha, linestyle = line_style)
     elif median:
         me = np.median(ar,axis=0)
-        ax.plot(xs, me, color=color, label=label, lw=5, alpha=0.75)
+        ax.plot(xs, me, color=color, label=label, lw=lw, alpha=alpha, linestyle = line_style)
     if bounds:
         low = np.percentile(ar, (100-CI)/2., axis=0)
         high = np.percentile(ar, 100-(100-CI)/2., axis=0)
@@ -53,6 +53,10 @@ def plot_mean_and_90CI(ax, xs, ar, color, label, bounds=True, CI=90, traces=None
 def load_bsplinemass_ppd():
     datadict = dd.io.load(paths.data / 'bsplines_64m1_18q_iid18mag_iid18tilt_pl18z_ppds.h5')
     return datadict['m1s'], datadict['dRdm1'], datadict['qs'], datadict['dRdq']
+
+def load_subpop_ppds():
+    datadict = dd.io.load(paths.data/ 'PPDS_bspline_mass_spin_1000w_10000s_thin2_independent_bspline_ratio_sigprior02_12-15-22.h5')
+    return datadict
 
 
 def plot_o3b_res(ax, fi, m1=True, col='tab:blue', lab='PP', bounds=False, fill_alpha=0.08):
