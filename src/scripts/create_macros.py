@@ -1,8 +1,6 @@
 import json2latex
 import json
 import numpy as np
-import arviz as az
-import deepdish as dd
 from scipy.integrate import cumtrapz
 import paths
 from utils import load_subpop_ppds, load_trace
@@ -45,16 +43,16 @@ def get_max_values(xs, pdfs):
     return np.array(x)
 
 def save_subpop_cred_intervals(xs, pdfs, max = True):
-    c90 = get_percentile(pdfs, xs, 90)
-    c10 = get_percentile(pdfs, xs, 90)
+    c99 = get_percentile(pdfs, xs, 99)
+    c1 = get_percentile(pdfs, xs, 1)
     peaks = get_max_values(xs, pdfs) 
     if max:
-        return {'10percentile': save_param_cred_intervals(c10),
-                '90percentile': save_param_cred_intervals(c90),
+        return {'1percentile': save_param_cred_intervals(c1),
+                '99percentile': save_param_cred_intervals(c99),
                 'max': save_param_cred_intervals(peaks)}
     else:
-        return {'10percentile': save_param_cred_intervals(c10), 
-                '90percentile': save_param_cred_intervals(c90)}
+        return {'1percentile': save_param_cred_intervals(c1), 
+                '99percentile': save_param_cred_intervals(c99)}
 
 def tilt_fracs(cts, ct_pdfs):
     gamma_fracs = []
@@ -114,7 +112,7 @@ def main():
     macro_dict = {'Mass': {}, 'SpinMag': {}, 'CosTilt': {}}
     all_ppds = load_subpop_ppds()
     idata = load_trace()
-    categories = ['Low-Mass Peak', 'High-Mass Peak', 'Continuum']
+    categories = ['LowMassPeak', 'HighMassPeak', 'Continuum']
     macro_dict['Mass'] = MassMacros(categories, all_ppds)
     macro_dict['SpinMag'] = SpinMagMacros(categories, all_ppds)
     macro_dict['CosTilt'] = TiltMacros(categories, all_ppds)
@@ -123,8 +121,8 @@ def main():
     print("Saving macros to src/data/macros.json...")
     with open(paths.data / "macros.json", 'w') as f:
         json.dump(macro_dict, f)
-    print("Updating macros in src/tex/macros.tex from data in src/data/macros.json...")
-    with open("src/tex/output/macros.tex", 'w') as ff:
+    print("Creating macros in src/tex/macros.tex from data in src/data/macros.json...")
+    with open(paths.tex / "macros.tex", 'w') as ff:
         json2latex.dump('macros', macro_dict, ff)
     # with open("src/tex/output/macros.tex", 'w') as ff:
     #     json2latex.dump('macros', macro_dict, ff)
