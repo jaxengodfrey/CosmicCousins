@@ -43,16 +43,16 @@ def get_max_values(xs, pdfs):
     return np.array(x)
 
 def save_subpop_cred_intervals(xs, pdfs, max = True):
-    c90 = get_percentile(pdfs, xs, 90)
-    c10 = get_percentile(pdfs, xs, 90)
+    c99 = get_percentile(pdfs, xs, 99)
+    c1 = get_percentile(pdfs, xs, 1)
     peaks = get_max_values(xs, pdfs) 
     if max:
-        return {'10percentile': save_param_cred_intervals(c10),
-                '90percentile': save_param_cred_intervals(c90),
+        return {'1percentile': save_param_cred_intervals(c1),
+                '99percentile': save_param_cred_intervals(c99),
                 'max': save_param_cred_intervals(peaks)}
     else:
-        return {'10percentile': save_param_cred_intervals(c10), 
-                '90percentile': save_param_cred_intervals(c90)}
+        return {'1percentile': save_param_cred_intervals(c1), 
+                '99percentile': save_param_cred_intervals(c99)}
 
 def tilt_fracs(cts, ct_pdfs):
     gamma_fracs = []

@@ -5,8 +5,9 @@ rule create_macros:
     output:
         "src/tex/macros.tex", 
         "src/data/macros.json",
+    priority: 
+        100
     conda:
-        "environment.yml",
+        "environment.yml"
     script:
-        "src/scripts/create_macros.py",
-    ruleorder: 1
+        "src/scripts/create_macros.py"
