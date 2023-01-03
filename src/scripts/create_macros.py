@@ -1,8 +1,6 @@
 import json2latex
 import json
 import numpy as np
-import arviz as az
-import deepdish as dd
 from scipy.integrate import cumtrapz
 import paths
 from utils import load_subpop_ppds, load_idata
@@ -114,7 +112,7 @@ def main():
     macro_dict = {'Mass': {}, 'SpinMag': {}, 'CosTilt': {}}
     all_ppds = load_subpop_ppds()
     idata = load_idata()
-    categories = ['Low-Mass Peak', 'High-Mass Peak', 'Continuum']
+    categories = ['LowMassPeak', 'HighMassPeak', 'Continuum']
     macro_dict['Mass'] = MassMacros(categories, all_ppds)
     macro_dict['SpinMag'] = SpinMagMacros(categories, all_ppds)
     macro_dict['CosTilt'] = TiltMacros(categories, all_ppds)
@@ -123,8 +121,8 @@ def main():
     print("Saving macros to src/data/macros.json...")
     with open(paths.data / "macros.json", 'w') as f:
         json.dump(macro_dict, f)
-    print("Updating macros in src/tex/macros.tex from data in src/data/macros.json...")
-    with open("src/tex/macros.tex", 'w') as ff:
+    print("Creating macros in src/tex/macros.tex from data in src/data/macros.json...")
+    with open(paths.tex / "macros.tex", 'w') as ff:
         json2latex.dump('macros', macro_dict, ff)
 
 if __name__ == '__main__':
