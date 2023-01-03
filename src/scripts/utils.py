@@ -1,6 +1,8 @@
 import numpy as np
 import paths
 import deepdish as dd
+import arviz as az
+import matplotlib.pyplot as plt
 
 
 def load_o3b_paper_run_masspdf(filename):
@@ -58,6 +60,9 @@ def load_subpop_ppds():
     datadict = dd.io.load(paths.data/ 'PPDS_bspline_mass_spin_1000w_10000s_thin2_independent_bspline_ratio_sigprior02_12-15-22.h5')
     return datadict
 
+def load_trace():
+    trace = az.from_netcdf(paths.data/'bspline_mass_spin_1000w_10000s_thin2_independent_bspline_ratio_reweighedKDEs_12-16-22.h5')
+    return trace
 
 def plot_o3b_res(ax, fi, m1=True, col='tab:blue', lab='PP', bounds=False, fill_alpha=0.08):
     plpeak_mpdfs, plpeak_qpdfs, plpeak_ms, plpeak_qs = load_o3b_paper_run_masspdf(paths.data / fi)
@@ -66,3 +71,49 @@ def plot_o3b_res(ax, fi, m1=True, col='tab:blue', lab='PP', bounds=False, fill_a
     else:
         plot_mean_and_90CI(ax, plpeak_qs, plpeak_qpdfs, color=col, label=lab, bounds=bounds, fill_alpha=fill_alpha)
     return ax
+
+def load_iid_tilt_ppd():
+    datadict = dd.io.load(paths.data / 'bsplines_64m1_18q_iid18mag_iid18tilt_pl18z_ppds.h5')
+    xs = datadict['tilts']
+    dRdct = datadict['dRdct']
+    return xs, dRdct
+
+def plot_o3b_spintilt(ax, fi,ct1=False, col='tab:blue', lab='PP'):
+    xs = np.linspace(-1, 1, 1000)
+    _data = dd.io.load(paths.data / fi)
+    lines = dict()
+    for key in _data["lines"].keys():
+        lines[key] = _data["lines"][key][()]
+        for ii in range(len(lines[key])):
+            lines[key][ii] /= np.trapz(lines[key][ii], xs)
+    if ct1:
+        ax = plot_mean_and_90CI(ax, xs, lines['cos_tilt_1'], color=col, label=lab, bounds=False)
+    else:
+        ax = plot_mean_and_90CI(ax, xs, lines['cos_tilt_2'], color=col, label=lab, bounds=False)
+    return ax
+
+def load_iid_mag_ppd():
+    datadict = dd.io.load(paths.data / 'bsplines_64m1_18q_iid18mag_iid18tilt_pl18z_ppds.h5')
+    return datadict['mags'], datadict['dRda']
+
+def plot_o3b_spinmag(ax, fi, a1=True, col='tab:blue', lab='PP'):
+    xs = np.linspace(0, 1, 1000)
+    _data = dd.io.load(paths.data / fi)
+    lines = dict()
+    for key in _data["lines"].keys():
+        lines[key] = _data["lines"][key][()]
+        for ii in range(len(lines[key])):
+            lines[key][ii] /= np.trapz(lines[key][ii], xs)
+    if a1:
+        ax = plot_mean_and_90CI(ax, xs, lines['a_1'], color=col, label=lab, bounds=False)
+    else:
+        ax = plot_mean_and_90CI(ax, xs, lines['a_2'], color=col, label=lab, bounds=False)
+    return ax
+
+def radar_plot(categories, events, ax, cm = None):
+    categories = [*categories, categories[0]]
+    events = np.column_stack((events, events[:,0]))
+    label_loc = np.linspace(start=0, stop=2 * np.pi, num=len(categories))
+    for i in range(len(events)):
+        ax.plot(label_loc, events[i], color = cm[:][i], alpha = 0.5)
+    lines, labels = plt.thetagrids(np.degrees(label_loc), labels=categories)

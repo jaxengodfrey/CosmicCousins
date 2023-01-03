@@ -9,14 +9,14 @@
     \script{mass_distribution_plot.py}
 \end{figure*}
 
-\begin{figure}[ht!]
+\begin{figure*}[ht!]
     \begin{centering}
         \includegraphics[width=\linewidth]{figures/spin_mag_distribution_plot.pdf}
         \caption{The marginal primary spin magnitude distribution}
         \label{fig:spin_mag_distribution}
     \end{centering}
     \script{spin_distributions_plot.py}
-\end{figure}
+\end{figure*}
 
 \begin{itemize}
     \item Start by introducing the dataset (GWTC-3) and threshold/cuts on catalog for our dataset
@@ -27,8 +27,17 @@
     \item Quantitative statements on spin orientation dist of our isolated subpop. How much does it prefer aligned spins over the other subpops?
 \end{itemize}
 
-With these models and framework in hand, we infer the mass and spin distributions with the recently released LVK catalog of gravitational wave observations, GWTC-3 \jaxen{CITE THIS}. We perform the same BBH threshold cuts on the catalog done by the LVK's accompnaying population analysis \jaxen{CITE THIS}, which leaves us with 70 BBH mergers. Additionally, we choose to remove GW190814 from our anlaysis, as it is likely to be an outlier of the total BBH population and is not very well understood \jaxen{CITE THIS}. With the 69 remaining events, we are able to infer the mass and spin distributions of three potential BBH subpopulations, detailed below.
+With these models and framework in hand, we infer the mass and spin distributions with the recently released LVK catalog of gravitational wave observations, GWTC-3 \jaxen{CITE THIS}. We perform the same BBH threshold cuts on the catalog done by the LVK's accompnaying population analysis \jaxen{CITE THIS}, which leaves us with 70 BBH mergers. Additionally, we choose to remove GW190814 from our anlaysis, as it is likely to be an outlier of the total BBH population and is not very well understood \jaxen{CITE THIS}. With the 69 remaining events, we are able to infer the mass and spin distributions of three potential BBH subpopulations, detailed below. \result{$\CIPlusMinus{\macros[Mass][Low-Mass Peak]}\,\msun$}
 
 \subsection{BBH Mass and Spin Distributions}
 
 Figure \ref{fig:mass_distribution} shows the inferred total primary mass distribution, as well as the distributions of the three subpopulations, \textsc{Low-Mass Peak}, \textsc{Mid-Mass Peak}, and \textsc{Continuum}. For comparison, it also includes the primary mass distributions inferred by \jaxen{CITE LVK GWTC-3 POP} and \jaxen{CITE BRUCE}. Figure 
+
+\begin{figure}[ht!]
+    \begin{centering}
+        \includegraphics[width=\linewidth]{figures/radar_plot.pdf}
+        \caption{}
+        \label{fig:radar_plot}
+    \end{centering}
+    \script{radar_plot.py}
+\end{figure}
