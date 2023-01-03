@@ -5,7 +5,7 @@ import arviz as az
 import deepdish as dd
 from scipy.integrate import cumtrapz
 import paths
-from utils import load_subpop_ppds, load_idata
+from utils import load_subpop_ppds, load_trace
 
 def round_sig(f, sig=2):
     max10exp = np.floor(np.log10(abs(f))) + 1
@@ -113,7 +113,7 @@ def BranchingRatioMacros(categories, idata):
 def main():
     macro_dict = {'Mass': {}, 'SpinMag': {}, 'CosTilt': {}}
     all_ppds = load_subpop_ppds()
-    idata = load_idata()
+    idata = load_trace()
     categories = ['Low-Mass Peak', 'High-Mass Peak', 'Continuum']
     macro_dict['Mass'] = MassMacros(categories, all_ppds)
     macro_dict['SpinMag'] = SpinMagMacros(categories, all_ppds)
@@ -124,8 +124,10 @@ def main():
     with open(paths.data / "macros.json", 'w') as f:
         json.dump(macro_dict, f)
     print("Updating macros in src/tex/macros.tex from data in src/data/macros.json...")
-    with open("src/tex/macros.tex", 'w') as ff:
+    with open("src/tex/output/macros.tex", 'w') as ff:
         json2latex.dump('macros', macro_dict, ff)
+    # with open("src/tex/output/macros.tex", 'w') as ff:
+    #     json2latex.dump('macros', macro_dict, ff)
 
 if __name__ == '__main__':
     main()
