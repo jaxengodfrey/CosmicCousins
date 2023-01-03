@@ -124,8 +124,6 @@ def main():
     print("Creating macros in src/tex/macros.tex from data in src/data/macros.json...")
     with open(paths.tex / "macros.tex", 'w') as ff:
         json2latex.dump('macros', macro_dict, ff)
-    # with open("src/tex/output/macros.tex", 'w') as ff:
-    #     json2latex.dump('macros', macro_dict, ff)
 
 if __name__ == '__main__':
     main()
