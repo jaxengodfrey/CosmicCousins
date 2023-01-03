@@ -3,7 +3,7 @@ import json
 import numpy as np
 from scipy.integrate import cumtrapz
 import paths
-from utils import load_subpop_ppds, load_idata
+from utils import load_subpop_ppds, load_trace
 
 def round_sig(f, sig=2):
     max10exp = np.floor(np.log10(abs(f))) + 1
@@ -111,7 +111,7 @@ def BranchingRatioMacros(categories, idata):
 def main():
     macro_dict = {'Mass': {}, 'SpinMag': {}, 'CosTilt': {}}
     all_ppds = load_subpop_ppds()
-    idata = load_idata()
+    idata = load_trace()
     categories = ['LowMassPeak', 'HighMassPeak', 'Continuum']
     macro_dict['Mass'] = MassMacros(categories, all_ppds)
     macro_dict['SpinMag'] = SpinMagMacros(categories, all_ppds)
