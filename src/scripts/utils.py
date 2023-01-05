@@ -116,4 +116,4 @@ def radar_plot(categories, events, ax, cm = None):
     label_loc = np.linspace(start=0, stop=2 * np.pi, num=len(categories))
     for i in range(len(events)):
         ax.plot(label_loc, events[i], color = cm[:][i], alpha = 0.5)
-    lines, labels = plt.thetagrids(np.degrees(label_loc), labels=categories)
+    lines, labels = plt.thetagrids(np.degrees(label_loc), labels=categories, fontsize = 10)

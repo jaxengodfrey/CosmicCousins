@@ -21,11 +21,11 @@ probs = idata.posterior['Qs'].mean(axis = 1).values[0] / (n_categories - 1)
 
 ticks = np.linspace(0, 1, n_categories)
 cm = plt.cm.cool(probs)
-fig, ax = plt.subplots(subplot_kw = {'projection': 'polar'}, figsize = (5,5))
+fig, ax = plt.subplots(subplot_kw = {'projection': 'polar'}, figsize = (6,6))
 radar_plot(categories, groups, ax, cm = cm)
-cbar = fig.colorbar(plt.cm.ScalarMappable(cmap='cool'), ax = ax, ticks=ticks, orientation = 'horizontal', shrink = 0.8)
+cbar = fig.colorbar(plt.cm.ScalarMappable(cmap='cool'), ax = ax, ticks=ticks, orientation = 'horizontal', shrink = 1)
 cbar.ax.set_xticklabels(categories) 
-cbar.set_label('Category', y=1.0)
+# cbar.set_label('Category', y=1.0)
 plt.savefig(paths.figures / 'radar_plot.pdf', dpi=300);
 plt.savefig(paths.figures / 'radar_plot.png', dpi=300);
 plt.close()

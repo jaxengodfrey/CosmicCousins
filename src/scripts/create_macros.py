@@ -74,7 +74,7 @@ def get_branching_ratios(categories, Ps, chain_idx = 0):
     higher = np.percentile(Ps, 95, axis = 0) - median
     branch_dict = {}
     for i in range(len(categories)):
-        branch_dict[categories[i]] = {'median': round_sig(median[i]), 'error plus': round_sig(higher[i]), 'error minus': round_sig(lower[i])}
+        branch_dict[categories[i]] = {'Frac': {'median': round_sig(median[i]), 'error plus': round_sig(higher[i]), 'error minus': round_sig(lower[i])}, 'Percent': {'median': round_sig(median[i]*100), 'error plus': round_sig(higher[i]*100), 'error minus': round_sig(lower[i]*100)}}
     return branch_dict
 
 def get_num_constraining_events(categories, Qs, chain_idx = 0):
