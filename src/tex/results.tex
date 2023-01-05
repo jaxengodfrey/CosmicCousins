@@ -9,14 +9,6 @@
     \script{mass_distribution_plot.py}
 \end{figure*}
 
-\begin{figure*}[ht!]
-    \begin{centering}
-        \includegraphics[width=\linewidth]{figures/spin_mag_distribution_plot.pdf}
-        \caption{The marginal primary spin magnitude distribution}
-        \label{fig:spin_mag_distribution}
-    \end{centering}
-    \script{spin_distributions_plot.py}
-\end{figure*}
 
 \begin{itemize}
     \item Start by introducing the dataset (GWTC-3) and threshold/cuts on catalog for our dataset
@@ -33,17 +25,33 @@ With these models and framework in hand, we infer the mass and spin distribution
 
 Figure \ref{fig:mass_distribution} shows the inferred total primary mass distribution, as well as the distributions of the three different categories considered, \first, \second, and \textsc{Continuum}. For comparison, \ref{fig:mass_distribution} also includes the primary mass distributions inferred by \jaxen{CITE LVK GWTC-3 POP} and \jaxen{CITE BRUCE}. We find that the \textsc{Low-Mass  Peak} category contains a maximum at $m_\mathrm{LM,max} = $ \result{$\CIPlusMinus{\macros[Mass][LowMassPeak][max]}$} \msun to $90\%$ credibility, which is in agreement with other recent studies that find a maximum in the BBH mass spectrum near $10$ \msun. Interestingly, the mid-mass range of the BBH mass spectrum is much more washed out compared to studies such as \jaxen{CITE Bruce and others} that find local peaks in the mass spectrum near $35$ \msun and potentially $20$ \msun. The \textsc{High-Mass Peak} category is maximized at $m_\mathrm{HM,max} = $ \result{$\CIPlusMinus{\macros[Mass][HighMassPeak][max]}$} \msun to $90\%$ credibility. 
 
-\begin{center}
-\begin{tabular} { | m{5em} | m{1cm}| m{1cm} | m{6em} |} 
+\begin{figure*}[ht!]
+    \begin{centering}
+        \includegraphics[width=\linewidth]{figures/spin_mag_distribution_plot.pdf}
+        \caption{The marginal primary spin magnitude distribution}
+        \label{fig:spin_mag_distribution}
+    \end{centering}
+    \script{spin_distributions_plot.py}
+\end{figure*}
+
+
+
+\begin{table}[h!]
+\centering
+\begin{tabular} { || m{5em} | p{5em}| p{5em} | m{5.5em}||} 
 \hline
 & \first & \second & \cont \\
 \hline \hline
 Branching Ratio  & $\CIPlusMinus{\macros[BranchingRatios][LowMassPeak]}$ & $\CIPlusMinus{\macros[BranchingRatios][HighMassPeak]}$ & $\CIPlusMinus{\macros[BranchingRatios][Continuum]}$ \\ 
 \hline
-Number of Events  & 7 & 78 & 5415 \\
+Number of Events  & $\CIPlusMinus{\macros[NumEvents][LowMassPeak]}$ & $\CIPlusMinus{\macros[NumEvents][HighMassPeak]}$ & $\CIPlusMinus{\macros[NumEvents][Continuum]}$ \\
 \hline
 \end{tabular}
-\end{center}
+\caption{Table to test captions and labels.}
+\label{table:1}
+\end{table}
+
+
 
 \begin{figure}[ht!]
     \begin{centering}

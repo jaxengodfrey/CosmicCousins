@@ -77,6 +77,17 @@ def get_branching_ratios(categories, Ps, chain_idx = 0):
         branch_dict[categories[i]] = {'median': round_sig(median[i]), 'error plus': round_sig(higher[i]), 'error minus': round_sig(lower[i])}
     return branch_dict
 
+def get_num_constraining_events(categories, Qs, chain_idx = 0):
+    Qs = Qs.values[chain_idx]
+    num_dict = {}
+    for i in range(len(categories)):
+        sums = np.sum(Qs == i, axis = 1)
+        median = np.median(sums)
+        lower = median - np.percentile(sums, 5)
+        higher = np.percentile(sums, 95) - median
+        num_dict[categories[i]] = {'median': round_sig(median), 'error plus': round_sig(higher), 'error minus': round_sig(lower)}
+    return num_dict
+
 def DistMacros(xs, ppds, categories, param_name, tilt = False):
     print('Saving {0} Distribution Macros'.format(param_name))
     categories_dict = {}
@@ -108,6 +119,9 @@ def TiltMacros(categories, ppds):
 def BranchingRatioMacros(categories, idata):
     return get_branching_ratios(categories, idata.posterior['Ps'])
 
+def NumEventsMacros(categories, idata):
+    return get_num_constraining_events(categories, idata.posterior['Qs'])
+
 def main():
     macro_dict = {'Mass': {}, 'SpinMag': {}, 'CosTilt': {}}
     all_ppds = load_subpop_ppds()
@@ -117,6 +131,7 @@ def main():
     macro_dict['SpinMag'] = SpinMagMacros(categories, all_ppds)
     macro_dict['CosTilt'] = TiltMacros(categories, all_ppds)
     macro_dict['BranchingRatios'] = BranchingRatioMacros(categories, idata)
+    macro_dict['NumEvents'] = NumEventsMacros(categories, idata)
 
     print("Saving macros to src/data/macros.json...")
     with open(paths.data / "macros.json", 'w') as f:
