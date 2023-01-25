@@ -81,6 +81,6 @@ ax[i_3].grid(True, which="major", ls=":")
 # plt.title(f'GWTC-3: Spin Tilt Distribution', fontsize=title_text_size);
 fig.tight_layout()
 plt.savefig(paths.figures / 'spin_mag_distribution_plot.pdf', dpi=300);
-plt.savefig(paths.figures / 'spin_mag_distribution_plot.png', dpi=300);
+plt.savefig(paths.figures / 'spin_mag_distribution_plot.jpeg', dpi=300);
 
 

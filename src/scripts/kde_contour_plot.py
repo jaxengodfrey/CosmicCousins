@@ -13,6 +13,7 @@ idata = load_trace()
 n_categories = 3
 categories = ['Low-Mass\nPeak', 'High-Mass\nPeak', 'Continuum']
 probs = idata.posterior['Qs'].mean(axis = 1).values[0] / (n_categories - 1)
+
 ticks = np.linspace(0,1, n_categories)
 cm = plt.cm.cool(probs)
 

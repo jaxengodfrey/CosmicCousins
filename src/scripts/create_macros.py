@@ -85,7 +85,7 @@ def get_num_constraining_events(categories, Qs, chain_idx = 0):
         median = np.median(sums)
         lower = median - np.percentile(sums, 5)
         higher = np.percentile(sums, 95) - median
-        num_dict[categories[i]] = {'median': round_sig(median), 'error plus': round_sig(higher), 'error minus': round_sig(lower)}
+        num_dict[categories[i]] = {'median': round_sig(median), 'error plus': round_sig(higher), 'error minus': round_sig(lower), 'low': round_sig(median - lower), 'high': round_sig(median + higher)}
     return num_dict
 
 def DistMacros(xs, ppds, categories, param_name, tilt = False):
