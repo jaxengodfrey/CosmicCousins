@@ -102,12 +102,39 @@ hex = []
 for i in range(len(cm)):
     hex.append(matplotlib.colors.rgb2hex(cm[i]))
 
-gs = grid_spec.GridSpec(len(cm),2)
+gs = grid_spec.GridSpec(len(cm),3)
 fig = plt.figure(figsize=(7,10))
+
+qs = np.array(idata.posterior["Qs"][0]).transpose()
+
+n_categories = len(categories)
+n_events = qs.shape[0]
+n_samp = qs.shape[1]
+groups = np.zeros([n_categories,n_events])
+for i in range(n_categories):
+    x = np.array([np.sum(qs == i, axis = 1) / n_samp])
+    groups[i] = x
+groups = groups.transpose()
+
+sorted_groups = groups[np.flip(sorted_probs)]
+sorted_names = np.array(event_names)[np.flip(sorted_probs)]
+
+colors = ['cyan', 'mediumpurple', 'magenta']
+
+ax3 = fig.add_subplot(gs[3:,0])
+left = len(cm) * [0]
+for idx in range(n_categories):
+    ax3.barh(sorted_names, sorted_groups[:, idx], left = left, color=colors[idx])
+    left = left + sorted_groups[:, idx]
+ax3.margins(0,0)
+ax3.set_xticks([0, 0.25, 0.5, 0.75, 1])
+plt.yticks(fontsize = 6)
+
 
 
 ax_obj1 = []
-ax_obj2 = [] 
+ax_obj2 = []
+# ax_obj = []
 for i in range(len(cm)):
     num = sorted_probs[i]
     event = event_names[num]
@@ -115,14 +142,20 @@ for i in range(len(cm)):
     x2 = idata.posterior['a_1_obs_event_{}'.format(num)].values[0]
 
     # creating new axes object
-    ax_obj1.append(fig.add_subplot(gs[i:i+1, 0]))
-    ax_obj2.append(fig.add_subplot(gs[i:i+1, 1]))
+    ax_obj1.append(fig.add_subplot(gs[i:i+1, 1]))
+    ax_obj2.append(fig.add_subplot(gs[i:i+1, 2]))
+    # ax_obj.append(fig.add_subplot(gs[i:i+1, 0]))
 
     # plotting the distribution
     sns.kdeplot(x=x1, ax=ax_obj1[-1], color=hex[num], lw=1, fill=True, multiple = 'stack', log_scale = True)
     sns.kdeplot(x=x2, ax=ax_obj2[-1], color=hex[num], lw=1, fill=True, multiple = 'stack')
     # ax_objs[-1].plot(x_d, np.exp(logprob),color=hex[num],lw=1)
     # ax_objs[-1].fill_between(x_d, np.exp(logprob), alpha=1,color="#f0f0f0")
+
+    # left = len(cm) * [0]
+    # for idx in range(n_categories):
+    #     ax_obj[-1].barh(sorted_names[i], sorted_groups[i, idx], left = left, color=colors[idx], height = 0.01)
+    #     left = left + sorted_groups[i, idx]
 
 
     # setting uniform x and y lims
@@ -140,26 +173,34 @@ for i in range(len(cm)):
     rect1.set_alpha(0)
     rect2 = ax_obj2[-1].patch
     rect2.set_alpha(0)
+    # rect = ax_obj[-1].patch
+    # rect.set_alpha(0)
 
 
 
     # remove borders, axis ticks, and labels
     ax_obj1[-1].set_yticklabels([])
     ax_obj2[-1].set_yticklabels([])
+    # ax_obj[-1].set_yticklabels([])
 
     spines = ["top","right","left"]
 
     if i == len(hex)-1:
         ax_obj1[-1].set_xlabel(r"$m_1$", fontsize=12)
-        logticks = np.array([5,8,10,20,40,70,100])
+        logticks = np.array([5,10,20,40,60,100])
         ax_obj1[-1].set_xticks(logticks)
+        ax_obj2[-1].set_xticks([0, 0.2, 0.5, 0.8, 1])
+        ax_obj2[-1].set_xticklabels(['0', '0.2', '0.5', '0.8', '1'] , fontsize = 10)
         ax_obj1[-1].get_xaxis().set_major_formatter(ScalarFormatter())
 
         ax_obj2[-1].set_xlabel(r"$a_1$", fontsize=12)
+        # ax_obj[-1].set_xlabel(r"event_cat", fontsize=12)
 
         for s in spines:
             ax_obj1[-1].spines[s].set_visible(False)
             ax_obj2[-1].spines[s].set_visible(False)
+            ax3.spines[s].set_visible(False)
+            # ax_obj[-1].spines[s].set_visible(False)
 
         # cbar = fig.colorbar(plt.cm.ScalarMappable(cmap='cool'), ax = ax_objs, ticks=ticks, label = 'Category', fraction=0.2, pad=0.4)
         # cbar.ax.set_yticklabels(categories) 
@@ -172,20 +213,28 @@ for i in range(len(cm)):
         ax_obj2[-1].set_xticklabels([])
         ax_obj2[-1].spines['bottom'].set(alpha = 0.4)
 
+        # ax_obj[-1].tick_params(axis='x',which='both', bottom=False, top=False)
+        # ax_obj[-1].set_xticklabels([])
+        # ax_obj[-1].spines['bottom'].set(alpha = 0.4)
+
         for s in spines:
             ax_obj1[-1].spines[s].set_visible(False)
             ax_obj2[-1].spines[s].set_visible(False)
+            ax3.spines[s].set_visible(False)
+            # ax_obj[-1].spines[s].set_visible(False)
 
+    
     ax_obj1[-1].tick_params(axis='y',which='both', left=False, right=False)
     ax_obj2[-1].tick_params(axis='y',which='both', left=False, right=False)
+    # ax_obj[-1].tick_params(axis='y',which='both', left=False, right=False)
 
-    adj_event = event.replace(" ","\n")
-    ax_obj2[-1].text(1.05,0,adj_event,fontsize=6,ha="left")
+    # adj_event = event.replace(" ","\n")
+    # ax_obj2[-1].text(1.05,0,adj_event,fontsize=6,ha="left")
 
 gs.update(hspace=-0.7)
 
 plt.suptitle("Primary Mass and Spin Magnitude Re-Weighed Posteriors")
-fig.subplots_adjust(top=0.95, right = 0.8)
+fig.subplots_adjust(top=0.95, left = 0.15, right = 0.97, bottom = 0.07, wspace = 0.15)
 plt.savefig(paths.figures / 'ridgeplot.png', bbox_inches = 'tight')
 plt.savefig(paths.figures / 'ridgeplot.pdf')
 
