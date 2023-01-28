@@ -5,6 +5,10 @@ import arviz as az
 import matplotlib.pyplot as plt
 
 
+def load_03b_posteriors():
+    data = dd.io.load( paths.data / 'posterior_samples_and_injections_spin_magnitude.h5')
+    return data
+
 def load_o3b_paper_run_masspdf(filename):
     """
     Generates a plot of the PPD and X% credible region for the mass distribution,

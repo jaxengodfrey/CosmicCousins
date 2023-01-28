@@ -1,9 +1,10 @@
-# https://matplotlib.org/matplotblog/posts/create-ridgeplots-in-matplotlib/
+ #https://matplotlib.org/matplotblog/posts/create-ridgeplots-in-matplotlib/
 
 import paths
 import numpy as np
 import matplotlib
 matplotlib.use('TkAgg')
+import matplotlib.pyplot as plt
 import matplotlib.pyplot as plt
 from matplotlib.ticker import ScalarFormatter
 import arviz as az
@@ -11,6 +12,7 @@ import seaborn as sns
 import matplotlib.gridspec as gridspec
 from matplotlib.ticker import ScalarFormatter
 from utils import load_trace
+from utils import load_03b_posteriors
 import deepdish as dd
 import matplotlib
 import pandas as pd
@@ -19,7 +21,11 @@ import matplotlib.pyplot as plt
 import matplotlib.gridspec as grid_spec
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 
-idata = load_trace()
+
+data = load_03b_posteriors()
+
+pedata = data['pedata']
+param_map = data['param_map']
 
 event_names = ['GW150914',
  'GW151012',
@@ -91,68 +97,37 @@ event_names = ['GW150914',
  'GW200311_115853',
  'GW200316_215756']
 
+idata = load_trace()
 n_categories = 3
-categories = ['Low-Mass\nPeak', 'High-Mass\nPeak', 'Continuum']
 probs = idata.posterior['Qs'].mean(axis = 1).values[0] / (n_categories - 1)
-ticks = np.linspace(0,1, n_categories)
-cm = plt.cm.cool(probs)
 sorted_probs = np.argsort(probs)
 
+num_events = 69
 
-hex = []
-for i in range(len(cm)):
-    hex.append(matplotlib.colors.rgb2hex(cm[i]))
-
-gs = grid_spec.GridSpec(len(cm),4)
+gs = grid_spec.GridSpec(num_events,3)
 fig = plt.figure(figsize=(8,10))
 
-qs = np.array(idata.posterior["Qs"][0]).transpose()
-
-n_categories = len(categories)
-n_events = qs.shape[0]
-n_samp = qs.shape[1]
-groups = np.zeros([n_categories,n_events])
-for i in range(n_categories):
-    x = np.array([np.sum(qs == i, axis = 1) / n_samp])
-    groups[i] = x
-groups = groups.transpose()
-
-sorted_groups = groups[np.flip(sorted_probs)]
-sorted_names = np.array(event_names)[np.flip(sorted_probs)]
-
-colors = ['cyan', 'mediumpurple', 'magenta']
-
-ax3 = fig.add_subplot(gs[3:,0])
-left = len(cm) * [0]
-for idx in range(n_categories):
-    ax3.barh(sorted_names, sorted_groups[:, idx], left = left, color=colors[idx], align = 'edge', height = 0.7)
-    left = left + sorted_groups[:, idx]
-ax3.margins(0,0)
-ax3.set_xticks([0, 0.2, 0.5, 0.8, 1])
-ax3.set_xlabel(r"event_cat", fontsize=12)
-ax3.set_xticklabels(['0', '0.2', '0.5', '0.8', '1'])
-plt.yticks(fontsize = 6)
 
 ax_obj1 = []
 ax_obj2 = []
 ax_obj3 = []
-for i in range(len(cm)):
+for i in range(num_events):
     num = sorted_probs[i]
     event = event_names[num]
-    x1 = idata.posterior['mass_1_obs_event_{}'.format(num)].values[0]
-    x2 = idata.posterior['a_1_obs_event_{}'.format(num)].values[0]
-    x3 = idata.posterior['cos_tilt_1_obs_event_{}'.format(num)].values[0]
+    x1 = pedata[param_map['mass_1']][num]
+    x2 = pedata[param_map['a_1']][num]
+    x3 = pedata[param_map['cos_tilt_1']][num]
 
     # creating new axes object
-    ax_obj1.append(fig.add_subplot(gs[i:i+1, 1]))
-    ax_obj2.append(fig.add_subplot(gs[i:i+1, 2]))
-    ax_obj3.append(fig.add_subplot(gs[i:i+1, 3]))
+    ax_obj1.append(fig.add_subplot(gs[i:i+1, 0]))
+    ax_obj2.append(fig.add_subplot(gs[i:i+1, 1]))
+    ax_obj3.append(fig.add_subplot(gs[i:i+1, 2]))
     ax_objs = [ax_obj1, ax_obj2, ax_obj3]
 
     # plot the posteriors
-    sns.kdeplot(x=x1, ax=ax_obj1[-1], color=hex[num], lw=1, fill=True, multiple = 'stack', log_scale = True)
-    sns.kdeplot(x=x2, ax=ax_obj2[-1], color=hex[num], lw=1, fill=True, multiple = 'stack')
-    sns.kdeplot(x=x3, ax=ax_obj3[-1], color=hex[num], lw=1, fill=True, multiple = 'stack')
+    sns.kdeplot(x=x1, ax=ax_obj1[-1], color='k', lw=1, fill=True, multiple = 'stack', log_scale = True)
+    sns.kdeplot(x=x2, ax=ax_obj2[-1], color='k', lw=1, fill=True, multiple = 'stack')
+    sns.kdeplot(x=x3, ax=ax_obj3[-1], color='k', lw=1, fill=True, multiple = 'stack')
 
 
     # setting uniform x and y lims
@@ -176,7 +151,7 @@ for i in range(len(cm)):
     
     #set subplot axes labels
     spines = ["top","right","left"]
-    if i == len(hex)-1:
+    if i == num_events-1:
         ax_obj1[-1].set_xlabel(r"$m_1$", fontsize=12)
         logticks = np.array([5,10,20,40,60,100])
         ax_obj1[-1].set_xticks(logticks)
@@ -194,7 +169,6 @@ for i in range(len(cm)):
         for s in spines:
             for ax in ax_objs:
                 ax[-1].spines[s].set_visible(False)
-            ax3.spines[s].set_visible(False)
 
     else:
         for ax in ax_objs:
@@ -206,7 +180,6 @@ for i in range(len(cm)):
         for s in spines:
             for ax in ax_objs:
                 ax[-1].spines[s].set_visible(False)
-            ax3.spines[s].set_visible(False)
 
     for ax in ax_objs:
         ax[-1].tick_params(axis='y',which='both', left=False, right=False)
