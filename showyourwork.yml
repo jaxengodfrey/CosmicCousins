@@ -11,29 +11,29 @@ dependencies:
     - src/scripts/create_macros.py
   src/tex/macros.tex:
     - src/scripts/create_macros.py
-    - src/data/bspline_mass_spin_1000w_10000s_thin2_independent_bspline_ratio_reweighedKDEs_12-16-22.h5
-    - src/data/PPDS_bspline_mass_spin_1000w_10000s_thin2_independent_bspline_ratio_sigprior02_12-15-22.h5
+    - src/data/bspline_1logpeak_100000s.h5
+    - src/data/bspline_1logpeak_100000s_ppds.h5
+    - src/data/bspline_1logpeak_samespin_100000s.h5
+    - src/data/bspline_1logpeak_samespin_100000s_ppds.h5
   src/scripts/create_macros.py:
-    - src/data/bspline_mass_spin_1000w_10000s_thin2_independent_bspline_ratio_reweighedKDEs_12-16-22.h5
-    - src/data/PPDS_bspline_mass_spin_1000w_10000s_thin2_independent_bspline_ratio_sigprior02_12-15-22.h5
-  src/scripts/mass_distribution_plot.py: 
+    - src/data/bspline_1logpeak_100000s.h5
+    - src/data/bspline_1logpeak_100000s_ppds.h5
+    - src/data/bspline_1logpeak_samespin_100000s.h5
+    - src/data/bspline_1logpeak_samespin_100000s_ppds.h5
+  src/scripts/mass_distribution_g1_plot.py: 
     - src/data/bsplines_64m1_18q_iid18mag_iid18tilt_pl18z_ppds.h5
     - src/data/o1o2o3_mass_c_iid_mag_iid_tilt_powerlaw_redshift_mass_data.h5
-    - src/data/PPDS_bspline_mass_spin_1000w_10000s_thin2_independent_bspline_ratio_12-12-22.h5
-    - src/data/PPDS_bspline_mass_spin_1000w_10000s_thin2_independent_bspline_ratio_sigprior02_12-15-22.h5
+    - src/data/bspline_1logpeak_100000s_ppds.h5
+  src/scripts/mass_distribution_g2_plot.py: 
+    - src/data/bsplines_64m1_18q_iid18mag_iid18tilt_pl18z_ppds.h5
+    - src/data/o1o2o3_mass_c_iid_mag_iid_tilt_powerlaw_redshift_mass_data.h5
+    - src/data/bspline_1logpeak_samespin_100000s_ppds.h5
   src/scripts/spin_distributions_plot.py: 
     - src/data/bsplines_64m1_18q_iid18mag_iid18tilt_pl18z_ppds.h5
-    - src/data/PPDS_bspline_mass_spin_1000w_10000s_thin2_independent_bspline_ratio_12-12-22.h5
-    - src/data/PPDS_bspline_mass_spin_1000w_10000s_thin2_independent_bspline_ratio_sigprior02_12-15-22.h5
+    - src/data/bspline_1logpeak_100000s_ppds.h5
+    - src/data/bspline_1logpeak_samespin_100000s_ppds.h5
     - src/data/o1o2o3_mass_c_iid_mag_iid_tilt_powerlaw_redshift_orientation_data.h5
     - src/data/o1o2o3_mass_c_iid_mag_iid_tilt_powerlaw_redshift_magnitude_data.h5
-    - src/data/spin_popfrac_posteriors.h5
-  src/scripts/kde_contour_plot.py:
-    - src/data/bspline_mass_spin_1000w_10000s_thin2_independent_bspline_ratio_reweighedKDEs_12-16-22.h5
-  src/scripts/spin_contour_plot.py:
-    - src/data/bspline_mass_spin_1000w_10000s_thin2_independent_bspline_ratio_reweighedKDEs_12-16-22.h5
-  src/scripts/radar_plot.py:
-    - src/data/bspline_mass_spin_1000w_10000s_thin2_independent_bspline_ratio_reweighedKDEs_12-16-22.h5
 datasets:
   10.5072/zenodo.1114865: # This is Cover Your Basis Data Release
     contents:
@@ -61,11 +61,11 @@ datasets:
                 o1o2o3_mass_c_iid_mag_iid_tilt_powerlaw_redshift_magnitude_data.h5: src/data/o1o2o3_mass_c_iid_mag_iid_tilt_powerlaw_redshift_magnitude_data.h5
                 o1o2o3_mass_c_iid_mag_iid_tilt_powerlaw_redshift_orientation_data.h5: src/data/o1o2o3_mass_c_iid_mag_iid_tilt_powerlaw_redshift_orientation_data.h5
                 o1o2o3_mass_c_iid_mag_iid_tilt_powerlaw_redshift_samples.hdf5: src/data/o1o2o3_mass_c_iid_mag_iid_tilt_powerlaw_redshift_samples.hdf5
-  10.5072/zenodo.1140832:
-      contents:
-        bspline_mass_spin_1000w_10000s_thin2_independent_bspline_ratio_12-12-22.h5: src/data/bspline_mass_spin_1000w_10000s_thin2_independent_bspline_ratio_12-12-22.h5
-        bspline_mass_spin_1000w_10000s_thin2_independent_bspline_ratio_reweighedKDEs_12-16-22.h5: src/data/bspline_mass_spin_1000w_10000s_thin2_independent_bspline_ratio_reweighedKDEs_12-16-22.h5
-        bspline_mass_spin_1000w_10000s_thin2_independent_bspline_ratio_sigprior02_12-12-22.h5: src/data/bspline_mass_spin_1000w_10000s_thin2_independent_bspline_ratio_sigprior02_12-12-22.h5
-        PPDS_bspline_mass_spin_1000w_10000s_thin2_independent_bspline_ratio_12-12-22.h5: src/data/PPDS_bspline_mass_spin_1000w_10000s_thin2_independent_bspline_ratio_12-12-22.h5
-        PPDS_bspline_mass_spin_1000w_10000s_thin2_independent_bspline_ratio_sigprior02_12-15-22.h5: src/data/PPDS_bspline_mass_spin_1000w_10000s_thin2_independent_bspline_ratio_sigprior02_12-15-22.h5
-        spin_popfrac_posteriors.h5: src/data/spin_popfrac_posteriors.h5
+  # 10.5072/zenodo.1140832:
+  #     contents:
+  #       bspline_mass_spin_1000w_10000s_thin2_independent_bspline_ratio_12-12-22.h5: src/data/bspline_mass_spin_1000w_10000s_thin2_independent_bspline_ratio_12-12-22.h5
+  #       bspline_mass_spin_1000w_10000s_thin2_independent_bspline_ratio_reweighedKDEs_12-16-22.h5: src/data/bspline_mass_spin_1000w_10000s_thin2_independent_bspline_ratio_reweighedKDEs_12-16-22.h5
+  #       bspline_mass_spin_1000w_10000s_thin2_independent_bspline_ratio_sigprior02_12-12-22.h5: src/data/bspline_mass_spin_1000w_10000s_thin2_independent_bspline_ratio_sigprior02_12-12-22.h5
+  #       # PPDS_bspline_mass_spin_1000w_10000s_thin2_independent_bspline_ratio_12-12-22.h5: src/data/PPDS_bspline_mass_spin_1000w_10000s_thin2_independent_bspline_ratio_12-12-22.h5
+  #       # PPDS_bspline_mass_spin_1000w_10000s_thin2_independent_bspline_ratio_sigprior02_12-15-22.h5: src/data/PPDS_bspline_mass_spin_1000w_10000s_thin2_independent_bspline_ratio_sigprior02_12-15-22.h5
+  #       spin_popfrac_posteriors.h5: src/data/spin_popfrac_posteriors.h5

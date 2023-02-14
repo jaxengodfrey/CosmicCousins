@@ -12,3 +12,6 @@ src/tex/figures/*
 
 # Miscellaneous
 __pycache__
+
+# scratch folders
+**/scratch

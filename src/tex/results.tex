@@ -2,11 +2,20 @@
 
 \begin{figure*}[ht!]
     \begin{centering}
-        \includegraphics[width=\linewidth]{figures/mass_distribution_plot.pdf}
+        \includegraphics[width=\linewidth]{figures/mass_distribution_g1_plot.pdf}
         \caption{The marginal primary mass distribution}
-        \label{fig:mass_distribution}
+        \label{fig:g1_mass_distribution}
     \end{centering}
-    \script{mass_distribution_plot.py}
+    \script{mass_distribution_g1_plot.py}
+\end{figure*}
+
+\begin{figure*}[ht!]
+    \begin{centering}
+        \includegraphics[width=\linewidth]{figures/mass_distribution_g2_plot.pdf}
+        \caption{The marginal primary mass distribution}
+        \label{fig:g2_mass_distribution}
+    \end{centering}
+    \script{mass_distribution_g2_plot.py}
 \end{figure*}
 
 
@@ -31,35 +40,43 @@ Figure \ref{fig:spin_mag_distribution} shows the inferred spin magnitude $a$ and
 
 \begin{figure*}[ht!]
     \begin{centering}
-        \includegraphics[width=\linewidth]{figures/spin_mag_distribution_plot.pdf}
+        \includegraphics[width=\linewidth]{figures/spin_distributions_plot.pdf}
         \caption{The marginal primary spin magnitude distribution}
-        \label{fig:spin_mag_distribution}
+        \label{fig:spin_distributions}
     \end{centering}
     \script{spin_distributions_plot.py}
 \end{figure*}
 
-
-
-\begin{table}[h!]
-\centering
-\begin{tabular} { || m{5em} | p{5em}| p{5em} | m{5.5em}||} 
-\hline
-& \first & \second & \cont \\
-\hline \hline
-Branching Ratio  & $\CIPlusMinus{\macros[BranchingRatios][LowMassPeak][Frac]}$ & $\CIPlusMinus{\macros[BranchingRatios][HighMassPeak][Frac]}$ & $\CIPlusMinus{\macros[BranchingRatios][Continuum][Frac]}$ \\ 
-\hline
-Number of Events  & $\macros[NumEvents][LowMassPeak][low]$ - $\macros[NumEvents][LowMassPeak][high]$ & $\macros[NumEvents][HighMassPeak][low]$ - $\macros[NumEvents][HighMassPeak][high]$ & $\macros[NumEvents][Continuum][low]$ - $\macros[NumEvents][Continuum][high]$ \\
-\hline
-\end{tabular}
-\caption{Table to test captions and labels.}
-\label{table:branch}
-\end{table}
-
 \begin{figure*}[ht!]
     \begin{centering}
-        \includegraphics[width=\linewidth]{figures/radar_plot.pdf}
-        \caption{}
-        \label{fig:radar_plot}
+        \includegraphics[width=\linewidth]{figures/ridgeplot_blogpeak_tight.pdf}
+        \caption{ridgeplot}
+        \label{fig:ridgeplot}
     \end{centering}
-    \script{radar_plot.py}
+    \script{ridgeplot_blogpeak.py}
 \end{figure*}
+
+
+% \begin{table}[h!]
+% \centering
+% \begin{tabular} { || m{5em} | p{5em}| p{5em} | m{5.5em}||} 
+% \hline
+% & \first & \second & \cont \\
+% \hline \hline
+% Branching Ratio  & $\CIPlusMinus{\macros[BranchingRatios][PeakA][Frac]}$ & $\CIPlusMinus{\macros[BranchingRatios][HighMassPeak][Frac]}$ & $\CIPlusMinus{\macros[BranchingRatios][Continuum][Frac]}$ \\ 
+% \hline
+% Number of Events  & $\macros[NumEvents][LowMassPeak][low]$ - $\macros[NumEvents][LowMassPeak][high]$ & $\macros[NumEvents][HighMassPeak][low]$ - $\macros[NumEvents][HighMassPeak][high]$ & $\macros[NumEvents][Continuum][low]$ - $\macros[NumEvents][Continuum][high]$ \\
+% \hline
+% \end{tabular}
+% \caption{Table to test captions and labels.}
+% \label{table:branch}
+% \end{table}
+
+% \begin{figure*}[ht!]
+%     \begin{centering}
+%         \includegraphics[width=\linewidth]{figures/radar_plot.pdf}
+%         \caption{}
+%         \label{fig:radar_plot}
+%     \end{centering}
+%     \script{radar_plot.py}
+% \end{figure*}

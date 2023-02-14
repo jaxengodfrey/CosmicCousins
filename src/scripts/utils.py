@@ -60,20 +60,28 @@ def load_bsplinemass_ppd():
     datadict = dd.io.load(paths.data / 'bsplines_64m1_18q_iid18mag_iid18tilt_pl18z_ppds.h5')
     return datadict['m1s'], datadict['dRdm1'], datadict['qs'], datadict['dRdq']
 
-def load_subpop_ppds():
-    datadict = dd.io.load(paths.data/ 'PPDS_bspline_mass_spin_1000w_10000s_thin2_independent_bspline_ratio_sigprior02_12-15-22.h5')
-    return datadict
+def load_subpop_ppds(g1 = False, g2 = False, g1_fname = 'bspline_1logpeak_ppds.h5', g2_fname = 'bspline_1logpeak_samespin_ppds.h5'):
+    if g1:
+        datadict = dd.io.load(paths.data/ g1_fname)
+        return datadict
+    elif g2:
+        datadict = dd.io.load(paths.data/ g2_fname)
+        return datadict
 
-def load_trace():
-    trace = az.from_netcdf(paths.data/'bspline_mass_spin_1000w_10000s_thin2_independent_bspline_ratio_reweighedKDEs_12-16-22.h5')
-    return trace
+def load_trace(g1 = False, g2 = False, g1_fname = 'bspline_1logpeak_10000s.h5', g2_fname = 'bspline_1logpeak_samespin_10000s.h5'):
+    if g1:
+        trace = az.from_netcdf(paths.data/g1_fname)
+        return trace
+    elif g2:
+        trace = az.from_netcdf(paths.data/g2_fname)
+        return trace
 
-def plot_o3b_res(ax, fi, m1=True, col='tab:blue', lab='PP', bounds=False, fill_alpha=0.08):
+def plot_o3b_res(ax, fi, m1=True, col='tab:blue', lab='PP', bounds=False, fill_alpha=0.08, **kwargs):
     plpeak_mpdfs, plpeak_qpdfs, plpeak_ms, plpeak_qs = load_o3b_paper_run_masspdf(paths.data / fi)
     if m1:
-        plot_mean_and_90CI(ax, plpeak_ms, plpeak_mpdfs, color=col, label=lab, bounds=bounds, fill_alpha=fill_alpha)
+        plot_mean_and_90CI(ax, plpeak_ms, plpeak_mpdfs, color=col, label=lab, bounds=bounds, fill_alpha=fill_alpha, mean = kwargs['mean'], median = kwargs['median'])
     else:
-        plot_mean_and_90CI(ax, plpeak_qs, plpeak_qpdfs, color=col, label=lab, bounds=bounds, fill_alpha=fill_alpha)
+        plot_mean_and_90CI(ax, plpeak_qs, plpeak_qpdfs, color=col, label=lab, bounds=bounds, fill_alpha=fill_alpha, mean = kwargs['mean'], median = kwargs['median'])
     return ax
 
 def load_iid_tilt_ppd():

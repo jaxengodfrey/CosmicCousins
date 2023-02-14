@@ -104,34 +104,51 @@ def DistMacros(xs, ppds, categories, param_name, tilt = False):
             categories_dict[categories[i]] = x
         return categories_dict
 
-def MassMacros(categories, ppds):
-    ms, m_ppds = ppds['mass_1'], [ppds['peak_1_mass_pdfs'], ppds['peak_2_mass_pdfs'], ppds['continuum_mass_pdfs']]
-    return DistMacros(ms, m_ppds, categories, 'Mass')
+def MassMacros(categories, ppds, g1 = True):
+    if g1:
+        ms, m_ppds = ppds['mass_1'], [ppds['peak_1_mass_pdfs'], ppds['continuum_mass_pdfs']]
+        return DistMacros(ms, m_ppds, categories, 'Mass')
+    else:
+        ms, m_ppds = ppds['mass_1'], [ppds['peak_1_mass_pdfs'], ppds['continuum_mass_pdfs'], ppds['continuum_1_mass_pdfs']]
+        return DistMacros(ms, m_ppds, categories, 'Mass')
 
-def SpinMagMacros(categories, ppds):
-    aa, a_ppds = ppds['a1'], [ppds['peak_1_a1_pdfs'], ppds['peak_2_a1_pdfs'], ppds['continuum_a1_pdfs']]
-    return DistMacros(aa, a_ppds, categories, 'Spin Mag')
+def SpinMagMacros(categories, ppds, g1 = True):
+    if g1:
+        aa, a_ppds = ppds['a1'], [ppds['peak_1_a1_pdfs']['unweighted'], ppds['continuum_a1_pdfs']['unweighted']]
+        return DistMacros(aa, a_ppds, categories, 'SpinMag')
+    else:
+        aa, a_ppds = ppds['a1'], [ppds['peak_1_continuum_a1_pdfs']['unweighted'], ppds['continuum_a1_pdfs']['unweighted']]
+        categories = ['Peak+ContinuumA', 'ContinuumB']
+        return DistMacros(aa, a_ppds, categories, 'SpinMag')
 
-def TiltMacros(categories, ppds):
-    cts, ct_ppds = ppds['cos_tilt_1'], [ppds['peak_1_tilt1_pdfs'], ppds['peak_2_tilt1_pdfs'], ppds['continuum_tilt1_pdfs']]
-    return DistMacros(cts, ct_ppds, categories, 'tilt', tilt = True)
+def TiltMacros(categories, ppds, g1 = True):
+    if g1:
+        cts, ct_ppds = ppds['cos_tilt_1'], [ppds['peak_1_ct1_pdfs']['unweighted'], ppds['continuum_ct1_pdfs']['unweighted']]
+        return DistMacros(cts, ct_ppds, categories, 'tilt', tilt = True)
+    else:
+        cts, ct_ppds = ppds['cos_tilt_1'], [ppds['peak_1_continuum_ct1_pdfs']['unweighted'], ppds['continuum_ct1_pdfs']['unweighted']]
+        categories = ['Peak+ContinuumA', 'ContinuumB']
+        return DistMacros(cts, ct_ppds, categories, 'tilt', tilt = True)
 
-def BranchingRatioMacros(categories, idata):
+def BranchingRatioMacros(categories, idata, g1 = True):
     return get_branching_ratios(categories, idata.posterior['Ps'])
 
-def NumEventsMacros(categories, idata):
+def NumEventsMacros(categories, idata, g1 = True):
     return get_num_constraining_events(categories, idata.posterior['Qs'])
 
 def main():
     macro_dict = {'Mass': {}, 'SpinMag': {}, 'CosTilt': {}}
-    all_ppds = load_subpop_ppds()
-    idata = load_trace()
-    categories = ['LowMassPeak', 'HighMassPeak', 'Continuum']
-    macro_dict['Mass'] = MassMacros(categories, all_ppds)
-    macro_dict['SpinMag'] = SpinMagMacros(categories, all_ppds)
-    macro_dict['CosTilt'] = TiltMacros(categories, all_ppds)
-    macro_dict['BranchingRatios'] = BranchingRatioMacros(categories, idata)
-    macro_dict['NumEvents'] = NumEventsMacros(categories, idata)
+    g1_ppds = load_subpop_ppds(g1 = True, g1_fname = 'bspline_1logpeak_100000s_ppds.h5')
+    g2_ppds = load_subpop_ppds(g2 = True, g2_fname = 'bspline_1logpeak_samespin_100000s_ppds.h5')
+    g1_idata = load_trace(g1 = True, g1_fname = 'bspline_1logpeak_100000s.h5')
+    g2_idata = load_trace(g2 = True, g2_fname = 'bspline_peak_samespin_100000s.h5')
+    g1_categories = ['Peak', 'Continuum']
+    g2_categories = ['PeakA', 'ContinuumB', 'ContinuumA']
+    macro_dict['Mass'] = {'Group 1': MassMacros(g1_categories, g1_ppds), 'Group 2': MassMacros(g2_categories, g2_ppds, g1 = False)}
+    macro_dict['SpinMag'] = {'Group 1': SpinMagMacros(g1_categories, g1_ppds), 'Group 2': SpinMagMacros(g2_categories, g2_ppds, g1 = False)}
+    macro_dict['CosTilt'] = {'Group 1': TiltMacros(g1_categories, g1_ppds), 'Group 2': TiltMacros(g2_categories, g2_ppds, g1 = False)}
+    macro_dict['BranchingRatios'] = {'Group 1': BranchingRatioMacros(g1_categories, g1_idata), 'Group 2': BranchingRatioMacros(g2_categories, g2_idata)}
+    macro_dict['NumEvents'] = {'Group 1': NumEventsMacros(g1_categories, g1_idata), 'Group 2': NumEventsMacros(g2_categories, g2_idata)}
 
     print("Saving macros to src/data/macros.json...")
     with open(paths.data / "macros.json", 'w') as f:
