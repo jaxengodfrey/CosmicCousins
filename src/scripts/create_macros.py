@@ -4,6 +4,7 @@ import numpy as np
 from scipy.integrate import cumtrapz
 import paths
 from utils import load_subpop_ppds, load_trace
+import arviz as az
 
 def round_sig(f, sig=2):
     max10exp = np.floor(np.log10(abs(f))) + 1
@@ -67,8 +68,7 @@ def tilt_fracs(cts, ct_pdfs):
     frac_neg_cts = np.array(frac_neg_cts)
     return np.log10(gamma_fracs), frac_neg_cts
 
-def get_branching_ratios(categories, Ps, chain_idx = 0):
-    Ps = Ps.values[chain_idx]
+def get_branching_ratios(categories, Ps):
     median = np.median(Ps, axis = 0)
     lower = median - np.percentile(Ps, 5, axis = 0)
     higher = np.percentile(Ps, 95, axis = 0) - median
@@ -77,8 +77,7 @@ def get_branching_ratios(categories, Ps, chain_idx = 0):
         branch_dict[categories[i]] = {'Frac': {'median': round_sig(median[i]), 'error plus': round_sig(higher[i]), 'error minus': round_sig(lower[i])}, 'Percent': {'median': round_sig(median[i]*100), 'error plus': round_sig(higher[i]*100), 'error minus': round_sig(lower[i]*100)}}
     return branch_dict
 
-def get_num_constraining_events(categories, Qs, chain_idx = 0):
-    Qs = Qs.values[chain_idx]
+def get_num_constraining_events(categories, Qs):
     num_dict = {}
     for i in range(len(categories)):
         sums = np.sum(Qs == i, axis = 1)
@@ -131,24 +130,28 @@ def TiltMacros(categories, ppds, g1 = True):
         return DistMacros(cts, ct_ppds, categories, 'tilt', tilt = True)
 
 def BranchingRatioMacros(categories, idata, g1 = True):
-    return get_branching_ratios(categories, idata.posterior['Ps'])
+    if g1:
+        return get_branching_ratios(categories, idata.posterior['Ps'].values[0])
+    else:
+        idata = az.extract(idata, group = 'posterior', combined = True)
+        return get_branching_ratios(categories, idata['Ps'].values)
 
 def NumEventsMacros(categories, idata, g1 = True):
-    return get_num_constraining_events(categories, idata.posterior['Qs'])
+    return get_num_constraining_events(categories, idata.posterior['Qs'].values[0])
 
 def main():
     macro_dict = {'Mass': {}, 'SpinMag': {}, 'CosTilt': {}}
     g1_ppds = load_subpop_ppds(g1 = True, g1_fname = 'bspline_1logpeak_100000s_ppds.h5')
-    g2_ppds = load_subpop_ppds(g2 = True, g2_fname = 'bspline_1logpeak_samespin_100000s_ppds.h5')
+    g2_ppds = load_subpop_ppds(g2 = True, g2_fname = 'bspline_1logpeak_samespin_100000s_2chains.h5')
     g1_idata = load_trace(g1 = True, g1_fname = 'bspline_1logpeak_100000s.h5')
-    g2_idata = load_trace(g2 = True, g2_fname = 'bspline_peak_samespin_100000s.h5')
+    g2_idata = load_trace(g2 = True, g2_fname = 'b1logpeak_marginalized_50000s_2chains.h5')
     g1_categories = ['Peak', 'Continuum']
     g2_categories = ['PeakA', 'ContinuumB', 'ContinuumA']
-    macro_dict['Mass'] = {'Group 1': MassMacros(g1_categories, g1_ppds), 'Group 2': MassMacros(g2_categories, g2_ppds, g1 = False)}
-    macro_dict['SpinMag'] = {'Group 1': SpinMagMacros(g1_categories, g1_ppds), 'Group 2': SpinMagMacros(g2_categories, g2_ppds, g1 = False)}
-    macro_dict['CosTilt'] = {'Group 1': TiltMacros(g1_categories, g1_ppds), 'Group 2': TiltMacros(g2_categories, g2_ppds, g1 = False)}
-    macro_dict['BranchingRatios'] = {'Group 1': BranchingRatioMacros(g1_categories, g1_idata), 'Group 2': BranchingRatioMacros(g2_categories, g2_idata)}
-    macro_dict['NumEvents'] = {'Group 1': NumEventsMacros(g1_categories, g1_idata), 'Group 2': NumEventsMacros(g2_categories, g2_idata)}
+    macro_dict['Mass'] = {'Base': MassMacros(g1_categories, g1_ppds), 'Composite': MassMacros(g2_categories, g2_ppds, g1 = False)}
+    macro_dict['SpinMag'] = {'Base': SpinMagMacros(g1_categories, g1_ppds), 'Composite': SpinMagMacros(g2_categories, g2_ppds, g1 = False)}
+    macro_dict['CosTilt'] = {'Base': TiltMacros(g1_categories, g1_ppds), 'Compostie': TiltMacros(g2_categories, g2_ppds, g1 = False)}
+    macro_dict['BranchingRatios'] = {'Base': BranchingRatioMacros(g1_categories, g1_idata), 'Composite': BranchingRatioMacros(g2_categories, g2_idata, g1 = False)}
+    macro_dict['NumEvents'] = {'Base': NumEventsMacros(g1_categories, g1_idata)}
 
     print("Saving macros to src/data/macros.json...")
     with open(paths.data / "macros.json", 'w') as f:

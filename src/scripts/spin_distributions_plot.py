@@ -29,45 +29,45 @@ ax[i_0].grid(True, which="major", ls=":")
 ax[i_0].set_xlim(0, 1)
 ax[i_0].set_ylim(0,3)
 ax[i_0].get_xaxis().set_major_formatter(ScalarFormatter())
-ax[i_0].set_title('Model Group 1 Spin Magnitude Distributions')
+ax[i_0].set_title('Base Model Spin Magnitude Distributions')
 ax[i_0].grid(True, which="major", ls=":")
 
 ax[i_1] = plot_mean_and_90CI(ax[i_1], subpop_ppds['cos_tilt_1'], subpop_ppds['peak_1_ct1_pdfs']['unweighted'], color ='tab:cyan', label='Peak A', bounds = True, lw = 3, line_style = '--')
 # ax[i_1] = plot_mean_and_90CI(ax[i_1], subpop_ppds['cos_tilt_1'], subpop_ppds['peak_2_tilt1_pdfs'], color ='tab:purple', label='High-Mass Peak', bounds = True, lw = 3, line_style = '--')
 ax[i_1] = plot_mean_and_90CI(ax[i_1], subpop_ppds['cos_tilt_1'], subpop_ppds['continuum_ct1_pdfs']['unweighted'], color ='tab:pink', label='Continuum B', bounds = True, lw = 3, line_style = (0, (1, 1)))
-ax[i_1].legend(frameon=False, fontsize=legend_text_size);
+# ax[i_1].legend(frameon=False, fontsize=legend_text_size);
 ax[i_1].set_xlabel(r'$cos(\theta)$', fontsize=label_text_size)
 ax[i_1].set_ylabel(r'$p(cos(\theta))$', fontsize=label_text_size)
 ax[i_1].grid(True, which="major", ls=":")
 ax[i_1].set_xlim(-1, 1)
 ax[i_1].set_ylim(0,1.2)
-ax[i_1].set_title('Model Group 1 Tilt Distributions')
+ax[i_1].set_title('Base Model Tilt Distributions')
 ax[i_1].get_xaxis().set_major_formatter(ScalarFormatter())
 ax[i_1].grid(True, which="major", ls=":")
 
 from utils import plot_mean_and_90CI, load_iid_tilt_ppd, plot_o3b_spintilt, plot_o3b_spinmag, load_iid_mag_ppd
 
-subpop_ppds_1 = load_subpop_ppds(g2 = True, g2_fname = 'bspline_1logpeak_samespin_100000s_ppds.h5')#dd.io.load(paths.data / 'spin_popfrac_posteriors.h5')
+subpop_ppds_1 = load_subpop_ppds(g2 = True, g2_fname = 'bspline_1logpeak_samespin_100000s_2chains.h5')#dd.io.load(paths.data / 'spin_popfrac_posteriors.h5')
 
 xmin, xmax = -1, 1
-ax[i_2] = plot_mean_and_90CI(ax[i_2], subpop_ppds_1['cos_tilt_1'], subpop_ppds_1['peak_1_continuum_ct1_pdfs']['unweighted'], color ='tab:cyan', label='Peak+Continuum A', bounds = True, lw = 3, line_style = '--')
+ax[i_2] = plot_mean_and_90CI(ax[i_2], subpop_ppds_1['cos_tilt_1'], subpop_ppds_1['peak_1_continuum_ct1_pdfs']['unweighted'], color ='tab:purple', label='Peak A & Continuum A', bounds = True, lw = 3, line_style = '--')
 ax[i_2] = plot_mean_and_90CI(ax[i_2],  subpop_ppds_1['cos_tilt_1'], subpop_ppds_1['continuum_ct1_pdfs']['unweighted'], color ='tab:pink', label='Continuum B', bounds = True, lw = 3, line_style = (0, (1, 1)))
 ax[i_2].set_xlabel(r'$\cos{\theta}$', fontsize=label_text_size)
 ax[i_2].set_ylabel(r'$p(\cos{\theta})$', fontsize=label_text_size)
 ax[i_2].set_xlim(xmin, xmax)
-ax[i_2].set_title('Model Group 2 Tilt Distribution')
-ax[i_2].legend(frameon=False, fontsize=legend_text_size, loc='upper left');
+ax[i_2].set_title('Composite Model Tilt Distribution')
+# ax[i_2].legend(frameon=False, fontsize=legend_text_size, loc='upper left');
 ax[i_2].grid(True, which="major", ls=":")
 ax[i_2].set_ylim(0, 1.2)
 
 xmin, xmax = 0, 1
-ax[i_3] = plot_mean_and_90CI(ax[i_3], subpop_ppds_1['a1'], subpop_ppds_1['peak_1_continuum_a1_pdfs']['unweighted'], color ='tab:cyan', label='Peak+Continuum A', bounds = True, lw = 3, line_style = '--')
+ax[i_3] = plot_mean_and_90CI(ax[i_3], subpop_ppds_1['a1'], subpop_ppds_1['peak_1_continuum_a1_pdfs']['unweighted'], color ='tab:purple', label='Peak A & Continuum A', bounds = True, lw = 3, line_style = '--')
 ax[i_3] = plot_mean_and_90CI(ax[i_3], subpop_ppds_1['a1'], subpop_ppds_1['continuum_a1_pdfs']['unweighted'], color ='tab:pink', label='Continuum B', bounds = True, lw = 3, line_style = (0, (1, 1)))
 ax[i_3].legend(frameon=False, fontsize=legend_text_size);
 ax[i_3].set_xlabel(r'$a$', fontsize=label_text_size)
 ax[i_3].set_ylabel(r'$p(a)$', fontsize=label_text_size)
 ax[i_3].set_xlim(xmin, xmax)
-ax[i_3].set_title('Model Group 2 Spin Magnitude Distribution')
+ax[i_3].set_title('Composite Model Spin Magnitude Distribution')
 ax[i_3].set_ylim(0, 3)
 ax[i_3].grid(True, which="major", ls=":")
 

@@ -21,7 +21,13 @@ from mpl_toolkits.axes_grid1 import make_axes_locatable
 
 categories = ['1', '2', '3']
 # categories = ['1', '2']
-idata = az.from_netcdf(paths.data/'bspline_peak_samespin_100000s.h5')
+dat = az.from_netcdf(paths.data/'b1logpeak_marginalized_50000s_2chains.h5')
+ppds = dd.io.load(paths.data/'bspline_1logpeak_samespin_100000s_2chains.h5')
+sel = np.ones_like(ppds['continuum_mass_pdfs'][:,127] < 1e-3)#ppds['continuum_mass_pdfs'][:,127] < 1e-3
+print(sel.shape)
+
+
+idata = az.extract_dataset(dat, combined = 'True')
 
 event_names = ['GW150914',
  'GW151012',
@@ -93,15 +99,37 @@ event_names = ['GW150914',
  'GW200311_115853',
  'GW200316_215756']
 
-n_categories = 3
 categories = ['1', '2', '3']
 
-dat = load_trace(g1 = True, g1_fname = 'scratch/bspline_mass_spin_logpeaks_tightsig_10000s.h5')
-probs = dat.posterior['Qs'].mean(axis = 1).values[0] / (n_categories - 1)
-dat.posterior
-sorted_probs = np.argsort(probs)
+n_categories = len(categories)
+n_events = len(event_names)
+groups = np.zeros((n_events, n_categories))
+probs = np.zeros(n_events)
+for i in range(n_events):
+    for j in range(n_categories):
+        if i == 44:
+            if j == 0:
+                nanidx = np.argwhere(np.isnan(idata[f'cat_frac_subpop_{j+1}_event_{i}'][sel].values))
+                groups[i][j] = np.delete(idata[f'cat_frac_subpop_{j+1}_event_{i}'][sel].values, nanidx).mean()
+            else:
+                infidx = np.argwhere(np.isinf(idata[f'cat_frac_subpop_{j+1}_event_{i}'][sel].values))
+                groups[i][j] = np.delete(idata[f'cat_frac_subpop_{j+1}_event_{i}'][sel].values, infidx).mean()
+        else:
+            groups[i][j] = idata[f'cat_frac_subpop_{j+1}_event_{i}'][sel].values.mean()
+        if j == 0:
+            probs[i] += groups[i][j] * j
+        if j == 1:
+            probs[i] += groups[i][j] * (j+1)
+        if j == 2:
+            probs[i] += groups[i][j] * (j-1)
+    probs[i] = probs[i] / (n_categories - 1)
 
-probs = idata.posterior['Qs'].mean(axis = 1).values[0] / (n_categories - 1)
+sorted_probs = np.argsort(probs)
+means = np.array([idata[f'mass_1_obs_event_{i}'].mean() for i in range(n_events)])
+sorted_probs = np.argsort(means)
+
+##### infinity in cat frac 
+
 ticks = np.linspace(0,1, n_categories)
 cm = plt.cm.cool(probs)
 
@@ -112,20 +140,20 @@ for i in range(len(cm)):
 gs = grid_spec.GridSpec(len(cm),4)
 fig = plt.figure(figsize=(8,10))
 
-qs = np.array(idata.posterior["Qs"][0]).transpose()
+# qs = np.array(idata.posterior["Qs"][0]).transpose()
 
-n_events = qs.shape[0]
-n_samp = qs.shape[1]
-groups = np.zeros([n_categories,n_events])
-for i in range(n_categories):
-    x = np.array([np.sum(qs == i, axis = 1) / n_samp])
-    groups[i] = x
-groups = groups.transpose()
+# n_events = qs.shape[0]
+# n_samp = qs.shape[1]
+# groups = np.zeros([n_categories,n_events])
+# for i in range(n_categories):
+#     x = np.array([np.sum(qs == i, axis = 1) / n_samp])
+#     groups[i] = x
+# groups = groups.transpose()
 
 sorted_groups = groups[np.flip(sorted_probs)]
 sorted_names = np.array(event_names)[np.flip(sorted_probs)]
 
-colors = ['cyan', 'mediumpurple', 'magenta']
+colors = ['cyan', 'magenta', 'mediumpurple']
 
 ax3 = fig.add_subplot(gs[3:,0])
 left = len(cm) * [0]
@@ -144,9 +172,9 @@ ax_obj3 = []
 for i in range(len(cm)):
     num = sorted_probs[i]
     event = event_names[num]
-    x1 = idata.posterior['mass_1_obs_event_{}'.format(num)].values[0]
-    x2 = idata.posterior['a_1_obs_event_{}'.format(num)].values[0]
-    x3 = idata.posterior['cos_tilt_1_obs_event_{}'.format(num)].values[0]
+    x1 = idata['mass_1_obs_event_{}'.format(num)][sel]
+    x2 = idata['a_1_obs_event_{}'.format(num)][sel]
+    x3 = idata['cos_tilt_1_obs_event_{}'.format(num)][sel]
 
     # creating new axes object
     ax_obj1.append(fig.add_subplot(gs[i:i+1, 1]))
@@ -178,6 +206,7 @@ for i in range(len(cm)):
         rect.set_alpha(0)
 
         ax_objs[k][-1].set_ylabel('')
+        ax_objs[k][-1].set_xlabel('')
         ax_objs[k][-1].set_yticklabels([])
 
     
@@ -225,8 +254,8 @@ gs.update(hspace=-0.7)
 
 # plt.suptitle("Primary Mass and Spin Magnitude Re-Weighed Posteriors")
 fig.subplots_adjust(left = 0.13, right = 0.97, bottom = 0.07, wspace = 0.15, top = 0.995)
-plt.savefig(paths.figures / 'ridgeplot_blogpeak_tight.png', bbox_inches = 'tight')
-plt.savefig(paths.figures / 'ridgeplot_blogpeak_tight.pdf')
+plt.savefig(paths.figures / 'ridgeplot_marginalized.png', bbox_inches = 'tight')
+plt.savefig(paths.figures / 'ridgeplot_marginalized.pdf')
 
 # plt.tight_layout()
 # plt.show()

@@ -23,42 +23,67 @@ We employ the typical hierarchical Bayesian inference framework to infer the pro
 \noindent with $p_\mathrm{det}(\theta)$ the probability of detecting a binary merger with parameters $\theta$. We calculate this fraction using simulated compact merger signals that were evaluated with the same search algorithms that produced the catalog of observations. With the signals that were successfully detected, we again use Monte Carlo integration to get the overall detection efficiency, $\xi(\Lambda)$.
 
 
-To model different subpopulations that could exist in the population, we use discrete latent variables that probabilistically associate each binary merger with different models. To model $M$ subpopulations in a catalog of $N_\mathrm{det}$ detections, we add a latent variable $q_i$ for each merger that can be $M$ different discrete values, each associated with a separate model, $p_{M}(\theta | \Lambda)$, and hyperparameters, $\Lambda_M$. Evaluating the model (or hyper-prior) for the $i^\mathrm{th}$ event with binary parameters, $\theta_i$, given latent variable $q_i$ and hyperparameters $\Lambda_M$, we have:
+To model different subpopulations that could exist in the population, we use discrete latent variables that probabilistically associate each binary merger with different models. To model $M$ subpopulations in a catalog of $N_\mathrm{det}$ detections, we add a latent variable $q_i$ for each merger that can be $M$ different discrete values between $0$ and $M-1$, each associated with a separate model, $p_{M}(\theta | \Lambda)$, and hyperparameters, $\Lambda_M$. Evaluating the model (or hyper-prior) for the $i^\mathrm{th}$ event with binary parameters, $\theta_i$, given latent variable $q_i$ and hyperparameters $\Lambda_M$, we have:
 
 \begin{equation} \label{eq:latent}
-    p(\theta_i | \Lambda, q_i) = p_{M=q_i}(\theta_i | \Lambda_{M=q_i})
+    p(\theta_i | \Lambda, q_i) = p_{M=q_i+1}(\theta_i | \Lambda_{M=q_i+1})
 \end{equation}
 
 \noindent To construct our probabilistic model, we first sample $p_M \sim \mathcal{D}(M)$, from an M-dimensional Dirichlet distribution of equal weights, representing the astrophysical branching ratios of each subpopulation. Then each of the $N_\mathrm{det}$ discrete latent variables are sampled from a categorical distribution with each category $M$ having probability, $p_M$. Within the \textsc{NumPyro} \citep{1810.09538,1912.11554} probabilistic programming language, we use the implementation of the \texttt{DiscreteHMCGibbs} \citep{Liu1996PeskunsTA} to sample the discrete latent variables, while using the \texttt{NUTS} \citep{1111.4246} sampler for continuous variables. While this approach may seem computationally expensive, we find that the conditional distributions over discrete latent variables enable Gibbs sampling with similar costs and speeds to the equivalent approach that marginalizes over each discrete latent variable, $q_i$. We find the same results with either approach and only slight performance differences that depend on specific model specifications, and thus opt for the approach without marginalization. This method also has the advantage that we get posterior distributions on each event's subpopulation assignment without extra steps.
 
-\subsection{Astrophysical Mixture Models} \label{sec:astromodels}
+\subsection{Astrophysical Mixture Models} \label{sec:astromodels} 
 
-For this study, we focus on one collection of primary mass and spin models to divide the BBH population into $M=3$ potential subpopulations. Throughout this work, we refer to these three categories by their mass models as \textsc{Low-Mass Peak}, \textsc{Mid-Mass Peak}, and \textsc{Continuum}. For all three categories, the spin magnitude and tilt distributions of each component are assumed to be independently and identically distributed (IID), i.e. we use a single model and parameters for each binary spin per category. To reduce the number of free parameters and thus computational cost, we fix the power law slope of the merger rate with redshift to $\lambda_z=2.7$ and use the same mass ratio model across all categories. We make use of the mass and spin basis spline (B-Spline) models from \cite{2022arXiv221012834E}. All the models and formalism used in our analysis are available in the \href{https://git.ligo.org/bruce.edelman/gwinferno}{GWInferno} python library, along with the code and data to reproduce this study in this GitHub \href{https://github.com/jaxeng/paper}{repository}. 
+Given the recent evidence for a $~10 M_{\odot}$, $~35 M_{\odot}$, and potentially a $~25 M_{\odot}$ peak in the BBH primary mass distribution \citep{2111.03634, 2022ApJ...928..155T, 10.3847/2041-8213/aa9bf6, 10.3847/1538-4357/aab34c, 10.3847/2041-8213/ab3800, 2021ApJ...913L...7A}, we chose models similar to the \textsc{Multi Spin} model in \cite{2021ApJ...913L...7A}, which is characterised by a power-law plus a Gaussian peak in primary mass, wherein the spin distributions of the two mass components are allowed to differ from each other. In our case, we replace the power law mass components and parametric spin descriptions with non-parametric Basis-Spline functions, in order to avoid model dependent biases on the resulting distributions.
+We also choose to parametrize peaks in the primary mass spectrum in terms of log-mass, rather than linear-mass. 
+In both of our model prescriptions, detailed below, the spin magnitude and tilt distributions of each binary component are assumed to be independently and identically distributed (IID), i.e. we fit the same model distribution to both binary spin components per category. To reduce the number of free parameters and thus computational cost, we fix the power law slope of the merger rate with redshift to $\lambda_z=2.7$. We make use of the mass and spin basis spline (B-Spline) models from \cite{2022arXiv221012834E}. All the models and formalism used in our analysis are available in the \href{https://git.ligo.org/bruce.edelman/gwinferno}{GWInferno} python library, along with the code and data to reproduce this study in this GitHub \href{https://github.com/jaxeng/paper}{repository}. 
 
-Given the recent evidence for a $~10 M_{\odot}$ and $~35 M_{\odot}$ peak in the BBH primary mass distribution \citep{2111.03634, 2022ApJ...928..155T, 10.3847/2041-8213/aa9bf6, 10.3847/1538-4357/aab34c, 10.3847/2041-8213/ab3800, 2021ApJ...913L...7A}, we chose to use a similar primary mass model to the \textsc{Multi Peak} and \textsc{Multi Spin} models in \cite{2021ApJ...913L...7A}, except we replace their power law mass component and parametric spin description with non-parametric B-Spline functions. We did this in order to avoid the model dependent biases on our resulting total distribution that we noticed were present when we used a power law.
 
-We infer the mean $\mu_{m,M}$ and standard deviation $\sigma_{m,M}$ of each Gaussian peak. $M=0$ denotes the peak with the lowest mean, \textsc{Low-Mass Peak}, and $M=1$ denotes the one with the larger mean, \textsc{Mid-Mass Peak}. To keep the ordering of the peaks consistent during inference, we use a unique prior to draw the peak means $\mu_{m,0}, \mu_{m,1}$. In particular, we sample from a 3-dimensional Dirichlet distribution $\mathcal{D}(3)$ with equal weights, then cumulatively sum the sampled array. We discard the last value, since it is always 1, and the remaining two values are rescaled to primary mass $m_1$ and assigned to $\mu_{m,0}$ and $\mu_{m,1}$. 
+
+\subsubsection{Base Model}
+In this model prescription, we categorize the BBH population into $M=2$ components, which we will refer to as \first{} and \contB{}, based on their primary mass distributions (continuum here referring to the non-parametric nature of the B-Spline distributions). The \first{} component is characterised by a truncated Log-Normal peak in primary mass and B-Spline functions in mass ratio, spin magnitude, and tilt angle. The \contB{} component is characterized by B-Spline functions in all mass and spin parameters. We infer the log mean $\text{log}(\mu_m)$ and standard deviation $\sigma_\text{log}(m)$ of the peak, along with the B-Spline coefficients $\mathbf{c}$ for all other parameters. During inference \first{} is associated with $q_i = 0$ (i.e. $M=1$) and \contB{} is associated with $q_i = 1$ ($M=2$).
+
+% $M=0$ denotes the peak with the lowest mean, \textsc{Low-Mass Peak}, and $M=1$ denotes the one with the larger mean, \textsc{Mid-Mass Peak}. To keep the ordering of the peaks consistent during inference, we use a unique prior to draw the peak means $\mu_{m,0}, \mu_{m,1}$. In particular, we sample from a 3-dimensional Dirichlet distribution $\mathcal{D}(3)$ with equal weights, then cumulatively sum the sampled array. We discard the last value, since it is always 1, and the remaining two values are rescaled to primary mass $m_1$ and assigned to $\mu_{m,0}$ and $\mu_{m,1}$. 
 
 \begin{itemize}
-    \item \textsc{Low-Mass Peak}, $M=0$ (\jaxen{NUMBER} parameters). This category assumes a truncated Gaussian model in primary mass, a B-spline model in spin magnitude $a_i$, and a B-spline model in $cos(\theta_{\text{tilt}})$. 
+    \item \first{}, $M=1$ (\jaxen{NUMBER} parameters). This category assumes a truncated Log-Normal model in primary mass, a B-spline model in spin magnitude $a_j$, and a B-spline model in $cos(\theta_{\text{tilt}_i})$. Note that since we assume the spins to be IID, the B-Spline spin parameters, such as $\mathbf{c}_{a,1}$, are the same for each binary component $j=1$ and $j=2$
     \begin{eqnarray} \label{eq:lowmass}
-        p_{m,0}(m_1| \Lambda_{m,0}) = G(m_1 | \mu_{m,0}, \sigma_{m,0}) \\
-        p_{a,0}(a_i| \Lambda_{a,0}) = B_k(a_i | \mathbf{c}_{a,0}) \\
-        p_{\theta,0}(cos(\theta_i)| \Lambda_{\theta,0}) = B_k( cos(\theta_i) | \mathbf{c}_{\theta,0})
+        p_{m,0}(m_1| \Lambda_{m,0}) = \text{Lognormal}_\text{T}(m_1 | \mu_{m}, \sigma_{m}) \\
+        p_{a,0}(a_j| \Lambda_{a,0}) = B_k(a_j | \mathbf{c}_{a,1}) \\
+        p_{\theta,0}(cos(\theta_j)| \Lambda_{\theta,0}) = B_k( cos(\theta_j) | \mathbf{c}_{\theta,1})
     \end{eqnarray}
 
-    \item \textsc{Mid-Mass Peak}, $M=1$ (\jaxen{NUMBER} parameters). Same form as \textsc{Low-Mass Peak}, except the mean $\mu_{m,1}$ of the primary mass truncated Gaussian model is required to be larger than $\mu_{m,0}$.
-    \begin{eqnarray} \label{eq:midmass}
-        p_{m,1}(m_1| \Lambda_{m,1}) = G(m_1 | \mu_{m,1}, \sigma_{m,1}) \\
-        p_{a,1}(a_i| \Lambda_{a,1}) = B_k(a_i | \mathbf{c}_{a,1}) \\
-        p_{\theta,1}(cos(\theta_i)| \Lambda_{\theta,1}) = B_k( cos(\theta_i) | \mathbf{c}_{\theta,1})
-    \end{eqnarray}
-
-    \item \textsc{Continuum}, $M=2$ (\jaxen{NUMBER} parameters). The spin models are the same as the previous two categories, but now the primary mass is modeled with a B-spline function. 
+    \item \contB{}, $M=2$ (\jaxen{NUMBER} parameters). The spin models have the same form as \first{}, but here primary mass is fit to a B-spline function. 
     \begin{eqnarray} \label{eq:contmass}
-        \text{log} p_{m,2}(m_1| \Lambda_{m,2}) = B_k(m_1 | \mathbf{c}_{m, 2}) \\
-        p_{a,2}(a_i| \Lambda_{a,2}) = B_k(a_i | \mathbf{c}_{a,2}) \\
-        p_{\theta,2}(cos(\theta_i)| \Lambda_{\theta,2}) = B_k( cos(\theta_i) | \mathbf{c}_{\theta,2})
+        \text{log} p_{m,1}(m_1| \Lambda_{m,1}) = B_k(m_1 | \mathbf{c}_{m, 2}) \\
+        p_{a,1}(a_j| \Lambda_{a,1}) = B_k(a_j | \mathbf{c}_{a,2}) \\
+        p_{\theta,1}(cos(\theta_j)| \Lambda_{\theta,1}) = B_k( cos(\theta_j) | \mathbf{c}_{\theta,2})
     \end{eqnarray}
     
+\end{itemize}
+
+\subsubsection{Composite Mass Model}
+
+To investigate whether other parts of the primary mass spectrum may have similar spin characteristics to \first{}, we construct a composite mass model, wherein we include a new category \contA{}, described by a B-Spline in primary mass but force it to have the same spin distributions as \first{}. \contB is still included and is described by it's own spin distributions. For this model prescription, we chose to marginalize over the discrete variables $q_i$ during sampling, in order to sample slightly more efficiently. 
+
+\begin{itemize}
+    \item \first{}, $M=1$ (\jaxen{NUMBER} parameters). This category assumes a truncated Log-Normal model in primary mass, a B-spline model in spin magnitude $a_i$, and a B-spline model in $cos(\theta_{\text{tilt}_i})$. 
+    \begin{eqnarray} \label{eq:lowmass}
+        p_{m}(m_1| \Lambda_{m}) = \text{Lognormal}_\text{T}(m_1 | \mu_{m}, \sigma_{m}) \\
+        p_{a}(a_j| \Lambda_{a}) = B_k(a_j | \mathbf{c}_{a,1}) \\
+        p_{\theta}(cos(\theta_j)| \Lambda_{\theta}) = B_k( cos(\theta_j) | \mathbf{c}_{\theta,1})
+    \end{eqnarray}
+
+    \item \contA{}, $M=2$ (\jaxen{NUMBER} parameters). The spin models are the same as the previous category, but here primary mass is fit to a B-spline function. 
+    \begin{eqnarray} \label{eq:contmass}
+        \text{log} p_{m}(m_1| \Lambda_{m}) = B_k(m_1 | \mathbf{c}_{m, 2}) \\
+        p_{a}(a_j| \Lambda_{a}) = B_k(a_j | \mathbf{c}_{a,2}) \\
+        p_{\theta}(cos(\theta_j)| \Lambda_{\theta}) = B_k( cos(\theta_j) | \mathbf{c}_{\theta,2})
+    \end{eqnarray}
+    
+    \item \contB{}, $M=3$ (\jaxen{NUMBER} parameters). Here, both primary mass and spin are fit to B-Splines.
+    \begin{eqnarray} \label{eq:contmass}
+        \text{log} p_{m}(m_1| \Lambda_{m}) = B_k(m_1 | \mathbf{c}_{m, 3}) \\
+        p_{a}(a_j| \Lambda_{a}) = B_k(a_j | \mathbf{c}_{a,3}) \\
+        p_{\theta}(cos(\theta_j)| \Lambda_{\theta}) = B_k( cos(\theta_j) | \mathbf{c}_{\theta,3})
+    \end{eqnarray}
 \end{itemize}
