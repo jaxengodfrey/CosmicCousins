@@ -24,6 +24,7 @@ subpop_ppds = load_subpop_ppds(g2 = True, g2_fname = 'bspline_1logpeak_samespin_
 tot_subpops = subpop_ppds['peak_1_mass_pdfs'] + subpop_ppds['continuum_mass_pdfs'] + subpop_ppds['continuum_1_mass_pdfs']
 fill = 0.2
 sel_1 = subpop_ppds['continuum_mass_pdfs'][:,127] < 1e-3
+num_1 = np.mean(sel_1)*100
 
 # ax1 = plot_o3b_res(ax1,'o1o2o3_mass_c_iid_mag_iid_tilt_powerlaw_redshift_mass_data.h5', lab='Abbott et. al. 2021b', col='tab:blue', bounds=False, mean = False, median = True)
 # ax1 = plot_mean_and_90CI(ax1, bspl_ms, bspl_mpdfs, color='tab:red', label='Edelman et. al. 2022',bounds=False, mean = False, median = True)
@@ -54,6 +55,7 @@ ax1 = plot_mean_and_90CI(ax1, subpop_ppds['mass_1'], subpop_ppds['continuum_mass
 ax1.legend(frameon=False, fontsize=legendfont);
 ax1.set_xlabel(r'$m_1 \,\,[M_\odot]$', fontsize=18)
 ax1.set_ylabel(r'$p(m_1) \,\,[M_\odot^{-1}]$', fontsize=18)
+ax1.text(55, 0.01, '{:.1f}% of samples'.format(num_1), fontsize = 12)
 ax1.grid(True, which="major", ls=":")
 ax1.tick_params(labelsize=14)
 ax1.set_yscale('log')
@@ -79,6 +81,7 @@ axy1.text(0.05, 0.5, r'$m_1 = 20$', fontsize = 12)
 
 
 sel_2 = subpop_ppds['continuum_mass_pdfs'][:,127] > 1e-3
+num_2 = np.mean(sel_2)*100
 
 kde = sns.kdeplot(y=subpop_ppds['continuum_mass_pdfs'][:,127], ax=axy, color='tab:pink', lw=0, common_norm = False, log_scale = True)
 points = kde.get_lines()[0].get_data()
@@ -94,6 +97,7 @@ ax.set_xlabel(r'$m_1 \,\,[M_\odot]$', fontsize=18)
 ax.set_ylabel(r'$p(m_1) \,\,[M_\odot^{-1}]$', fontsize=18)
 ax.grid(True, which="major", ls=":")
 ax.tick_params(labelsize=14)
+ax.text(55, 0.3, '{:.1f}% of samples'.format(num_2), fontsize = 12)
 ax.set_yscale('log')
 ax.set_xscale('log')
 ax.set_ylim(1e-5, 1e0)
