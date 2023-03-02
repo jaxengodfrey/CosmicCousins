@@ -25,6 +25,7 @@ dependencies:
     - src/data/bspline_1logpeak_100000s_ppds.h5
     - src/data/bspline_1logpeak_samespin_100000s_2chains.h5
   src/scripts/mass_distribution_g2_plot.py: 
+    - src/data/bsplines_64m1_18q_iid18mag_iid18tilt_pl18z_ppds.h5
     - src/data/bspline_1logpeak_100000s_ppds.h5
     - src/data/bspline_1logpeak_samespin_100000s_2chains.h5
   src/scripts/spin_distributions_plot.py: 
