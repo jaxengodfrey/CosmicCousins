@@ -1,8 +1,6 @@
 import paths
-import numpy as np
 import matplotlib.pyplot as plt
 from utils import plot_mean_and_90CI, load_subpop_ppds
-import deepdish as dd
 from matplotlib.ticker import ScalarFormatter
 
 

@@ -2,33 +2,16 @@
 
 import paths
 import numpy as np
-import matplotlib
-matplotlib.use('TkAgg')
-import matplotlib.pyplot as plt
-from matplotlib.ticker import ScalarFormatter
 import arviz as az
 import seaborn as sns
-import matplotlib.gridspec as gridspec
-from matplotlib.ticker import ScalarFormatter
-from utils import load_trace
-import deepdish as dd
 import matplotlib
-import pandas as pd
-import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as grid_spec
-from mpl_toolkits.axes_grid1 import make_axes_locatable
+matplotlib.use('TkAgg')
+from matplotlib.ticker import ScalarFormatter
 
 categories = ['1', '2', '3']
-# categories = ['1', '2']
-dat = az.from_netcdf(paths.data/'b1logpeak_marginalized_50000s_2chains.h5')
-ppds = dd.io.load(paths.data/'bspline_1logpeak_samespin_100000s_2chains.h5')
-sel = np.ones_like(ppds['continuum_mass_pdfs'][:,127] < 1e-3)#ppds['continuum_mass_pdfs'][:,127] < 1e-3
-print(sel.shape)
-
-
-idata = az.extract_dataset(dat, combined = 'True')
-
+idata = az.extract(az.from_netcdf(paths.data/'b1logpeak_marginalized_50000s_2chains.h5'), combined = 'True', num_samples=3500)
 event_names = ['GW150914',
  'GW151012',
  'GW151226',
@@ -109,13 +92,13 @@ for i in range(n_events):
     for j in range(n_categories):
         if i == 44:
             if j == 0:
-                nanidx = np.argwhere(np.isnan(idata[f'cat_frac_subpop_{j+1}_event_{i}'][sel].values))
-                groups[i][j] = np.delete(idata[f'cat_frac_subpop_{j+1}_event_{i}'][sel].values, nanidx).mean()
+                nanidx = np.argwhere(np.isnan(idata[f'cat_frac_subpop_{j+1}_event_{i}'].values))
+                groups[i][j] = np.delete(idata[f'cat_frac_subpop_{j+1}_event_{i}'].values, nanidx).mean()
             else:
-                infidx = np.argwhere(np.isinf(idata[f'cat_frac_subpop_{j+1}_event_{i}'][sel].values))
-                groups[i][j] = np.delete(idata[f'cat_frac_subpop_{j+1}_event_{i}'][sel].values, infidx).mean()
+                infidx = np.argwhere(np.isinf(idata[f'cat_frac_subpop_{j+1}_event_{i}'].values))
+                groups[i][j] = np.delete(idata[f'cat_frac_subpop_{j+1}_event_{i}'].values, infidx).mean()
         else:
-            groups[i][j] = idata[f'cat_frac_subpop_{j+1}_event_{i}'][sel].values.mean()
+            groups[i][j] = idata[f'cat_frac_subpop_{j+1}_event_{i}'].values.mean()
         if j == 0:
             probs[i] += groups[i][j] * j
         if j == 1:
@@ -172,9 +155,9 @@ ax_obj3 = []
 for i in range(len(cm)):
     num = sorted_probs[i]
     event = event_names[num]
-    x1 = idata['mass_1_obs_event_{}'.format(num)][sel]
-    x2 = idata['a_1_obs_event_{}'.format(num)][sel]
-    x3 = idata['cos_tilt_1_obs_event_{}'.format(num)][sel]
+    x1 = idata['mass_1_obs_event_{}'.format(num)]
+    x2 = idata['a_1_obs_event_{}'.format(num)]
+    x3 = idata['cos_tilt_1_obs_event_{}'.format(num)]
 
     # creating new axes object
     ax_obj1.append(fig.add_subplot(gs[i:i+1, 1]))
