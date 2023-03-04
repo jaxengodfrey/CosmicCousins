@@ -60,7 +60,7 @@ def load_bsplinemass_ppd():
     datadict = dd.io.load(paths.data / 'bsplines_64m1_18q_iid18mag_iid18tilt_pl18z_ppds.h5')
     return datadict['m1s'], datadict['dRdm1'], datadict['qs'], datadict['dRdq']
 
-def load_subpop_ppds(g1 = False, g2 = False, g1_fname = 'bspline_1logpeak_ppds.h5', g2_fname = 'bspline_1logpeak_samespin_ppds.h5', N=5000):
+def load_subpop_ppds(g1 = False, g2 = False, g1_fname = 'bspline_1logpeak_ppds.h5', g2_fname = 'bspline_1logpeak_samespin_ppds.h5', N=2000):
     static_keys = ['a1', 'cos_tilt_1', 'mass_1', 'mass_ratio', 'a2', 'cos_tilt_2']
     if g1:
         datadict = dd.io.load(paths.data/ g1_fname)
