@@ -7,12 +7,18 @@
     \item report fdyn / fhm and etc
 \end{itemize}
 
+
+
 \section{Conclusion} \label{sec:conclusion}
 
 \begin{itemize}
-    \item Reiterate the motivation of the work
-    \item restate the main conclusions leading us to identify this 10 solar mass peak as isolated
-    \item briefly comment on main astro implications from prev section
     \item Discuss further work on other ways we can use this method to probe formation channels even deeper. (use spin vs mass dist to disentangle the sub pops. i.e. isotropic tilt for dynamical -- aligned tilt for isolated)
-    \item Discuss other applications of discrete latent variables (label for BNS/NSBH/BBH, label for 1G/2G/3G etc)
 \end{itemize}
+
+As the catalog of compact object mergers continues to grow, we are able to probe the physical properties of these systems with higher fidelity and uncover details in their distributions previously obscured by our lack of data. With these advancements comes the ability to piece together formation histories imprinted in the details of the distributions. Understanding the physical properties of CBC's and their formation has implications for the broader astrophysics community such as providing constraints on stellar evolution theories and population synthesis simulations, the physics of globular clusters, stellar metalicity, neutron star equations of state, and much more. 
+
+By leveraging the hierarchical Bayesian inference toolkit, a mixture of parametric and non-parametric models, and combining information across mass and spin, we were able to identify a peak in the BBH primary mass spectrum at $m_\text{1,peak} = $ \result{$\CIPlusMinus{\macros[Mass][Base][PeakA][max]}$} that corresponds to a subpopulation of BBH's with low spins and a moderate preference for alignment, consistent with isolated binary formation. We then extended our \base{} to search the rest of the mass spectrum for events with similar spin characteristics to the $10\msun$ subpopulation. We found that the peak in the mass spectrum near $35\msun$ was consistent with the $10\msun$ events. The categorization of the $20\msun$ events remains unclear, since $\sim20\%$ of the posterior samples categorized the $20\msun$ peak with the highest mass events. It is also unclear whether the spin tilt distribution of the high mass events is an informed isotropic distribution or just uninformed due to large measurement uncertainty. 
+
+astro implications
+
+The discrete latent variable framework laid out in this analysis and developed in the python library \textsc{GWinferno} can be used to understand the full CBC catalog beyond identifying BBH subpopulations. Currently the LVK categorizes mergers as binary black holes, binary neutron stars, or neutron star binary black holes a-priori based on mass thresholds and tidal deformation values. Instead of categorizing merger components a-priori and then fitting the mass and spin distributions of each category individually, discrete latent variables could be used to simultaneously classify merger components and infer their mass and spin distributions. Another application of categorical inference could be labeling CBC's as 1st, 2nd, or 3rd, generation hierarchical mergers. 

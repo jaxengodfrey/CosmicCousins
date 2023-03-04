@@ -77,14 +77,45 @@ def get_branching_ratios(categories, Ps):
         branch_dict[categories[i]] = {'Frac': {'median': round_sig(median[i]), 'error plus': round_sig(higher[i]), 'error minus': round_sig(lower[i])}, 'Percent': {'median': round_sig(median[i]*100), 'error plus': round_sig(higher[i]*100), 'error minus': round_sig(lower[i]*100)}}
     return branch_dict
 
-def get_num_constraining_events(categories, Qs):
+def get_num_constraining_events(categories, idata, g1 = True):
     num_dict = {}
-    for i in range(len(categories)):
-        sums = np.sum(Qs == i, axis = 1)
-        median = np.median(sums)
-        lower = median - np.percentile(sums, 5)
-        higher = np.percentile(sums, 95) - median
-        num_dict[categories[i]] = {'median': round_sig(median), 'error plus': round_sig(higher), 'error minus': round_sig(lower), 'low': round_sig(median - lower), 'high': round_sig(median + higher)}
+    if g1:
+        Qs = idata.posterior['Qs'].values[0]
+        for i in range(len(categories)):
+            sums = np.sum(Qs == i, axis = 1)
+            median = np.median(sums)
+            lower = median - np.percentile(sums, 5)
+            higher = np.percentile(sums, 95) - median
+            num_dict[categories[i]] = {'median': round_sig(median), 'error plus': round_sig(higher), 'error minus': round_sig(lower), 'low': round_sig(median - lower), 'high': round_sig(median + higher)}
+    else:
+        n_categories = len(categories)
+        n_events = 69
+        n_samples = idata['logmp'].shape[0]
+        groups = np.zeros((n_events, n_categories, n_samples))
+        for i in range(n_events):
+            for j in range(n_categories):
+                if i == 44:
+                    if j == 0:
+                        nanidx = np.argwhere(np.isnan(idata[f'cat_frac_subpop_{j+1}_event_{i}'].values))
+                        ps = idata[f'cat_frac_subpop_{j+1}_event_{i}'].values
+                        ps[nanidx] = 0
+                        groups[i][j] = ps
+                    else:
+                        infidx = np.argwhere(np.isinf(idata[f'cat_frac_subpop_{j+1}_event_{i}'].values))
+                        ps = idata[f'cat_frac_subpop_{j+1}_event_{i}'].values
+                        ps[infidx] = 0
+                        groups[i][j] = ps
+
+                else:
+                    groups[i][j] = idata[f'cat_frac_subpop_{j+1}_event_{i}'].values
+        
+        sums = np.sum(groups, axis = 0)
+        for i in range(n_categories):
+            median = np.median(sums, axis = 1)[i]
+            lower = median - np.percentile(sums, 5, axis  = 1)[i]
+            higher = np.percentile(sums, 95, axis = 1)[i] - median
+            num_dict[categories[i]] = {'median': round_sig(median), 'error plus': round_sig(higher), 'error minus': round_sig(lower), 'low': round_sig(median - lower), 'high': round_sig(median + higher)}
+
     return num_dict
 
 def DistMacros(xs, ppds, categories, param_name, tilt = False):
@@ -134,10 +165,14 @@ def BranchingRatioMacros(categories, idata, g1 = True):
         return get_branching_ratios(categories, idata.posterior['Ps'].values[0])
     else:
         idata = az.extract(idata, group = 'posterior', combined = True)
-        return get_branching_ratios(categories, idata['Ps'].values)
+        return get_branching_ratios(categories, np.transpose(idata['Ps'].values))
 
 def NumEventsMacros(categories, idata, g1 = True):
-    return get_num_constraining_events(categories, idata.posterior['Qs'].values[0])
+    if g1:
+        return get_num_constraining_events(categories, idata, g1)
+    else:
+        idata = az.extract(idata, group = 'posterior', combined = True)
+        return get_num_constraining_events(categories, idata, g1)
 
 def main():
     macro_dict = {'Mass': {}, 'SpinMag': {}, 'CosTilt': {}}
@@ -145,13 +180,13 @@ def main():
     g2_ppds = load_subpop_ppds(g2 = True, g2_fname = 'bspline_1logpeak_samespin_100000s_2chains.h5')
     g1_idata = load_trace(g1 = True, g1_fname = 'bspline_1logpeak_100000s.h5')
     g2_idata = load_trace(g2 = True, g2_fname = 'b1logpeak_marginalized_50000s_2chains.h5')
-    g1_categories = ['Peak', 'Continuum']
+    g1_categories = ['PeakA', 'ContinuumB']
     g2_categories = ['PeakA', 'ContinuumB', 'ContinuumA']
     macro_dict['Mass'] = {'Base': MassMacros(g1_categories, g1_ppds), 'Composite': MassMacros(g2_categories, g2_ppds, g1 = False)}
     macro_dict['SpinMag'] = {'Base': SpinMagMacros(g1_categories, g1_ppds), 'Composite': SpinMagMacros(g2_categories, g2_ppds, g1 = False)}
-    macro_dict['CosTilt'] = {'Base': TiltMacros(g1_categories, g1_ppds), 'Compostie': TiltMacros(g2_categories, g2_ppds, g1 = False)}
+    macro_dict['CosTilt'] = {'Base': TiltMacros(g1_categories, g1_ppds), 'Composite': TiltMacros(g2_categories, g2_ppds, g1 = False)}
     macro_dict['BranchingRatios'] = {'Base': BranchingRatioMacros(g1_categories, g1_idata), 'Composite': BranchingRatioMacros(g2_categories, g2_idata, g1 = False)}
-    macro_dict['NumEvents'] = {'Base': NumEventsMacros(g1_categories, g1_idata)}
+    macro_dict['NumEvents'] = {'Base': NumEventsMacros(g1_categories, g1_idata, g1 = True), 'Composite': NumEventsMacros(g2_categories, g2_idata, g1 = False)}
 
     print("Saving macros to src/data/macros.json...")
     with open(paths.data / "macros.json", 'w') as f:

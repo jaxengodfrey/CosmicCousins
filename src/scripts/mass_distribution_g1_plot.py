@@ -94,6 +94,8 @@ for axs, color in zip([axy, axy0], ['deepskyblue', 'royalblue']):
     axs.set_xlim(0, 0.65)
     # axs.minorticks_off()
 
+axy.text(0.05, 0.5, r'$m_1 = 20$', fontsize = 12, color = 'deepskyblue')
+axy0.text(0.05, 0.5, r'$m_1 = 35$', fontsize = 12, color = 'royalblue')
 axy.tick_params(which = 'major', bottom = False, left = False, labelbottom = False, labelleft = False)
 axy.minorticks_off()
 axy0.tick_params(which = 'both', bottom = False, left = False, labelbottom = False, labelleft = False, right = True, labelright = True, color = 'royalblue', labelsize = 14)

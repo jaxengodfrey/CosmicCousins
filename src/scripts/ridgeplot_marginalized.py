@@ -10,7 +10,7 @@ import arviz as az
 import seaborn as sns
 import matplotlib.gridspec as gridspec
 from matplotlib.ticker import ScalarFormatter
-from utils import load_trace
+from utils import load_trace, load_03b_posteriors
 import deepdish as dd
 import matplotlib
 import pandas as pd
@@ -23,8 +23,13 @@ categories = ['1', '2', '3']
 # categories = ['1', '2']
 dat = az.from_netcdf(paths.data/'b1logpeak_marginalized_50000s_2chains.h5')
 ppds = dd.io.load(paths.data/'bspline_1logpeak_samespin_100000s_2chains.h5')
+posteriors = dd.io.load(paths.data/'composite_model_resampled_single_event_posterior.h5')
 sel = np.ones_like(ppds['continuum_mass_pdfs'][:,127] < 1e-3)#ppds['continuum_mass_pdfs'][:,127] < 1e-3
-print(sel.shape)
+
+data = load_03b_posteriors()
+
+pedata = data['pedata']
+param_map = data['param_map']
 
 
 idata = az.extract_dataset(dat, combined = 'True')
@@ -172,9 +177,17 @@ ax_obj3 = []
 for i in range(len(cm)):
     num = sorted_probs[i]
     event = event_names[num]
-    x1 = idata['mass_1_obs_event_{}'.format(num)][sel]
-    x2 = idata['a_1_obs_event_{}'.format(num)][sel]
-    x3 = idata['cos_tilt_1_obs_event_{}'.format(num)][sel]
+    x1 = posteriors[event]['mass_1']
+    x2 = posteriors[event]['a_1']
+    x3 = posteriors[event]['cos_tilt_1']
+
+    y1 = pedata[param_map['mass_1']][num]
+    y2 = pedata[param_map['a_1']][num]
+    y3 = pedata[param_map['cos_tilt_1']][num]
+
+    # x1 = idata['mass_1_obs_event_{}'.format(num)][sel]
+    # x2 = idata['a_1_obs_event_{}'.format(num)][sel]
+    # x3 = idata['cos_tilt_1_obs_event_{}'.format(num)][sel]
 
     # creating new axes object
     ax_obj1.append(fig.add_subplot(gs[i:i+1, 1]))
@@ -183,16 +196,22 @@ for i in range(len(cm)):
     ax_objs = [ax_obj1, ax_obj2, ax_obj3]
 
     # plot the posteriors
+
+    sns.kdeplot(x=y1, ax=ax_obj1[-1], color='gray', lw=1, fill=False, multiple = 'stack', log_scale = True, ls = ':')
+    sns.kdeplot(x=y2, ax=ax_obj2[-1], color='gray', lw=1, fill=False, multiple = 'stack', ls = ':')
+    sns.kdeplot(x=y3, ax=ax_obj3[-1], color='gray', lw=1, fill=False, multiple = 'stack', ls = ':')
+
     sns.kdeplot(x=x1, ax=ax_obj1[-1], color=hex[num], lw=1, fill=True, multiple = 'stack', log_scale = True)
     sns.kdeplot(x=x2, ax=ax_obj2[-1], color=hex[num], lw=1, fill=True, multiple = 'stack')
     sns.kdeplot(x=x3, ax=ax_obj3[-1], color=hex[num], lw=1, fill=True, multiple = 'stack')
 
+    
     # ax_obj1[-1].set_box_aspect(0.2)
 
 
     # setting uniform x and y lims
     ax_obj1[-1].set_xlim(5,100)
-    ax_obj1[-1].set_ylim(bottom = 0)
+    ax_obj1[-1].set_ylim(0, 30)
 
     ax_obj2[-1].set_xlim(0,1)
     ax_obj2[-1].set_ylim(0,7)

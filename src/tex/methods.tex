@@ -35,7 +35,7 @@ To model different subpopulations that could exist in the population, we use dis
 
 Given the recent evidence for a $~10 M_{\odot}$, $~35 M_{\odot}$, and potentially a $~25 M_{\odot}$ peak in the BBH primary mass distribution \citep{2111.03634, 2022ApJ...928..155T, 10.3847/2041-8213/aa9bf6, 10.3847/1538-4357/aab34c, 10.3847/2041-8213/ab3800, 2021ApJ...913L...7A}, we chose models similar to the \textsc{Multi Spin} model in \cite{2021ApJ...913L...7A}, which is characterised by a power-law plus a Gaussian peak in primary mass, wherein the spin distributions of the two mass components are allowed to differ from each other. In our case, we replace the power law mass components and parametric spin descriptions with non-parametric Basis-Spline functions, in order to avoid model dependent biases on the resulting distributions.
 We also choose to parametrize peaks in the primary mass spectrum in terms of log-mass, rather than linear-mass. 
-In both of our model prescriptions, detailed below, the spin magnitude and tilt distributions of each binary component are assumed to be independently and identically distributed (IID), i.e. we fit the same model distribution to both binary spin components per category. To reduce the number of free parameters and thus computational cost, we fix the power law slope of the merger rate with redshift to $\lambda_z=2.7$. We make use of the mass and spin basis spline (B-Spline) models from \cite{2022arXiv221012834E}. All the models and formalism used in our analysis are available in the \href{https://git.ligo.org/bruce.edelman/gwinferno}{GWInferno} python library, along with the code and data to reproduce this study in this GitHub \href{https://github.com/jaxeng/paper}{repository}. 
+In both of our model prescriptions, detailed below, the spin magnitude and tilt distributions of each binary component are assumed to be independently and identically distributed (IID), i.e. we fit the same model distribution to both binary spin components per category. To reduce the number of free parameters and thus computational cost, we fix the power law slope of the merger rate with redshift to $\lambda_z=2.7$ and do not fit the mininum and maximum BBH primary mass, instead truncating all the mass distributions below $m_\text{min} = 5.0$ and above $m_\text{max}$. We make use of the mass and spin basis spline (B-Spline) models from \cite{2022arXiv221012834E}. All the models and formalism used in our analysis are available in the \href{https://git.ligo.org/bruce.edelman/gwinferno}{GWInferno} python library, along with the code and data to reproduce this study in this GitHub \href{https://github.com/jaxeng/paper}{repository}. 
 
 
 
@@ -76,8 +76,8 @@ To investigate whether other parts of the primary mass spectrum may have similar
     \item \contA{}, $M=2$ (\jaxen{NUMBER} parameters). The spin models are the same as the previous category, but here primary mass is fit to a B-spline function. 
     \begin{eqnarray} \label{eq:contmass}
         \text{log} p_{m}(m_1| \Lambda_{m}) = B_k(m_1 | \mathbf{c}_{m, 2}) \\
-        p_{a}(a_j| \Lambda_{a}) = B_k(a_j | \mathbf{c}_{a,2}) \\
-        p_{\theta}(cos(\theta_j)| \Lambda_{\theta}) = B_k( cos(\theta_j) | \mathbf{c}_{\theta,2})
+        p_{a}(a_j| \Lambda_{a}) = B_k(a_j | \mathbf{c}_{a,1}) \\
+        p_{\theta}(cos(\theta_j)| \Lambda_{\theta}) = B_k( cos(\theta_j) | \mathbf{c}_{\theta,1})
     \end{eqnarray}
     
     \item \contB{}, $M=3$ (\jaxen{NUMBER} parameters). Here, both primary mass and spin are fit to B-Splines.
