@@ -7,7 +7,6 @@ import seaborn as sns
 import matplotlib
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as grid_spec
-matplotlib.use('TkAgg')
 from matplotlib.ticker import ScalarFormatter
 
 categories = ['1', '2', '3']
