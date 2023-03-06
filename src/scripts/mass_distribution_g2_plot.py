@@ -20,7 +20,7 @@ axy = fig.add_subplot(gs[1,1])
 axy1 = fig.add_subplot(gs[0,1])
 fig.suptitle('Composite Model: Mass Distributions', fontsize = 18)
 bspl_ms, bspl_mpdfs, bspl_qs, bspl_qpdfs = load_bsplinemass_ppd()
-subpop_ppds = load_subpop_ppds(g2 = True, g2_fname = 'bspline_1logpeak_samespin_100000s_2chains.h5')
+subpop_ppds = load_subpop_ppds(g2 = True, g2_fname = 'bspline_1logpeak_samespin_100000s_2chains.h5', N=100000)
 tot_subpops = subpop_ppds['peak_1_mass_pdfs'] + subpop_ppds['continuum_mass_pdfs'] + subpop_ppds['continuum_1_mass_pdfs']
 fill = 0.2
 sel_1 = subpop_ppds['continuum_mass_pdfs'][:,127] < 1e-3
@@ -55,7 +55,7 @@ ax1 = plot_mean_and_90CI(ax1, subpop_ppds['mass_1'], subpop_ppds['continuum_mass
 ax1.legend(frameon=False, fontsize=legendfont);
 ax1.set_xlabel(r'$m_1 \,\,[M_\odot]$', fontsize=18)
 ax1.set_ylabel(r'$p(m_1) \,\,[M_\odot^{-1}]$', fontsize=18)
-ax1.text(55, 0.01, '{:.1f}% of samples'.format(num_1), fontsize = 12)
+ax1.text(55, 0.01, '{:.0f}% of samples'.format(num_1), fontsize = 12)
 ax1.grid(True, which="major", ls=":")
 ax1.tick_params(labelsize=14)
 ax1.set_yscale('log')
@@ -97,7 +97,7 @@ ax.set_xlabel(r'$m_1 \,\,[M_\odot]$', fontsize=18)
 ax.set_ylabel(r'$p(m_1) \,\,[M_\odot^{-1}]$', fontsize=18)
 ax.grid(True, which="major", ls=":")
 ax.tick_params(labelsize=14)
-ax.text(55, 0.3, '{:.1f}% of samples'.format(num_2), fontsize = 12)
+ax.text(55, 0.3, '{:.0f}% of samples'.format(num_2), fontsize = 12)
 ax.set_yscale('log')
 ax.set_xscale('log')
 ax.set_ylim(1e-5, 1e0)

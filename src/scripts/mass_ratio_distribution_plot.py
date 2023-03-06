@@ -13,7 +13,7 @@ from mpl_toolkits.axes_grid1.inset_locator import mark_inset
 
 
 bspl_ms, bspl_mpdfs, bspl_qs, bspl_qpdfs = load_bsplinemass_ppd()
-subpop_ppds = load_subpop_ppds(g1 = True, g1_fname = 'bspline_1logpeak_100000s_ppds.h5')
+subpop_ppds = load_subpop_ppds(g1 = True, g1_fname = 'bspline_1logpeak_100000s_ppds.h5', N = 10000)
 tot_subpops = subpop_ppds['peak_1_mass_ratio_pdfs'] + subpop_ppds['continuum_mass_ratio_pdfs']
 
 figx, figy = 5, 7
@@ -42,7 +42,7 @@ ax[i_0].get_xaxis().set_major_formatter(ScalarFormatter())
 ax[i_0].set_title('Base Model Mass Ratio Distributions')
 ax[i_0].grid(True, which="major", ls=":")
 
-subpop_ppds = load_subpop_ppds(g2 = True, g2_fname = 'bspline_1logpeak_samespin_100000s_2chains.h5')
+subpop_ppds = load_subpop_ppds(g2 = True, g2_fname = 'bspline_1logpeak_samespin_100000s_2chains.h5', N = 10000)
 tot_subpops = subpop_ppds['peak_1_mass_ratio_pdfs'] + subpop_ppds['continuum_mass_ratio_pdfs'] + subpop_ppds['continuum_1_mass_ratio_pdfs']
 
 ax[i_1] = plot_mean_and_90CI(ax[i_1], bspl_qs, bspl_qpdfs, color ='tab:red', label='Edelman et al 2022', bounds = False, lw = 2)

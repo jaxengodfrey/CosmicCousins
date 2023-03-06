@@ -72,6 +72,7 @@ datasets:
         bspline_1logpeak_100000s.h5: src/data/bspline_1logpeak_100000s.h5
         bspline_1logpeak_100000s_ppds.h5: src/data/bspline_1logpeak_100000s_ppds.h5
         bspline_1logpeak_samespin_100000s_2chains.h5: src/data/bspline_1logpeak_samespin_100000s_2chains.h5
+        composite_model_resampled_single_event_posterior.h5: src/data/composite_model_resampled_single_event_posterior.h5
   #       bspline_mass_spin_1000w_10000s_thin2_independent_bspline_ratio_12-12-22.h5: src/data/bspline_mass_spin_1000w_10000s_thin2_independent_bspline_ratio_12-12-22.h5
   #       bspline_mass_spin_1000w_10000s_thin2_independent_bspline_ratio_reweighedKDEs_12-16-22.h5: src/data/bspline_mass_spin_1000w_10000s_thin2_independent_bspline_ratio_reweighedKDEs_12-16-22.h5
   #       bspline_mass_spin_1000w_10000s_thin2_independent_bspline_ratio_sigprior02_12-12-22.h5: src/data/bspline_mass_spin_1000w_10000s_thin2_independent_bspline_ratio_sigprior02_12-12-22.h5
