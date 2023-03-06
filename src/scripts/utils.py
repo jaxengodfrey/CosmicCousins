@@ -60,12 +60,33 @@ def load_bsplinemass_ppd():
     datadict = dd.io.load(paths.data / 'bsplines_64m1_18q_iid18mag_iid18tilt_pl18z_ppds.h5')
     return datadict['m1s'], datadict['dRdm1'], datadict['qs'], datadict['dRdq']
 
-def load_subpop_ppds(g1 = False, g2 = False, g1_fname = 'bspline_1logpeak_ppds.h5', g2_fname = 'bspline_1logpeak_samespin_ppds.h5'):
+def load_subpop_ppds(g1 = False, g2 = False, g1_fname = 'bspline_1logpeak_ppds.h5', g2_fname = 'bspline_1logpeak_samespin_ppds.h5', N=2000):
+    static_keys = ['a1', 'cos_tilt_1', 'mass_1', 'mass_ratio', 'a2', 'cos_tilt_2']
     if g1:
         datadict = dd.io.load(paths.data/ g1_fname)
+        if N < len(datadict['peak_1_mass_pdfs']):
+            for k in datadict.keys():
+                if k not in static_keys:
+                    if type(datadict[k]) == dict:
+                        for kk in datadict[k].keys():
+                            idxs = np.random.choice(datadict[k][kk].shape[0], N, replace=False)
+                            datadict[k][kk] = datadict[k][kk][idxs]
+                    else:
+                        idxs = np.random.choice(datadict[k].shape[0], N, replace=False)
+                        datadict[k] = datadict[k][idxs]
         return datadict
     elif g2:
         datadict = dd.io.load(paths.data/ g2_fname)
+        if N < len(datadict['peak_1_mass_pdfs']):
+            for k in datadict.keys():
+                if k not in static_keys:
+                    if type(datadict[k]) == dict:
+                        for kk in datadict[k].keys():
+                            idxs = np.random.choice(datadict[k][kk].shape[0], N, replace=False)
+                            datadict[k][kk] = datadict[k][kk][idxs]
+                    else:
+                        idxs = np.random.choice(datadict[k].shape[0], N, replace=False)
+                        datadict[k] = datadict[k][idxs]
         return datadict
 
 def load_trace(g1 = False, g2 = False, g1_fname = 'bspline_1logpeak_10000s.h5', g2_fname = 'bspline_1logpeak_samespin_10000s.h5'):

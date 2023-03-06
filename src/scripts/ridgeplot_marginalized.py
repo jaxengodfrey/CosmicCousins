@@ -2,10 +2,6 @@
 
 import paths
 import numpy as np
-import matplotlib
-matplotlib.use('TkAgg')
-import matplotlib.pyplot as plt
-from matplotlib.ticker import ScalarFormatter
 import arviz as az
 import seaborn as sns
 import matplotlib.gridspec as gridspec
@@ -13,11 +9,9 @@ from matplotlib.ticker import ScalarFormatter
 from utils import load_trace, load_03b_posteriors
 import deepdish as dd
 import matplotlib
-import pandas as pd
-import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as grid_spec
-from mpl_toolkits.axes_grid1 import make_axes_locatable
+from matplotlib.ticker import ScalarFormatter
 
 categories = ['1', '2', '3']
 # categories = ['1', '2']
@@ -32,7 +26,7 @@ pedata = data['pedata']
 param_map = data['param_map']
 
 
-idata = az.extract_dataset(dat, combined = 'True')
+idata = az.extract_dataset(dat, combined = 'True', num_samples = 3500)
 
 event_names = ['GW150914',
  'GW151012',
@@ -114,13 +108,13 @@ for i in range(n_events):
     for j in range(n_categories):
         if i == 44:
             if j == 0:
-                nanidx = np.argwhere(np.isnan(idata[f'cat_frac_subpop_{j+1}_event_{i}'][sel].values))
-                groups[i][j] = np.delete(idata[f'cat_frac_subpop_{j+1}_event_{i}'][sel].values, nanidx).mean()
+                nanidx = np.argwhere(np.isnan(idata[f'cat_frac_subpop_{j+1}_event_{i}'].values))
+                groups[i][j] = np.delete(idata[f'cat_frac_subpop_{j+1}_event_{i}'].values, nanidx).mean()
             else:
-                infidx = np.argwhere(np.isinf(idata[f'cat_frac_subpop_{j+1}_event_{i}'][sel].values))
-                groups[i][j] = np.delete(idata[f'cat_frac_subpop_{j+1}_event_{i}'][sel].values, infidx).mean()
+                infidx = np.argwhere(np.isinf(idata[f'cat_frac_subpop_{j+1}_event_{i}'].values))
+                groups[i][j] = np.delete(idata[f'cat_frac_subpop_{j+1}_event_{i}'].values, infidx).mean()
         else:
-            groups[i][j] = idata[f'cat_frac_subpop_{j+1}_event_{i}'][sel].values.mean()
+            groups[i][j] = idata[f'cat_frac_subpop_{j+1}_event_{i}'].values.mean()
         if j == 0:
             probs[i] += groups[i][j] * j
         if j == 1:
