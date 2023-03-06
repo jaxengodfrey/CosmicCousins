@@ -40,10 +40,10 @@ In both of our model prescriptions, detailed below, the spin magnitude and tilt 
 
 
 \subsubsection{Base Model}
-In this model prescription, we categorize the BBH population into $M=2$ components, which we will refer to as \first{} and \contB{}, based on their primary mass distributions (continuum here referring to the non-parametric nature of the B-Spline distributions). The \first{} component is characterised by a truncated Log-Normal peak in primary mass and B-Spline functions in mass ratio, spin magnitude, and tilt angle. The \contB{} component is characterized by B-Spline functions in all mass and spin parameters. We infer the log mean $\text{log}(\mu_m)$ and standard deviation $\sigma_\text{log}(m)$ of the peak, along with the B-Spline coefficients $\mathbf{c}$ for all other parameters. During inference \first{} is associated with $k_i = 0$ (i.e. $M=1$) and \contB{} is associated with $k_i = 1$ ($M=2$).
+In this model prescription, we categorize the BBH population into $M=2$ subpopulations, which we will refer to as \first{} and \contB{}, based on their primary mass distributions (continuum here referring to the non-parametric nature of the B-Spline distributions). The \first{} subpopulation is characterised by a truncated Log-Normal peak in primary mass and B-Spline functions in mass ratio, spin magnitude, and tilt angle. The \contB{} subpopulation is characterized by B-Spline functions in all mass and spin parameters. We infer the log mean $\text{log}(\mu_m)$ and standard deviation $\sigma_\text{log}(m)$ of the peak, along with the B-Spline coefficients $\mathbf{c}$ for all other parameters. During inference \first{} is associated with $k_i = 0$ (i.e. $M=1$) and \contB{} is associated with $k_i = 1$ ($M=2$).
 
 \begin{itemize}
-    \item \first{}, $M=1$ (\jaxen{NUMBER} parameters). This category assumes a truncated Log-Normal model in primary mass and B-spline models in mass ratio $q$, spin magnitude $a_j$, and $cos(\theta_{\text{tilt}_i})$. Note that since we assume the spins to be IID, the B-Spline spin parameters, such as $\mathbf{c}_{a,1}$, are the same for each binary component $j=1$ and $j=2$
+    \item \first{}, $M=1$. This category assumes a truncated Log-Normal model in primary mass and B-spline models in mass ratio $q$, spin magnitude $a_j$, and $cos(\theta_{\text{tilt}_i})$. Note that since we assume the spins to be IID, the B-Spline spin parameters, such as $\mathbf{c}_{a,1}$, are the same for each binary component $j=1$ and $j=2$
     \begin{eqnarray} \label{eq:lowmass}
         p_{m,0}(m_1| \Lambda_{m,0}) = \text{Lognormal}_\text{T}(m_1 | \mu_{m}, \sigma_{m}) \\
         p_{q,0}(q| \Lambda_{q,0}) = B_k(q | \mathbf{c}_{q,1}) \\
@@ -63,7 +63,7 @@ In this model prescription, we categorize the BBH population into $M=2$ componen
 
 \subsubsection{Composite Mass Model}
 
-To investigate whether other parts of the primary mass spectrum may have similar spin characteristics to \first{}, we construct a composite mass model, wherein we include a new category \contA{}, described by a B-Spline in primary mass but force it to have the same spin distributions as \first{}. \contB is still included and is described by it's own spin distributions. For this model prescription, we chose to marginalize over the discrete variables $k_i$ during sampling, in order to sample slightly more efficiently. 
+To investigate whether other parts of the primary mass spectrum may have similar spin characteristics to \first{}, we construct a composite subpopulation model, wherein we include an additional mass component \contA{}, described by a B-Spline in primary mass but force it to have the same spin distributions as \first{}. \contB is still included and is described by it's own spin distributions. For this model prescription, we chose to marginalize over the discrete variables $k_i$ during sampling, in order to sample slightly more efficiently. 
 
 \begin{itemize}
     \item \first{}, $M=1$ (\jaxen{NUMBER} parameters). This category assumes a truncated Log-Normal model in primary mass, and B-spline models in mass ratio $q$, spin magnitude $a_j$, and $cos(\theta_{\text{tilt}_j})$. 
