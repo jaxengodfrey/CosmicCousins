@@ -24,7 +24,7 @@ axy = fig.add_subplot(gs1[0,1])
 axy0 = fig.add_subplot(gs1[0,2])
 fig.suptitle('Base and Composite Model Mass Distributions', fontsize = 18)
 bspl_ms, bspl_mpdfs, bspl_qs, bspl_qpdfs = load_bsplinemass_ppd()
-subpop_ppds = load_subpop_ppds(g1 = True, g1_fname = 'bspline_1logpeak_100000s_ppds.h5', N = 10000)
+subpop_ppds = load_subpop_ppds(g1 = True, g1_fname = 'bspline_1logpeak_100000s_ppds.h5')
 tot_subpops = subpop_ppds['peak_1_mass_pdfs'] + subpop_ppds['continuum_mass_pdfs']
 
 # ax1.set_title('Model Group 1: Gaussian Peak + B-Spline')
@@ -74,7 +74,7 @@ ax.set_xlim(mmin+0.5, mmax)
 # axy1.set_ylabel(r'$p(m_1 = 20) \,\,[M_\odot^{-1}]$', fontsize=18)
 
 
-subpop_ppds = load_subpop_ppds(g2 = True, g2_fname = 'bspline_1logpeak_samespin_100000s_2chains.h5', N = 10000)
+subpop_ppds = load_subpop_ppds(g2 = True, g2_fname = 'bspline_1logpeak_samespin_100000s_2chains.h5')
 tot_subpops = subpop_ppds['peak_1_mass_pdfs'] + subpop_ppds['continuum_mass_pdfs'] + subpop_ppds['continuum_1_mass_pdfs']
 
 # axins = ax1.inset_axes([0.8, 0.8, 0.4, 0.4])

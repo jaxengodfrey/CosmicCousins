@@ -20,7 +20,7 @@ axy = fig.add_subplot(gs[1,1])
 axy1 = fig.add_subplot(gs[0,1])
 fig.suptitle('Composite Model: Mass Distributions', fontsize = 18)
 bspl_ms, bspl_mpdfs, bspl_qs, bspl_qpdfs = load_bsplinemass_ppd()
-subpop_ppds = load_subpop_ppds(g2 = True, g2_fname = 'bspline_1logpeak_samespin_100000s_2chains.h5', N=100000)
+subpop_ppds = load_subpop_ppds(g2 = True, g2_fname = 'bspline_1logpeak_samespin_100000s_2chains.h5')
 tot_subpops = subpop_ppds['peak_1_mass_pdfs'] + subpop_ppds['continuum_mass_pdfs'] + subpop_ppds['continuum_1_mass_pdfs']
 fill = 0.2
 sel_1 = subpop_ppds['continuum_mass_pdfs'][:,127] < 1e-3

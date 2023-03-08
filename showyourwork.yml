@@ -15,11 +15,13 @@ dependencies:
     - src/data/bspline_1logpeak_100000s_ppds.h5
     - src/data/bspline_1logpeak_samespin_100000s_2chains.h5
     - src/data/b1logpeak_marginalized_50000s_2chains.h5
+    - src/data/chi_eff_chi_p_ppds.h5
   src/scripts/create_macros.py:
     - src/data/bspline_1logpeak_100000s.h5
     - src/data/bspline_1logpeak_100000s_ppds.h5
     - src/data/bspline_1logpeak_samespin_100000s_2chains.h5
     - src/data/b1logpeak_marginalized_50000s_2chains.h5
+    - src/data/chi_eff_chi_p_ppds.h5
   src/scripts/mass_distribution_g1_plot.py: 
     - src/data/bsplines_64m1_18q_iid18mag_iid18tilt_pl18z_ppds.h5
     - src/data/bspline_1logpeak_100000s_ppds.h5
@@ -29,6 +31,7 @@ dependencies:
     - src/data/bspline_1logpeak_100000s_ppds.h5
     - src/data/bspline_1logpeak_samespin_100000s_2chains.h5
   src/scripts/mass_ratio_distribution_plot.py: 
+    - src/data/bsplines_64m1_18q_iid18mag_iid18tilt_pl18z_ppds.h5
     - src/data/bspline_1logpeak_100000s_ppds.h5
     - src/data/bspline_1logpeak_samespin_100000s_2chains.h5
   src/scripts/spin_distributions_plot.py: 
@@ -39,6 +42,10 @@ dependencies:
     - src/data/b1logpeak_marginalized_50000s_2chains.h5
     - src/data/posterior_samples_and_injections_spin_magnitude.h5
     - src/data/composite_model_resampled_single_event_posterior.h5
+  src/scripts/chi_eff_plot.py:
+    - src/data/chi_eff_chi_p_ppds.h5
+  src/scripts/chi_p_plot.py:
+    - src/data/chi_eff_chi_p_ppds.h5
 datasets:
   10.5281/zenodo.7566301:
     contents:
@@ -74,6 +81,7 @@ datasets:
         bspline_1logpeak_samespin_100000s_2chains.h5: src/data/bspline_1logpeak_samespin_100000s_2chains.h5
         composite_model_resampled_single_event_posterior.h5: src/data/composite_model_resampled_single_event_posterior.h5
         posterior_samples_and_injections_spin_magnitude.h5: src/data/posterior_samples_and_injections_spin_magnitude.h5
+        chi_eff_chi_p_ppds.h5: src/data/chi_eff_chi_p_ppds.h5
   #       bspline_mass_spin_1000w_10000s_thin2_independent_bspline_ratio_12-12-22.h5: src/data/bspline_mass_spin_1000w_10000s_thin2_independent_bspline_ratio_12-12-22.h5
   #       bspline_mass_spin_1000w_10000s_thin2_independent_bspline_ratio_reweighedKDEs_12-16-22.h5: src/data/bspline_mass_spin_1000w_10000s_thin2_independent_bspline_ratio_reweighedKDEs_12-16-22.h5
   #       bspline_mass_spin_1000w_10000s_thin2_independent_bspline_ratio_sigprior02_12-12-22.h5: src/data/bspline_mass_spin_1000w_10000s_thin2_independent_bspline_ratio_sigprior02_12-12-22.h5

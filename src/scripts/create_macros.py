@@ -5,6 +5,7 @@ from scipy.integrate import cumtrapz
 import paths
 from utils import load_subpop_ppds, load_trace
 import arviz as az
+import deepdish as dd
 
 def round_sig(f, sig=2):
     max10exp = np.floor(np.log10(abs(f))) + 1
@@ -58,15 +59,23 @@ def save_subpop_cred_intervals(xs, pdfs, max = True):
 def tilt_fracs(cts, ct_pdfs):
     gamma_fracs = []
     frac_neg_cts = []
+    frac_less01 = []
+    frac_less03 = []
     for i in range(len(ct_pdfs)):
         ct_pdfs[i,:] /= np.trapz(ct_pdfs[i,:], cts)
         gam = ct_pdfs[i, cts>=0.9] / ct_pdfs[i, cts<=-0.9]
         gamma_fracs.append(gam)
         neg = cts <= 0
+        less03 = cts <= -0.3
+        less01 = cts <= 0.1
         frac_neg_cts.append(np.trapz(ct_pdfs[i,neg], x=cts[neg]))
+        frac_less01.append(np.trapz(ct_pdfs[i,less01], x=cts[less01]))
+        frac_less03.append(np.trapz(ct_pdfs[i,less03], x=cts[less03]))
     gamma_fracs = np.array(gamma_fracs)
     frac_neg_cts = np.array(frac_neg_cts)
-    return np.log10(gamma_fracs), frac_neg_cts
+    frac_less01 = np.array(frac_less01)
+    frac_less03 = np.array(frac_less03)
+    return np.log10(gamma_fracs), frac_neg_cts, frac_less01, frac_less03
 
 def get_branching_ratios(categories, Ps):
     median = np.median(Ps, axis = 0)
@@ -127,10 +136,14 @@ def DistMacros(xs, ppds, categories, param_name, tilt = False):
         return categories_dict
     else:
         for i in range(len(ppds)):
-            l10gf, fn = tilt_fracs(xs, ppds[i])
+            l10gf, fn, f01, f03 = tilt_fracs(xs, ppds[i])
             x = save_subpop_cred_intervals(xs, ppds[i])
             x['log10gammafrac'] = save_param_cred_intervals(l10gf)
             x['negfrac'] = save_param_cred_intervals(fn)
+            x['less01frac'] = save_param_cred_intervals(f01)
+            x['less03frac'] = save_param_cred_intervals(f03)
+            x['fdyn'] = save_param_cred_intervals(2*fn)
+            x['fhm'] = save_param_cred_intervals(6.25*f03)
             categories_dict[categories[i]] = x
         return categories_dict
 
@@ -148,7 +161,7 @@ def SpinMagMacros(categories, ppds, g1 = True):
         return DistMacros(aa, a_ppds, categories, 'SpinMag')
     else:
         aa, a_ppds = ppds['a1'], [ppds['peak_1_continuum_a1_pdfs']['unweighted'], ppds['continuum_a1_pdfs']['unweighted']]
-        categories = ['Peak+ContinuumA', 'ContinuumB']
+        categories = ['PeakAContinuumA', 'ContinuumB']
         return DistMacros(aa, a_ppds, categories, 'SpinMag')
 
 def TiltMacros(categories, ppds, g1 = True):
@@ -157,7 +170,7 @@ def TiltMacros(categories, ppds, g1 = True):
         return DistMacros(cts, ct_ppds, categories, 'tilt', tilt = True)
     else:
         cts, ct_ppds = ppds['cos_tilt_1'], [ppds['peak_1_continuum_ct1_pdfs']['unweighted'], ppds['continuum_ct1_pdfs']['unweighted']]
-        categories = ['Peak+ContinuumA', 'ContinuumB']
+        categories = ['PeakAContinuumA', 'ContinuumB']
         return DistMacros(cts, ct_ppds, categories, 'tilt', tilt = True)
 
 def BranchingRatioMacros(categories, idata, g1 = True):
@@ -174,12 +187,22 @@ def NumEventsMacros(categories, idata, g1 = True):
         idata = az.extract(idata, group = 'posterior', combined = True)
         return get_num_constraining_events(categories, idata, g1)
 
+def ChiEffMacros(categories, ppds, g1 = True):
+    if g1:
+        chis, chi_ppds = ppds['Base']['PeakA']['chieffs'], [ppds['Base']['PeakA']['pchieff'], ppds['Base']['ContinuumB']['pchieff']]
+        return DistMacros(chis, chi_ppds, categories, 'ChiEff', tilt = True)
+    else:
+        chis, chi_ppds = ppds['Composite']['PeakA']['chieffs'], [ppds['Composite']['PeakA']['pchieff'], ppds['Composite']['ContinuumB']['pchieff']]
+        categories = ['PeakAContinuumA', 'ContinuumB']
+        return DistMacros(chis, chi_ppds, categories, 'ChiEff', tilt = True)
+
 def main():
     macro_dict = {'Mass': {}, 'SpinMag': {}, 'CosTilt': {}}
     g1_ppds = load_subpop_ppds(g1 = True, g1_fname = 'bspline_1logpeak_100000s_ppds.h5')
     g2_ppds = load_subpop_ppds(g2 = True, g2_fname = 'bspline_1logpeak_samespin_100000s_2chains.h5')
     g1_idata = load_trace(g1 = True, g1_fname = 'bspline_1logpeak_100000s.h5')
     g2_idata = load_trace(g2 = True, g2_fname = 'b1logpeak_marginalized_50000s_2chains.h5')
+    chieff = dd.io.load(paths.data / 'chi_eff_chi_p_ppds.h5')
     g1_categories = ['PeakA', 'ContinuumB']
     g2_categories = ['PeakA', 'ContinuumB', 'ContinuumA']
     macro_dict['Mass'] = {'Base': MassMacros(g1_categories, g1_ppds), 'Composite': MassMacros(g2_categories, g2_ppds, g1 = False)}
@@ -187,6 +210,7 @@ def main():
     macro_dict['CosTilt'] = {'Base': TiltMacros(g1_categories, g1_ppds), 'Composite': TiltMacros(g2_categories, g2_ppds, g1 = False)}
     macro_dict['BranchingRatios'] = {'Base': BranchingRatioMacros(g1_categories, g1_idata), 'Composite': BranchingRatioMacros(g2_categories, g2_idata, g1 = False)}
     macro_dict['NumEvents'] = {'Base': NumEventsMacros(g1_categories, g1_idata, g1 = True), 'Composite': NumEventsMacros(g2_categories, g2_idata, g1 = False)}
+    macro_dict['ChiEff'] = {'Base': ChiEffMacros(g1_categories, chieff), 'Composite': ChiEffMacros(g2_categories, chieff, g1 = False)}
 
     print("Saving macros to src/data/macros.json...")
     with open(paths.data / "macros.json", 'w') as f:
