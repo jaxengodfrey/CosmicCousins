@@ -26,7 +26,7 @@ i_0 = 0
 i_1 = 1
 
 fill = 0.2
-ax[i_0] = plot_mean_and_90CI(ax[i_0], bspl_qs, bspl_qpdfs, color ='tab:red', label='Edelman et. al. 2022', bounds = True, lw = 2)
+ax[i_0] = plot_mean_and_90CI(ax[i_0], bspl_qs, bspl_qpdfs, color ='tab:red', label='Edelman et. al. 2022', bounds = False, lw = 2)
 ax[i_0] = plot_mean_and_90CI(ax[i_0], subpop_ppds['mass_ratio'], tot_subpops, color ='k', label='Total', bounds = False, lw = 2)
 ax[i_0] = plot_mean_and_90CI(ax[i_0], subpop_ppds['mass_ratio'], subpop_ppds['peak_1_mass_ratio_pdfs'], color ='tab:cyan', label='Peak A', bounds = True, lw = 2, line_style = '--', fill_alpha = fill)
 # ax[i_0] = plot_mean_and_90CI(ax[i_0], subpop_ppds['a1'], subpop_ppds['peak_2_a1_pdfs'], color ='tab:purple', label='High-Mass Peak', bounds = True, lw = 3, line_style = '--')

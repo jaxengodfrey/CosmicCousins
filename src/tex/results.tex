@@ -33,7 +33,7 @@ With these models and framework in hand, we infer the mass and spin distribution
 
 % define subpopulation vs component more: subpopulation = same spins, component = part of composite mass model
 
-Figure \ref{fig:g1_mass_distribution} shows the mass distributions of the \base{}, as well as the the total primary mass distribution inferred by \brucepaper{} for comparison. As seen in the figure, the total BBH primary mass distribution of the \base{} is statistically consistent with that inferred by \brucepaper{}. Inspecting the subpopulations, \first{} and \contB{}, we see that \first{} identifies a peak in the primary mass spectrum near $10\msun$ while \contB{} describes the rest of the spectrum above the peak. Interestingly, even though the $35\msun$ peak was the first observed departure from power law-like behaviour in the mass spectrum, it's spin characteristics are perhaps not as distinct as the $10\msun$ peak for \first{} to isolate it from the rest of the population. As we will discuss later, this does not necessarily imply that the $35\msun$ peak does not have spin characteristics distinct from other parts of the mass spectrum. Figure \ref{fig:spin_distributions} shows the inferred spin magnitude and tilt distributions for the two components. We see that the events categorized in \first{} prefer lower spins than those in \contB{} and have a stronger preference for alignment than their higher mass counterparts. Specifically, the tilt distribution of \first{} peaks at $\text{cos}(\theta_\text{peak,PA})=$ \result{$\CIPlusMinus{\macros[CosTilt][Base][PeakA][max]}$} and has a fraction of negative tilts $\frac{theta_\text{neg,PA}}{\theta}=$ \result{$\CIPlusMinus{\macros[CosTilt][Base][PeakA][negfrac]}$} while \contB{}'s spin tilt distribution peaks at $\text{cos}(\theta_\text{peak,CB})=$ \result{$\CIPlusMinus{\macros[CosTilt][Base][ContinuumB][max]}$}, with $\frac{theta_\text{neg, CB}}{\theta} = $ \result{$\CIPlusMinus{\macros[CosTilt][Base][ContinuumB][negfrac]}$}. Given that isolated binary evolution is theorized to produce a population of BBH's with similar mass and spin characteristics \jaxen{CITE}, we conclude that \first{} is consistent with a subpopulation of BBH's formed through isolated binary evolution. Due to the rather large uncertainties in the measured spin parameters, it's important to note that these spin features only hint at preferences of a given subset of events and should be taken with a grain of salt. To confidently associate these BBH's with the field formation channel, more observations are needed. 
+Figure \ref{fig:g1_mass_distribution} shows the primary mass distributions of the \base{}, as well as the the total primary mass distribution inferred by \brucepaper{} for comparison. As seen in the figure, the total BBH primary mass distribution of the \base{} is statistically consistent with that inferred by \brucepaper{}. Inspecting the subpopulations, \first{} and \contB{}, we see that \first{} identifies a peak in the primary mass spectrum near $10\msun$ while \contB{} describes the rest of the spectrum above the peak. Interestingly, even though the $35\msun$ peak was the first observed departure from power law-like behaviour in the mass spectrum, it's spin characteristics are perhaps not as distinct as the $10\msun$ peak for \first{} to isolate it from the rest of the population. As we will discuss later, this does not necessarily imply that the $35\msun$ peak does not have spin characteristics distinct from other parts of the mass spectrum. Figure \ref{fig:spin_distributions} shows the inferred spin magnitude and tilt distributions for the two components. We see that the events categorized in \first{} prefer lower spins than those in \contB{} and have a stronger preference for alignment than their higher mass counterparts. Specifically, the tilt distribution of \first{} peaks at $\text{cos}(\theta)_\text{peak,PA}=$ \result{$\CIPlusMinus{\macros[CosTilt][Base][PeakA][max]}$} and has a fraction of negative tilts $\frac{\theta_\text{neg,PA}}{\theta}=$ \result{$\CIPlusMinus{\macros[CosTilt][Base][PeakA][negfrac]}$} while \contB{}'s spin tilt distribution peaks at $\text{cos}(\theta)_\text{peak,CB}=$ \result{$\CIPlusMinus{\macros[CosTilt][Base][ContinuumB][max]}$}, with $\frac{\theta_\text{neg, CB}}{\theta} = $ \result{$\CIPlusMinus{\macros[CosTilt][Base][ContinuumB][negfrac]}$}. Given that isolated binary evolution is theorized to produce a population of BBH's with similar mass and spin characteristics \jaxen{CITE}, we conclude that \first{} is consistent with a subpopulation of BBH's formed through isolated binary evolution. Due to the rather large uncertainties in the measured spin parameters, it's important to note that these spin features only hint at preferences of a given subset of events and should be taken with a grain of salt. To confidently associate these BBH's with the field formation channel, more observations are needed. 
 
 \begin{figure*}[ht!]
     \begin{centering}
@@ -56,207 +56,88 @@ Figure \ref{fig:g1_mass_distribution} shows the mass distributions of the \base{
 
 The need for more data is even more apparent when we consider the rest of the BBH population and the results of the \comp{}. The primary mass distributions of the \comp{} are shown in the bottom panel of Figure \ref{fig:g1_mass_distribution}, again plotted alongside the total distribution inferred by \brucepaper{}. From this figure, we see that the events in the $\sim15-50 \msun$ range are described by \contA{}, which is the component that shares spin properties with \first{}. The tail end of the mass spectrum is then picked up by \contB{}. Looking to Figure \ref{fig:spin_distributions}, the top right panel shows that the spin magnitude distribution of \first{} and \contA{} resembles that of \first{} from the \base{}, while the distribution of \contB{} is completely uninformed. In the bottom right panel, the tilt distribution of \first{} and \contA{} in the \comp{} also shares similarities with that of \first{} in the \base{}, and again \contB{} possess an uninformed distribution, though it is possible that \contB{}'s tilt distribution may actually be an informed isotropic distribution.
 
-\begin{figure}[ht!]
-    \begin{centering}
-        \includegraphics[width=\linewidth]{figures/chi_p_distribution_plot.pdf}
-        \caption{effective spin distributions}
-        \label{fig:chi_p_distributions}
-    \end{centering}
-    \script{chi_p_plot.py}
-\end{figure}
+% \begin{figure}[ht!]
+%     \begin{centering}
+%         \includegraphics[width=\linewidth]{figures/chi_p_distribution_plot.pdf}
+%         \caption{effective spin distributions}
+%         \label{fig:chi_p_distributions}
+%     \end{centering}
+%     \script{chi_p_plot.py}
+% \end{figure}
 
 Given these observations, it may be tempting to claim that all the mid-mass events categorized in \contA{} have spin properties consistent with \first{} and therefore may be the product of the same formation mechanism as \first{}; however, a closer look at the results shows there is some uncertainty in how the $20 \msun$ peak is categorized. If we plot the value of the primary mass probability density for a subset of posterior draws at a given mass, we would expect the result to be relatively Gaussian; however, when we do this for \contB{} at $m_1 = 20 \msun$, the resulting collection of probability densities is actually bimodal. Making a cut through the posterior draws at the inflection point between the two modes, we recreate Figure \ref{fig:g1_mass_distribution} in Figure \ref{fig:g2_mass_distribution} but for these two different areas of parameter space. The top panel of \ref{fig:g2_mass_distribution} represents \jaxen{some number $\%$} of the posterior draws while the bottom represents \jaxen{some number $\%$}. We see that while most of the time, the events near $20\msun$ are categorized with \contA{} and therefore associated with the $10\msun$ peak and $35\msun$ peak, there is a small probability that they are actually associated with the highest mass events and therefore could be consistent with an isotropic spin distribution. Importantly, \contA{} rarely picks up the high mass tail of the mass spectrum, which marks those events as distinct from the $10\msun$ and $35\msun$ peaks. 
+
+The location of \first{} in the mass spectrum as well as the structure of its spin distributions are robust against our choice of model. We implemented a number of different parametric subpopulations alongside \first{} in our preliminary investigations and still found the location of \first{} to be $10\msun$ in primary mass. We chose to relax our assumptions on each subpopulation, ultimately opting for the non-parametric B-Splines for the mass distributions of \contA{} and \contB{} and all the spin distributions.
 
 \subsection{Astrophysical Branching Ratios and Event Categorization}
 
 Table \ref{tab:branch} lists the astrophysical branching ratios and the number of events constraining each subpopulation/component of the \base{} and \comp{}. The branching ratio and number of events of \first{} are consistent between the \textsc{Base} and \textsc{Composite} models. Figure \ref{fig:ridgeplot} gives a visual representation of event categorization for the \comp{} as well as the physical properties of the subpopulations. Within \contA{}, events GW190412 and GW190517\_055101 are likely outliers of the subpopulation due to their visually different spin distributions. This may indicate that while our models can identify subpopulation-level features in the catalog, categorization of an individual event to a particular subopulation does not guarantee it is truly a member of that subpopulation. GW190412 and GW190517\_055101 were both detections with fairly certain spin properties. GW190412 was the first clearly unequal mass binary detection \jaxen{CITE}, which allowed for a measure of definitively non-zero primary spin magntiude \jaxen{CITE}. GW190517\_055101 was highlighted in the GWTC-2 catalog paper \jaxen{CITE} for having the highest $\chi_\text{eff}$ values, which can be seen in Figure 10 of \jaxen{CITE gwtc-2 catalog paper}. The categorization of these potential outliers may have an impact on the resulting subpopulation distribuitons, so in future work, it will be important to incorporate a method for categorizing outliers that don't fit into any of the given subpopulations. 
 
-\result{$\CIPlusMinus{\macros[ChiEff][Base][PeakA][max]}$, $\CIPlusMinus{\macros[ChiEff][Base][PeakA][negfrac]}$}
+A look at the highest mass events in \ref{fig:ridgeplot} reveals that most of them are characterized about $50/50$ between \contA{} and \contB{}. The spin distributions of these events are largely uninformed, so it is not surprising they are categorized into each component roughly equally. Events with relatively well measured spins, like GW191109\_010717, are more strongly associated with \contB{}.
 
-% Please add the following required packages to your document preamble:
-% \usepackage{multirow}
-% Please add the following required packages to your document preamble:
-% \usepackage{multirow}
-% Please add the following required packages to your document preamble:
-% \usepackage{multirow}
+their categorization between \contA{} and \contB{}, is often $50/50$, though the three events measured with spi
+
+% \result{$\macros[ChiEff][Composite][ContinuumA][95percentile]$}
+
 % Please add the following required packages to your document preamble:
 % \usepackage{multirow}
 \begin{table*}[]
     \centering
-    \begin{tabular}{lcc|c|c|c|c|c|c|c|}
+    \begin{tabular}{lcccccc}
     \hline
     \multicolumn{1}{|c|}{\textbf{\begin{tabular}[c]{@{}c@{}}Base \\ Model\end{tabular}}} &
       \multicolumn{1}{c|}{$\lambda$} &
-      $N_\text{events}$ &
-      $a_\text{peak}$ &
-      $cos(\theta_\text{peak})$ &
-      $\chi_\text{eff, peak}$ &
-      $f_{\chi_\text{eff}<0}$ &
-      $f_{\chi_\text{eff}<0.1}$ &
-      $f_\text{dyn}$ &
-      $f_\text{HM}$ \\ \hline
+      \multicolumn{1}{c|}{$N_\text{events}$} &
+      \multicolumn{1}{c|}{$a_\text{peak}$} &
+      \multicolumn{1}{c|}{$cos(\theta)_\text{peak}$} &
+      \multicolumn{1}{c|}{$cos(\theta)_{10\%}$} &
+      \multicolumn{1}{c|}{$\chi_\text{eff,peak}$} \\ \hline
     \multicolumn{1}{|l|}{Peak A} &
       \multicolumn{1}{c|}{$\CIPlusMinusPer{\macros[BranchingRatios][Base][PeakA][Percent]}$} &
-      $\CIPlusMinus{\macros[NumEvents][Base][PeakA]}$ &
-      $\CIPlusMinus{\macros[SpinMag][Base][PeakA][max]}$ &
-      $\CIPlusMinus{\macros[CosTilt][Base][PeakA][max]}$ &
-      $\CIPlusMinus{\macros[ChiEff][Base][PeakA][max]}$ &
-      $\CIPlusMinus{\macros[ChiEff][Base][PeakA][negfrac]}$ &
-      $\CIPlusMinus{\macros[ChiEff][Base][PeakA][less01frac]}$ &
-      $\CIPlusMinus{\macros[ChiEff][Base][PeakA][fdyn]}$ &
-      $\CIPlusMinus{\macros[ChiEff][Base][PeakA][fhm]}$ \\ \hline
+      \multicolumn{1}{c|}{$\CIPlusMinus{\macros[NumEvents][Base][PeakA]}$} &
+      \multicolumn{1}{c|}{$\CIPlusMinus{\macros[SpinMag][Base][PeakA][max]}$} &
+      \multicolumn{1}{c|}{$\CIPlusMinus{\macros[CosTilt][Base][PeakA][max]}$} &
+      \multicolumn{1}{c|}{$\CIPlusMinus{\macros[CosTilt][Base][PeakA][10percentile]}$} &
+      \multicolumn{1}{c|}{$\CIPlusMinus{\macros[ChiEff][Base][PeakA][max]}$} \\ \hline
     \multicolumn{1}{|l|}{Continuum B} &
       \multicolumn{1}{c|}{$\CIPlusMinusPer{\macros[BranchingRatios][Base][ContinuumB][Percent]}$} &
-      $\CIPlusMinus{\macros[NumEvents][Base][ContinuumB]}$ &
-      $\CIPlusMinus{\macros[SpinMag][Base][ContinuumB][max]}$ &
-      $\CIPlusMinus{\macros[CosTilt][Base][ContinuumB][max]}$ &
-      $\CIPlusMinus{\macros[ChiEff][Base][ContinuumB][max]}$ &
-      $\CIPlusMinus{\macros[ChiEff][Base][ContinuumB][negfrac]}$ &
-      $\CIPlusMinus{\macros[ChiEff][Base][ContinuumB][less01frac]}$ &
-      $\CIPlusMinus{\macros[ChiEff][Base][ContinuumB][fdyn]}$ &
-      $\CIPlusMinus{\macros[ChiEff][Base][ContinuumB][fhm]}$ \\ \hline
-     &
-       &
-       &
-       &
-       &
-       &
-       &
-       &
-       &
-       \\ \hline
+      \multicolumn{1}{c|}{$\CIPlusMinus{\macros[NumEvents][Base][ContinuumB]}$} &
+      \multicolumn{1}{c|}{$\CIPlusMinus{\macros[SpinMag][Base][ContinuumB][max]}$} &
+      \multicolumn{1}{c|}{$\CIPlusMinus{\macros[CosTilt][Base][ContinuumB][max]}$} &
+      \multicolumn{1}{c|}{$\CIPlusMinus{\macros[CosTilt][Base][ContinuumB][10percentile]}$} &
+      \multicolumn{1}{c|}{$\CIPlusMinus{\macros[ChiEff][Base][ContinuumB][max]}$} \\ \hline
+    \multicolumn{7}{l}{} \\ \hline
     \multicolumn{1}{|c|}{\textbf{\begin{tabular}[c]{@{}c@{}}Composite \\ Model\end{tabular}}} &
       \multicolumn{1}{c|}{$\lambda$} &
-      $N_\text{events}$ &
-      $a_\text{peak}$ &
-      $cos(\theta_\text{peak})$ &
-      $\chi_\text{eff, peak}$ &
-      $f_{\chi_\text{eff}<0}$ &
-      $f_{\chi_\text{eff}<0.1}$ &
-      $f_\text{dyn}$ &
-      $f_\text{HM}$ \\ \hline
+      \multicolumn{1}{c|}{$N_\text{events}$} &
+      \multicolumn{1}{c|}{$a_\text{peak}$} &
+      \multicolumn{1}{c|}{$cos(\theta_\text{peak})$} &
+      \multicolumn{1}{c|}{$cos(\theta)_{10\%}$} &
+      \multicolumn{1}{c|}{$\chi_\text{eff,peak}$} \\ \hline
     \multicolumn{1}{|l|}{Peak A} &
       \multicolumn{1}{c|}{$\CIPlusMinusPer{\macros[BranchingRatios][Composite][PeakA][Percent]}$} &
-      $\CIPlusMinus{\macros[NumEvents][Composite][PeakA]}$ &
-      \multirow{2}{*}{$\CIPlusMinus{\macros[SpinMag][Composite][PeakAContinuumA][max]}$} &
-      \multirow{2}{*}{$\CIPlusMinus{\macros[CosTilt][Composite][PeakAContinuumA][max]}$} &
-      \multirow{2}{*}{$\CIPlusMinus{\macros[ChiEff][Composite][PeakAContinuumA][max]}$} &
-      \multirow{2}{*}{$\CIPlusMinus{\macros[ChiEff][Composite][PeakAContinuumA][negfrac]}$} &
-      \multirow{2}{*}{$\CIPlusMinus{\macros[ChiEff][Composite][PeakAContinuumA][less01frac]}$} &
-      \multirow{2}{*}{$\CIPlusMinus{\macros[ChiEff][Composite][PeakAContinuumA][fdyn]}$} &
-      \multirow{2}{*}{$\CIPlusMinus{\macros[ChiEff][Composite][PeakAContinuumA][fhm]}$} \\ \cline{1-3}
+      \multicolumn{1}{c|}{$\CIPlusMinus{\macros[NumEvents][Composite][PeakA]}$} &
+      \multicolumn{1}{c|}{\multirow{2}{*}{$\CIPlusMinus{\macros[SpinMag][Composite][PeakAContinuumA][max]}$}} &
+      \multicolumn{1}{c|}{\multirow{2}{*}{$\CIPlusMinus{\macros[CosTilt][Composite][PeakAContinuumA][max]}$}} &
+      \multicolumn{1}{c|}{\multirow{2}{*}{$\CIPlusMinus{\macros[CosTilt][Composite][PeakAContinuumA][10percentile]}$}} &
+      \multicolumn{1}{c|}{\multirow{2}{*}{$\CIPlusMinus{\macros[ChiEff][Composite][PeakAContinuumA][max]}$}} \\ \cline{1-3}
     \multicolumn{1}{|l|}{Continuum A} &
       \multicolumn{1}{c|}{$\CIPlusMinusPer{\macros[BranchingRatios][Composite][ContinuumA][Percent]}$} &
-      $\CIPlusMinus{\macros[NumEvents][Composite][ContinuumA]}$ &
-       &
-       &
-       &
-       &
-       &
-       &
-       \\ \hline
+      \multicolumn{1}{c|}{$\CIPlusMinus{\macros[NumEvents][Composite][ContinuumA]}$} &
+      \multicolumn{1}{c|}{} &
+      \multicolumn{1}{c|}{} &
+      \multicolumn{1}{c|}{} &
+      \multicolumn{1}{c|}{} \\ \hline
     \multicolumn{1}{|l|}{Continuum B} &
       \multicolumn{1}{c|}{$\CIPlusMinusPer{\macros[BranchingRatios][Composite][ContinuumB][Percent]}$} &
-      $\CIPlusMinus{\macros[NumEvents][Composite][ContinuumB]}$ &
-      $\CIPlusMinus{\macros[SpinMag][Composite][ContinuumB][max]}$ &
-      $\CIPlusMinus{\macros[CosTilt][Composite][ContinuumB][max]}$ &
-      $\CIPlusMinus{\macros[ChiEff][Composite][ContinuumB][max]}$ &
-      $\CIPlusMinus{\macros[ChiEff][Composite][ContinuumB][negfrac]}$ &
-      $\CIPlusMinus{\macros[ChiEff][Composite][ContinuumB][less01frac]}$ &
-      $\CIPlusMinus{\macros[ChiEff][Composite][ContinuumB][fdyn]}$ &
-      $\CIPlusMinus{\macros[ChiEff][Composite][ContinuumB][fhm]}$ \\ \hline
+      \multicolumn{1}{c|}{$\CIPlusMinus{\macros[NumEvents][Composite][ContinuumB]}$} &
+      \multicolumn{1}{c|}{$\CIPlusMinus{\macros[SpinMag][Composite][ContinuumB][max]}$} &
+      \multicolumn{1}{c|}{$\CIPlusMinus{\macros[CosTilt][Composite][ContinuumB][max]}$} &
+      \multicolumn{1}{c|}{$\CIPlusMinus{\macros[CosTilt][Composite][ContinuumB][10percentile]}$} &
+      \multicolumn{1}{c|}{$\CIPlusMinus{\macros[ChiEff][Composite][ContinuumB][max]}$} \\ \hline
     \end{tabular}
     \end{table*}
-% Please add the following required packages to your document preamble:
-% \usepackage{multirow}
-% Please add the following required packages to your document preamble:
-% \usepackage{multirow}
-% \begin{table*}[]
-%     \begin{tabular}{lcc|c|c|c|c|c|}
-%     \hline
-%     \multicolumn{1}{|c|}{\textbf{\begin{tabular}[c]{@{}c@{}}Base \\ Model\end{tabular}}} &
-%       \multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}Branching \\ Ratio\end{tabular}} &
-%       \begin{tabular}[c]{@{}c@{}}Number of \\ Events\end{tabular} &
-%       $a_\text{peak}$ &
-%       $cos(\theta_\text{peak})$ &
-%       $\chi_\text{eff, peak}$ &
-%       $f_{\chi_\text{eff}<0}$ &
-%       $f_{\chi_\text{eff}<0.1}$ \\ \hline
-%     \multicolumn{1}{|l|}{Peak A} &
-%       \multicolumn{1}{c|}{$\CIPlusMinusPer{\macros[BranchingRatios][Base][Peak][Percent]}$} &
-%       $\CIPlusMinus{\macros[NumEvents][Base][PeakA]}$ &
-%       $\CIPlusMinus{\macros[SpinMag][Base][PeakA][max]}$ &
-%       $\CIPlusMinus{\macros[CosTilt][Base][PeakA][max]}$ &
-%       $\CIPlusMinus{\macros[ChiEff][Base][PeakA][max]}$ &
-%       $\CIPlusMinus{\macros[ChiEff][Base][PeakA][negfrac]}$ &
-%        \\ \hline
-%     \multicolumn{1}{|l|}{Continuum B} &
-%       \multicolumn{1}{c|}{$\CIPlusMinusPer{\macros[BranchingRatios][Base][Continuum][Percent]}$} &
-%       $\CIPlusMinus{\macros[NumEvents][Base][ContinuumA]}$ &
-%       $\CIPlusMinus{\macros[SpinMag][Base][ContinuumB][max]}$ &
-%       $\CIPlusMinus{\macros[CosTilt][Base][ContinuumB][max]}$ &
-%       $\CIPlusMinus{\macros[ChiEff][Base][ContinuumB][max]}$ &
-%       $\CIPlusMinus{\macros[ChiEff][Base][PeakA][negfrac]}$ &
-%        \\ \hline
-%      &
-%        &
-%        &
-%        &
-%        &
-%        &
-%        &
-%        \\ \hline
-%     \multicolumn{1}{|c|}{\textbf{\begin{tabular}[c]{@{}c@{}}Composite \\ Model\end{tabular}}} &
-%       \multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}Branching \\ Ratio\end{tabular}} &
-%       \begin{tabular}[c]{@{}c@{}}Number of \\ Events\end{tabular} &
-%       $a_\text{peak}$ &
-%       $cos(\theta_\text{peak})$ &
-%       $\chi_\text{eff, peak}$ &
-%       $f_{\chi_\text{eff}<0}$ &
-%       $f_{\chi_\text{eff}<0.1}$ \\ \hline
-%     \multicolumn{1}{|l|}{Peak A} &
-%       \multicolumn{1}{c|}{$\CIPlusMinusPer{\macros[BranchingRatios][Composite][PeakA][Percent]}$} &
-%       $\CIPlusMinus{\macros[NumEvents][Composite][PeakA]}$ &
-%       \multirow{2}{*}{$\CIPlusMinus{\macros[SpinMag][Composite][PeakA+ContinuumA][max]}$} &
-%       \multirow{2}{*}{$\CIPlusMinus{\macros[CosTilt][Composite][PeakA+ContinuumA][max]}$} &
-%       \multirow{2}{*}{$\CIPlusMinus{\macros[ChiEff][Composite][PeakA+ContinuumA][max]}$} &
-%       \multirow{2}{*}{$\CIPlusMinus{\macros[ChiEff][Base][PeakA][negfrac]}$} &
-%       \multirow{2}{*}{} \\ \cline{1-3}
-%     \multicolumn{1}{|l|}{Continuum A} &
-%       \multicolumn{1}{c|}{$\CIPlusMinusPer{\macros[BranchingRatios][Composite][ContinuumA][Percent]}$} &
-%       $\CIPlusMinus{\macros[NumEvents][Composite][ContinuumA]}$ &
-%        &
-%        &
-%        &
-%        &
-%        \\ \hline
-%     \multicolumn{1}{|l|}{Continuum B} &
-%       \multicolumn{1}{c|}{$\CIPlusMinusPer{\macros[BranchingRatios][Composite][ContinuumB][Percent]}$} &
-%       $\CIPlusMinus{\macros[NumEvents][Composite][ContinuumB]}$ &
-%       $\CIPlusMinus{\macros[SpinMag][Composite][ContinuumB][max]}$ &
-%       $\CIPlusMinus{\macros[CosTilt][Composite][ContinuumB][max]}$ &
-%       $\CIPlusMinus{\macros[ChiEff][Composite][ContinuumB][max]}$ &
-%       $\CIPlusMinus{\macros[ChiEff][Base][PeakA][negfrac]}$ &
-%        \\ \hline
-%     \end{tabular}
-% \end{table*}
 
-% \begin{table}[]
-%     \centering
-%     \begin{tabular}{lcc}
-%     \hline
-%     \multicolumn{1}{|c|}{\textbf{\begin{tabular}[c]{@{}c@{}}Base \\ Model\end{tabular}}}      & \multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}Branching \\ Ratio\end{tabular}}                  & \multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}Number of \\ Events\end{tabular}} \\ \hline
-%     \multicolumn{1}{|l|}{Peak A}                                                              & \multicolumn{1}{c|}{$\CIPlusMinusPer{\macros[BranchingRatios][Base][PeakA][Percent]}$}            & \multicolumn{1}{c|}{$\CIPlusMinus{\macros[NumEvents][Base][PeakA]}$}             \\ \hline
-%     \multicolumn{1}{|l|}{Continuum B}                                                         & \multicolumn{1}{c|}{$\CIPlusMinusPer{\macros[BranchingRatios][Base][ContinuumB][Percent]}$}       & \multicolumn{1}{c|}{$\CIPlusMinus{\macros[NumEvents][Base][ContinuumB]}$}        \\ \hline
-%                                                                                               &                                                                                                  &                                                                                  \\ \hline
-%     \multicolumn{1}{|c|}{\textbf{\begin{tabular}[c]{@{}c@{}}Composite \\ Model\end{tabular}}} & \multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}Branching \\ Ratio\end{tabular}}                  & \multicolumn{1}{c|}{\begin{tabular}[c]{@{}c@{}}Number of \\ Events\end{tabular}} \\ \hline
-%     \multicolumn{1}{|l|}{Peak A}                                                              & \multicolumn{1}{c|}{$\CIPlusMinusPer{\macros[BranchingRatios][Composite][PeakA][Percent]}$}      & \multicolumn{1}{c|}{$\CIPlusMinus{\macros[NumEvents][Composite][PeakA]}$}        \\ \hline
-%     \multicolumn{1}{|l|}{Continuum A}                                                         & \multicolumn{1}{c|}{$\CIPlusMinusPer{\macros[BranchingRatios][Composite][ContinuumA][Percent]}$} & \multicolumn{1}{c|}{$\CIPlusMinus{\macros[NumEvents][Composite][ContinuumA]}$}   \\ \hline
-%     \multicolumn{1}{|l|}{Continuum B}                                                         & \multicolumn{1}{c|}{$\CIPlusMinusPer{\macros[BranchingRatios][Composite][ContinuumB][Percent]}$} & \multicolumn{1}{c|}{$\CIPlusMinus{\macros[NumEvents][Composite][ContinuumB]}$}   \\ \hline
-%     \end{tabular}
-%     \caption{Astrophysical branching ratios and the number of events constraining each model's subpopulations/components.}
-%     \label{tab:branch}
-% \end{table}
 
 \begin{figure*}[ht!]
     \begin{centering}

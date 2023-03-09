@@ -46,36 +46,44 @@ def get_max_values(xs, pdfs):
 
 def save_subpop_cred_intervals(xs, pdfs, max = True):
     c99 = get_percentile(pdfs, xs, 99)
+    c90 = get_percentile(pdfs, xs, 90)
+    c95 = get_percentile(pdfs, xs, 95)
+    c10 = get_percentile(pdfs, xs, 10)
+    c5 = get_percentile(pdfs, xs, 5)
     c1 = get_percentile(pdfs, xs, 1)
     peaks = get_max_values(xs, pdfs) 
     if max:
         return {'1percentile': save_param_cred_intervals(c1),
+                '10percentile': save_param_cred_intervals(c10),
+                '90percentile': save_param_cred_intervals(c90),
                 '99percentile': save_param_cred_intervals(c99),
                 'max': save_param_cred_intervals(peaks)}
     else:
-        return {'1percentile': save_param_cred_intervals(c1), 
+        return {'1percentile': save_param_cred_intervals(c1),
+                '10percentile': save_param_cred_intervals(c10),
+                '90percentile': save_param_cred_intervals(c90),
                 '99percentile': save_param_cred_intervals(c99)}
 
 def tilt_fracs(cts, ct_pdfs):
     gamma_fracs = []
     frac_neg_cts = []
-    frac_less01 = []
-    frac_less03 = []
+    # frac_less01 = []
+    # frac_less03 = []
     for i in range(len(ct_pdfs)):
         ct_pdfs[i,:] /= np.trapz(ct_pdfs[i,:], cts)
         gam = ct_pdfs[i, cts>=0.9] / ct_pdfs[i, cts<=-0.9]
         gamma_fracs.append(gam)
         neg = cts <= 0
-        less03 = cts <= -0.3
-        less01 = cts <= 0.1
+        # less03 = cts <= -0.3
+        # less01 = cts <= 0.1
         frac_neg_cts.append(np.trapz(ct_pdfs[i,neg], x=cts[neg]))
-        frac_less01.append(np.trapz(ct_pdfs[i,less01], x=cts[less01]))
-        frac_less03.append(np.trapz(ct_pdfs[i,less03], x=cts[less03]))
+        # frac_less01.append(np.trapz(ct_pdfs[i,less01], x=cts[less01]))
+        # frac_less03.append(np.trapz(ct_pdfs[i,less03], x=cts[less03]))
     gamma_fracs = np.array(gamma_fracs)
     frac_neg_cts = np.array(frac_neg_cts)
-    frac_less01 = np.array(frac_less01)
-    frac_less03 = np.array(frac_less03)
-    return np.log10(gamma_fracs), frac_neg_cts, frac_less01, frac_less03
+    # frac_less01 = np.array(frac_less01)
+    # frac_less03 = np.array(frac_less03)
+    return np.log10(gamma_fracs), frac_neg_cts #, frac_less01, frac_less03
 
 def get_branching_ratios(categories, Ps):
     median = np.median(Ps, axis = 0)
@@ -136,14 +144,14 @@ def DistMacros(xs, ppds, categories, param_name, tilt = False):
         return categories_dict
     else:
         for i in range(len(ppds)):
-            l10gf, fn, f01, f03 = tilt_fracs(xs, ppds[i])
+            l10gf, fn = tilt_fracs(xs, ppds[i])
             x = save_subpop_cred_intervals(xs, ppds[i])
             x['log10gammafrac'] = save_param_cred_intervals(l10gf)
             x['negfrac'] = save_param_cred_intervals(fn)
-            x['less01frac'] = save_param_cred_intervals(f01)
-            x['less03frac'] = save_param_cred_intervals(f03)
-            x['fdyn'] = save_param_cred_intervals(2*fn)
-            x['fhm'] = save_param_cred_intervals(6.25*f03)
+            # x['less01frac'] = save_param_cred_intervals(f01)
+            # x['less03frac'] = save_param_cred_intervals(f03)
+            # x['fdyn'] = save_param_cred_intervals(2*fn)
+            # x['fhm'] = save_param_cred_intervals(6.25*f03)
             categories_dict[categories[i]] = x
         return categories_dict
 
@@ -203,7 +211,7 @@ def main():
     g1_idata = load_trace(g1 = True, g1_fname = 'bspline_1logpeak_100000s.h5')
     g2_idata = load_trace(g2 = True, g2_fname = 'b1logpeak_marginalized_50000s_2chains.h5')
     chieff = dd.io.load(paths.data / 'chi_eff_chi_p_ppds.h5')
-    g1_categories = ['PeakA', 'ContinuumB']
+    g1_categories = ['PeakA', 'ContinuumB'] 
     g2_categories = ['PeakA', 'ContinuumB', 'ContinuumA']
     macro_dict['Mass'] = {'Base': MassMacros(g1_categories, g1_ppds), 'Composite': MassMacros(g2_categories, g2_ppds, g1 = False)}
     macro_dict['SpinMag'] = {'Base': SpinMagMacros(g1_categories, g1_ppds), 'Composite': SpinMagMacros(g2_categories, g2_ppds, g1 = False)}

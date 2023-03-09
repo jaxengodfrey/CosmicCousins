@@ -8,7 +8,7 @@ We employ the typical hierarchical Bayesian inference framework to infer the pro
     \frac{dN}{dV_cdt_\mathrm{src}d\theta} = \frac{dN}{dV_cdt_\mathrm{src}} p(\theta | \Lambda) = \mathcal{R} p(\theta | \Lambda)
 \end{equation}
 
-\noindent with $p(\theta | \Lambda)$ the population model, $\mathcal{R}$ the merger rate, and $\Lambda$ the set of population hyperparameters. Following other population studies \citep{10.1093/mnras/stz896,2007.05579,2010.14533,2111.03634}, we use the hierarchical likelihood that incorporates selection effects and marginalizes over the merger rate as: 
+\noindent with $p(\theta | \Lambda)$ the population model, $\mathcal{R}$ the merger rate, and $\Lambda$ the set of population hyperparameters. Following other population studies \citep{10.1093/mnras/stz896,2007.05579,2021ApJ...913L...7A,2111.03634}, we use the hierarchical likelihood that incorporates selection effects and marginalizes over the merger rate as: 
 
 \begin{equation} \label{eq:likelihood}
     \mathcal{L}(\bm{d} | \Lambda) \propto \frac{1}{\xi(\Lambda)} \prod_{i=1}^{N_\mathrm{det}} \int d\theta \mathcal{L}(d_i | \theta) p(\theta | \Lambda)

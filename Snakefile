@@ -4,6 +4,7 @@ rule create_macros:
         "src/data/bspline_1logpeak_100000s_ppds.h5",
         "src/data/bspline_1logpeak_samespin_100000s_2chains.h5",
         "src/data/b1logpeak_marginalized_50000s_2chains.h5",
+        "src/data/chi_eff_chi_p_ppds.h5"
     output:
         "src/tex/macros.tex", 
         "src/data/macros.json",
