@@ -16,3 +16,6 @@ __pycache__
 
 # scratch folders
 **/scratch
+
+# synctex files
+*.synctex.gz
