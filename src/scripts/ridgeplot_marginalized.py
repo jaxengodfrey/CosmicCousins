@@ -26,7 +26,7 @@ pedata = data['pedata']
 param_map = data['param_map']
 
 
-idata = az.extract_dataset(dat, combined = 'True', num_samples = 3500)
+idata = az.extract(dat, combined = 'True', num_samples = 3500)
 
 event_names = ['GW150914',
  'GW151012',
@@ -98,7 +98,7 @@ event_names = ['GW150914',
  'GW200311_115853',
  'GW200316_215756']
 
-categories = ['1', '2', '3']
+categories = ['Peak A', 'Continuum A', 'Continuum B']
 
 n_categories = len(categories)
 n_events = len(event_names)
@@ -139,6 +139,7 @@ for i in range(len(cm)):
 gs = grid_spec.GridSpec(len(cm),4)
 fig = plt.figure(figsize=(8,10))
 
+
 # qs = np.array(idata.posterior["Qs"][0]).transpose()
 
 # n_events = qs.shape[0]
@@ -149,10 +150,16 @@ fig = plt.figure(figsize=(8,10))
 #     groups[i] = x
 # groups = groups.transpose()
 
+# cax = fig.add_subplot(gs[0,:])
+# ticks = np.linspace(0,1, 3)
+# cbar = fig.colorbar(plt.cm.ScalarMappable(cmap='cool'), ax = cax, location = 'top', ticks=ticks, label = 'Category')
+# cbar.ax.set_xticklabels(categories) 
+
 sorted_groups = groups[np.flip(sorted_probs)]
 sorted_names = np.array(event_names)[np.flip(sorted_probs)]
 
 colors = ['cyan', 'magenta', 'mediumpurple']
+
 
 ax3 = fig.add_subplot(gs[3:,0])
 left = len(cm) * [0]
@@ -161,7 +168,7 @@ for idx in range(n_categories):
     left = left + sorted_groups[:, idx]
 ax3.margins(0,0)
 ax3.set_xticks([0, 0.2, 0.5, 0.8, 1])
-ax3.set_xlabel(r"event_cat", fontsize=12)
+ax3.set_xlabel(r"probability", fontsize=12)
 ax3.set_xticklabels(['0', '0.2', '0.5', '0.8', '1'])
 plt.yticks(fontsize = 6)
 
@@ -262,6 +269,7 @@ for i in range(len(cm)):
 
     # adj_event = event.replace(" ","\n")
     # ax_obj2[-1].text(1.05,0,adj_event,fontsize=6,ha="left")
+
 
 gs.update(hspace=-0.7)
 

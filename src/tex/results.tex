@@ -3,7 +3,7 @@
 \begin{figure*}[ht!]
     \begin{centering}
         \includegraphics[width=\linewidth]{figures/mass_distribution_g1_plot.pdf}
-        \caption{The marginal primary mass distribution}
+        \caption{The astrophysical primary mass distribution inferred by the \base{} (top) and the \comp{} (bottom left). In both panels, the median total distribution inferred by \brucepaper is shown in red and the total inferred by this work is shown in black. The median of the subpopulation component distributions are shown in dashed lines and the shaded regions indicate the $90\%$ credible regions. The bottom right two panels show the values of $p(m_1 = 20)$ (left) and $p(m_1 = 35$ (right) for the posterior draws of \contA{} (purple) and \contB{} (pink).}
         \label{fig:g1_mass_distribution}
     \end{centering}
     \script{mass_distribution_g1_plot.py}
@@ -12,7 +12,7 @@
 \begin{figure*}[ht!]
     \begin{centering}
         \includegraphics[width=\linewidth]{figures/mass_distribution_g2_plot.pdf}
-        \caption{The marginal primary mass distribution}
+        \caption{The astrophysical primary mass distributions inferred by the \comp{}. The top (bottom) panel represents $79\%$ ($21\%$) of the posterior draws of \comp{}, specifically those where $p(m_1 = 20) < 10^{-3}$ ($p(m_1 = 20) > 10^{-3}$) for \contB{}. In both panels, the median total distribution is shown in black. The median of the subpopulation component distributions are shown in dashed lines and the shaded regions indicate the $90\%$ credible regioins.}
         \label{fig:g2_mass_distribution}
     \end{centering}
     \script{mass_distribution_g2_plot.py}
@@ -23,7 +23,7 @@ With these models and framework in hand, we infer the mass and spin distribution
 \begin{figure}[ht!]
     \begin{centering}
         \includegraphics[width=\linewidth]{figures/mass_ratio_distribution_plot.pdf}
-        \caption{The marginal mass ratio distribution}
+        \caption{The astrophysical mass ratio distributions inferred by the \base{} (top) and the \comp{} (bottom). In both panels, the median total distribution inferred by \brucepaper is shown in red and the total inferred by this work is shown in black. The median of the subpopulation component distributions are shown in dashed lines and the shaded regions indicate the $90\%$ credible regions.}
         \label{fig:mass_ratio_distribution}
     \end{centering}
     \script{mass_ratio_distribution_plot.py}
@@ -31,14 +31,12 @@ With these models and framework in hand, we infer the mass and spin distribution
 
 \subsection{BBH Mass and Spin Distributions}
 
-% define subpopulation vs component more: subpopulation = same spins, component = part of composite mass model
-
 Figure \ref{fig:g1_mass_distribution} shows the primary mass distributions of the \base{}, as well as the the total primary mass distribution inferred by \brucepaper{} for comparison. As seen in the figure, the total BBH primary mass distribution of the \base{} is statistically consistent with that inferred by \brucepaper{}. Inspecting the subpopulations, \first{} and \contB{}, we see that \first{} identifies a peak in the primary mass spectrum near $10\msun$ while \contB{} describes the rest of the spectrum above the peak. Interestingly, even though the $35\msun$ peak was the first observed departure from power law-like behaviour in the mass spectrum, it's spin characteristics are perhaps not as distinct as the $10\msun$ peak for \first{} to isolate it from the rest of the population. As we will discuss later, this does not necessarily imply that the $35\msun$ peak does not have spin characteristics distinct from other parts of the mass spectrum. Figure \ref{fig:spin_distributions} shows the inferred spin magnitude and tilt distributions for the two components. We see that the events categorized in \first{} prefer lower spins than those in \contB{} and have a stronger preference for alignment than their higher mass counterparts. Specifically, the tilt distribution of \first{} peaks at $\text{cos}(\theta)_\text{peak,PA}=$ \result{$\CIPlusMinus{\macros[CosTilt][Base][PeakA][max]}$} and has a fraction of negative tilts $\frac{\theta_\text{neg,PA}}{\theta}=$ \result{$\CIPlusMinus{\macros[CosTilt][Base][PeakA][negfrac]}$} while \contB{}'s spin tilt distribution peaks at $\text{cos}(\theta)_\text{peak,CB}=$ \result{$\CIPlusMinus{\macros[CosTilt][Base][ContinuumB][max]}$}, with $\frac{\theta_\text{neg, CB}}{\theta} = $ \result{$\CIPlusMinus{\macros[CosTilt][Base][ContinuumB][negfrac]}$}. Given that isolated binary evolution is theorized to produce a population of BBH's with similar mass and spin characteristics \jaxen{CITE}, we conclude that \first{} is consistent with a subpopulation of BBH's formed through isolated binary evolution. Due to the rather large uncertainties in the measured spin parameters, it's important to note that these spin features only hint at preferences of a given subset of events and should be taken with a grain of salt. To confidently associate these BBH's with the field formation channel, more observations are needed. 
 
 \begin{figure*}[ht!]
     \begin{centering}
         \includegraphics[width=\linewidth]{figures/spin_distributions_plot.pdf}
-        \caption{The marginal primary spin magnitude distribution}
+        \caption{The astrophysical spin magnitude and tilt distributions inferred by the \base{} (top left and bottom left) and the \comp{} (top right and bottom right). In each panel, the median of the subpopulation component distributions are shown in dashed lines and the shaded regions indicate the $90\%$ credible regions.}
         \label{fig:spin_distributions}
     \end{centering}
     \script{spin_distributions_plot.py}
@@ -47,14 +45,14 @@ Figure \ref{fig:g1_mass_distribution} shows the primary mass distributions of th
 \begin{figure}[hb]
     \begin{centering}
         \includegraphics[width=\linewidth]{figures/chi_eff_distribution_plot.pdf}
-        \caption{effective spin distributions}
+        \caption{The astrophysical effective spin distribution inferred by the \comp{}. The median of the subpopulation component distributions are shown in dashed lines and the shaded regions indicate the $90\%$ credible regions.}
         \label{fig:chi_eff_distributions}
     \end{centering}
     \script{chi_eff_plot.py}
 \end{figure}
 
 
-The need for more data is even more apparent when we consider the rest of the BBH population and the results of the \comp{}. The primary mass distributions of the \comp{} are shown in the bottom panel of Figure \ref{fig:g1_mass_distribution}, again plotted alongside the total distribution inferred by \brucepaper{}. From this figure, we see that the events in the $\sim15-50 \msun$ range are described by \contA{}, which is the component that shares spin properties with \first{}. The tail end of the mass spectrum is then picked up by \contB{}. Looking to Figure \ref{fig:spin_distributions}, the top right panel shows that the spin magnitude distribution of \first{} and \contA{} resembles that of \first{} from the \base{}, while the distribution of \contB{} is completely uninformed. In the bottom right panel, the tilt distribution of \first{} and \contA{} in the \comp{} also shares similarities with that of \first{} in the \base{}, and again \contB{} possess an uninformed distribution, though it is possible that \contB{}'s tilt distribution may actually be an informed isotropic distribution.
+The need for more data is even more apparent when we consider the rest of the BBH population and the results of the \comp{}. The primary mass distributions of the \comp{} are shown in the bottom panel of Figure \ref{fig:g1_mass_distribution}, again plotted alongside the total distribution inferred by \brucepaper{}. From this figure, we see that the events in the $\sim15-50 \msun$ range are described by \contA{}, which is the component that shares spin properties with \first{}. The tail end of the mass spectrum is then picked up by \contB{}. Looking to Figure \ref{fig:spin_distributions}, the top right panel shows that the spin magnitude distribution of \first{} and \contA{} resembles that of \first{} from the \base{}, while the distribution of \contB{} is completely uninformed. In the bottom right panel, the tilt distribution of \first{} and \contA{} in the \comp{} also shares similarities with that of \first{} in the \base{}, and again \contB{} possess an uninformed distribution, though it is possible that \contB{}'s tilt distribution may actually be an informed isotropic distribution. Figure \ref{fig:chi_eff_distributions} shows the effective spin distributions of the \comp{}.
 
 % \begin{figure}[ht!]
 %     \begin{centering}
@@ -65,17 +63,17 @@ The need for more data is even more apparent when we consider the rest of the BB
 %     \script{chi_p_plot.py}
 % \end{figure}
 
-Given these observations, it may be tempting to claim that all the mid-mass events categorized in \contA{} have spin properties consistent with \first{} and therefore may be the product of the same formation mechanism as \first{}; however, a closer look at the results shows there is some uncertainty in how the $20 \msun$ peak is categorized. If we plot the value of the primary mass probability density for a subset of posterior draws at a given mass, we would expect the result to be relatively Gaussian; however, when we do this for \contB{} at $m_1 = 20 \msun$, the resulting collection of probability densities is actually bimodal. Making a cut through the posterior draws at the inflection point between the two modes, we recreate Figure \ref{fig:g1_mass_distribution} in Figure \ref{fig:g2_mass_distribution} but for these two different areas of parameter space. The top panel of \ref{fig:g2_mass_distribution} represents \jaxen{some number $\%$} of the posterior draws while the bottom represents \jaxen{some number $\%$}. We see that while most of the time, the events near $20\msun$ are categorized with \contA{} and therefore associated with the $10\msun$ peak and $35\msun$ peak, there is a small probability that they are actually associated with the highest mass events and therefore could be consistent with an isotropic spin distribution. Importantly, \contA{} rarely picks up the high mass tail of the mass spectrum, which marks those events as distinct from the $10\msun$ and $35\msun$ peaks. 
+Given these observations, it may be tempting to claim that all the mid-mass events categorized in \contA{} have spin properties consistent with \first{} and therefore may be the product of the same formation mechanism as \first{}; however, a closer look at the results shows there is some uncertainty in how the $20 \msun$ peak is categorized. If we plot the value of the primary mass probability density for a subset of posterior draws at a given mass, we would expect the result to be relatively Gaussian; however, when we do this for \contB{} at $m_1 = 20 \msun$, the resulting collection of probability densities is actually bimodal. Making a cut through the posterior draws at the inflection point between the two modes, we recreate Figure \ref{fig:g1_mass_distribution} in Figure \ref{fig:g2_mass_distribution} but for these two different areas of parameter space. The top panel of \ref{fig:g2_mass_distribution} represents $\sim80\%$ of the posterior draws while the bottom represents $\sim20\%$. We see that while most of the time, the events near $20\msun$ are categorized with \contA{} and therefore associated with the $10\msun$ peak and $35\msun$ peak, there is a small probability that they are actually associated with the highest mass events and therefore could be consistent with an isotropic spin distribution. Importantly, \contA{} rarely picks up the high mass tail of the mass spectrum, which marks those events as distinct from the $10\msun$ and $35\msun$ peaks. 
 
-The location of \first{} in the mass spectrum as well as the structure of its spin distributions are robust against our choice of model. We implemented a number of different parametric subpopulations alongside \first{} in our preliminary investigations and still found the location of \first{} to be $10\msun$ in primary mass. We chose to relax our assumptions on each subpopulation, ultimately opting for the non-parametric B-Splines for the mass distributions of \contA{} and \contB{} and all the spin distributions.
+The location of \first{} in the mass spectrum is robust against our choice of model. We implemented a number of different parametric subpopulations alongside \first{} in our preliminary investigations and still found the location of \first{} to be $10\msun$ in primary mass. We chose to relax our assumptions on each subpopulation, ultimately opting for non-parametric B-Splines for the mass distributions of \contA{} and \contB{} and all the spin distributions in order to keep any model biases in our results minimal. A recent work, \citet{2303.02973}, conducted a similar studying that inferred the existence of two subpopulations in the GWTC-3 catalog data, one with masses $\lesssim 40\msun$ and low spin magnitude and the other with masses in the range $20-90\msun$, isotropic spins, and a spin magnitude distribution peaking at $a_\text{peak} \sim 0.8$. These results are not consistent with the mass and spin distributions we infer; however, model biases may be responsible for the differences in our results. In our preliminary investigations using parametric spin models, such as truncated Gaussians, we recovered similar spin distributions as their high-spin group (HSG). We noticed that features in our recovered distributions, specifically the peak in the spin magnitude distribution at $\sim 0.8$, were significantly impacted by our choice of prior boundaries on the standard deviation hyper-parameter.
+
+Figure \ref{fig:mass_ratio_distribution} shows the mass ratio distributions of the \base{} and \comp{}. The distributions of each subpopulation are not significantly different from each other, though the sharp fall-off of \first{} near $q=0.4$ in both models is due to the fact that we fix the minimum mass $m_\text{min}=5\msun$ and events in \first{} are $\lesssim10\msun$. The total mass ratio distributions for both models are consistent with the total inferred by \brucepaper.  
 
 \subsection{Astrophysical Branching Ratios and Event Categorization}
 
-Table \ref{tab:branch} lists the astrophysical branching ratios and the number of events constraining each subpopulation/component of the \base{} and \comp{}. The branching ratio and number of events of \first{} are consistent between the \textsc{Base} and \textsc{Composite} models. Figure \ref{fig:ridgeplot} gives a visual representation of event categorization for the \comp{} as well as the physical properties of the subpopulations. Within \contA{}, events GW190412 and GW190517\_055101 are likely outliers of the subpopulation due to their visually different spin distributions. This may indicate that while our models can identify subpopulation-level features in the catalog, categorization of an individual event to a particular subopulation does not guarantee it is truly a member of that subpopulation. GW190412 and GW190517\_055101 were both detections with fairly certain spin properties. GW190412 was the first clearly unequal mass binary detection \jaxen{CITE}, which allowed for a measure of definitively non-zero primary spin magntiude \jaxen{CITE}. GW190517\_055101 was highlighted in the GWTC-2 catalog paper \jaxen{CITE} for having the highest $\chi_\text{eff}$ values, which can be seen in Figure 10 of \jaxen{CITE gwtc-2 catalog paper}. The categorization of these potential outliers may have an impact on the resulting subpopulation distribuitons, so in future work, it will be important to incorporate a method for categorizing outliers that don't fit into any of the given subpopulations. 
+Table \ref{tab:table} lists the astrophysical branching ratios and the number of events constraining each subpopulation/component of the \base{} and \comp{}. The branching ratio and number of events of \first{} are consistent between the \textsc{Base} and \textsc{Composite} models. Figure \ref{fig:ridgeplot} gives a visual representation of event categorization for the \comp{} as well as the physical properties of the subpopulations. Within \contA{}, events GW190412 and GW190517\_055101 are likely outliers of the subpopulation due to their visually different spin distributions. This may indicate that while our models can identify subpopulation-level features in the catalog, categorization of an individual event to a particular subopulation does not guarantee it is truly a member of that subpopulation. GW190412 and GW190517\_055101 were both detections with fairly certain spin properties. GW190412 was the first clearly unequal mass binary detection, which allowed for a measure of definitively non-zero primary spin magntiude \citep{2010.14527}. GW190517\_055101 was highlighted in the GWTC-2 catalog paper \citet{2010.14527} for having the highest $\chi_\text{eff}$ values, which can be seen in Figure 10 of \citet{2010.14527}. The categorization of these potential outliers may have an impact on the resulting subpopulation distribuitons, so in future work, it will be important to incorporate a method for categorizing outliers that don't fit into any of the given subpopulations. 
 
-A look at the highest mass events in \ref{fig:ridgeplot} reveals that most of them are characterized about $50/50$ between \contA{} and \contB{}. The spin distributions of these events are largely uninformed, so it is not surprising they are categorized into each component roughly equally. Events with relatively well measured spins, like GW191109\_010717, are more strongly associated with \contB{}.
-
-their categorization between \contA{} and \contB{}, is often $50/50$, though the three events measured with spi
+A look at the highest mass events in \ref{fig:ridgeplot} reveals that most of them are characterized about $50/50$ between \contA{} and \contB{}. The spin distributions of these events are largely uninformed, so it is not surprising they are categorized into each component roughly equally. Events with relatively well measured aligned or anti-aligned spins, like GW191109\_010717, are more strongly associated with \contB{}, which may indicate that the spin tilt distribution of \contB{} is an informed isotropic distribution. On the other hand, if the tilt distribution is actually unconstrained, an event like GW191109\_010717 with definitively negative $\text{cos}(\theta)$ is more likely to come from a uniform distribution than one with a preference for positive values, like \contA{}'s tilt distribution. 
 
 % \result{$\macros[ChiEff][Composite][ContinuumA][95percentile]$}
 
@@ -97,14 +95,14 @@ their categorization between \contA{} and \contB{}, is often $50/50$, though the
       \multicolumn{1}{c|}{$\CIPlusMinus{\macros[NumEvents][Base][PeakA]}$} &
       \multicolumn{1}{c|}{$\CIPlusMinus{\macros[SpinMag][Base][PeakA][max]}$} &
       \multicolumn{1}{c|}{$\CIPlusMinus{\macros[CosTilt][Base][PeakA][max]}$} &
-      \multicolumn{1}{c|}{$\CIPlusMinus{\macros[CosTilt][Base][PeakA][10percentile]}$} &
+      \multicolumn{1}{c|}{$\CIPlusMinus{\macros[CosTilt][Base][PeakA][negfrac]}$} &
       \multicolumn{1}{c|}{$\CIPlusMinus{\macros[ChiEff][Base][PeakA][max]}$} \\ \hline
     \multicolumn{1}{|l|}{Continuum B} &
       \multicolumn{1}{c|}{$\CIPlusMinusPer{\macros[BranchingRatios][Base][ContinuumB][Percent]}$} &
       \multicolumn{1}{c|}{$\CIPlusMinus{\macros[NumEvents][Base][ContinuumB]}$} &
       \multicolumn{1}{c|}{$\CIPlusMinus{\macros[SpinMag][Base][ContinuumB][max]}$} &
       \multicolumn{1}{c|}{$\CIPlusMinus{\macros[CosTilt][Base][ContinuumB][max]}$} &
-      \multicolumn{1}{c|}{$\CIPlusMinus{\macros[CosTilt][Base][ContinuumB][10percentile]}$} &
+      \multicolumn{1}{c|}{$\CIPlusMinus{\macros[CosTilt][Base][ContinuumB][negfrac]}$} &
       \multicolumn{1}{c|}{$\CIPlusMinus{\macros[ChiEff][Base][ContinuumB][max]}$} \\ \hline
     \multicolumn{7}{l}{} \\ \hline
     \multicolumn{1}{|c|}{\textbf{\begin{tabular}[c]{@{}c@{}}Composite \\ Model\end{tabular}}} &
@@ -119,7 +117,7 @@ their categorization between \contA{} and \contB{}, is often $50/50$, though the
       \multicolumn{1}{c|}{$\CIPlusMinus{\macros[NumEvents][Composite][PeakA]}$} &
       \multicolumn{1}{c|}{\multirow{2}{*}{$\CIPlusMinus{\macros[SpinMag][Composite][PeakAContinuumA][max]}$}} &
       \multicolumn{1}{c|}{\multirow{2}{*}{$\CIPlusMinus{\macros[CosTilt][Composite][PeakAContinuumA][max]}$}} &
-      \multicolumn{1}{c|}{\multirow{2}{*}{$\CIPlusMinus{\macros[CosTilt][Composite][PeakAContinuumA][10percentile]}$}} &
+      \multicolumn{1}{c|}{\multirow{2}{*}{$\CIPlusMinus{\macros[CosTilt][Composite][PeakAContinuumA][negfrac]}$}} &
       \multicolumn{1}{c|}{\multirow{2}{*}{$\CIPlusMinus{\macros[ChiEff][Composite][PeakAContinuumA][max]}$}} \\ \cline{1-3}
     \multicolumn{1}{|l|}{Continuum A} &
       \multicolumn{1}{c|}{$\CIPlusMinusPer{\macros[BranchingRatios][Composite][ContinuumA][Percent]}$} &
@@ -133,16 +131,18 @@ their categorization between \contA{} and \contB{}, is often $50/50$, though the
       \multicolumn{1}{c|}{$\CIPlusMinus{\macros[NumEvents][Composite][ContinuumB]}$} &
       \multicolumn{1}{c|}{$\CIPlusMinus{\macros[SpinMag][Composite][ContinuumB][max]}$} &
       \multicolumn{1}{c|}{$\CIPlusMinus{\macros[CosTilt][Composite][ContinuumB][max]}$} &
-      \multicolumn{1}{c|}{$\CIPlusMinus{\macros[CosTilt][Composite][ContinuumB][10percentile]}$} &
+      \multicolumn{1}{c|}{$\CIPlusMinus{\macros[CosTilt][Composite][ContinuumB][negfrac]}$} &
       \multicolumn{1}{c|}{$\CIPlusMinus{\macros[ChiEff][Composite][ContinuumB][max]}$} \\ \hline
+    \label{tab:table}
     \end{tabular}
+    \caption{The astrophysical branching ratio $\lambda$ of each subpopulation, the number of events that constrain each subpopulation $N_\text{event}$, and a summary of their spin distributions.}
     \end{table*}
 
 
 \begin{figure*}[ht!]
     \begin{centering}
         \includegraphics[width=\linewidth]{figures/ridgeplot_marginalized.pdf}
-        \caption{ridgeplot}
+        \caption{The left most panel shows probability of each event belonging to \first{} (cyan), \contA{} (purple), and \contB{} (magenta). The right three panels show the population reweighed single event primary mass, spin magnitude, and spin tilt posteriors. Gray dashed lines indicate the original unweighed posteriors.}
         \label{fig:ridgeplot}
     \end{centering}
     \script{ridgeplot_marginalized.py}
