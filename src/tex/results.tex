@@ -72,7 +72,6 @@ The location of \first{} in the mass spectrum is robust against our choice of mo
 \subsection{Astrophysical Branching Ratios and Event Categorization}
 
 Table \ref{tab:table} lists the astrophysical branching ratios and the number of events constraining each subpopulation/component of the \base{} and \comp{}. The branching ratio and number of events of \first{} are consistent between the \textsc{Base} and \textsc{Composite} models. Figure \ref{fig:ridgeplot} provides a visual representation of event categorization for the \comp{} as well as the physical properties of the subpopulations. Within \contA{}, events GW190412 and GW190517\_055101 are likely outliers of the subpopulation due to their visually different spin distributions. This may indicate that while our models can identify subpopulation-level features in the catalog, categorization of an individual event to a particular subopulation does not guarantee it is truly a member of that subpopulation. GW190412 and GW190517\_055101 were both detections with fairly certain spin properties. GW190412 was the first clearly unequal mass binary detection, which allowed for a measure of definitively non-zero primary spin magntiude \citep{10.3847/2041-8213/aba8ef, 2010.14527}. GW190517\_055101 was highlighted in the GWTC-2 catalog paper \citet{2010.14527} for having the highest $\chi_\text{eff}$ values, which can be seen in Figure 10 of \citet{2010.14527}. The categorization of these potential outliers may have an impact on the resulting subpopulation distribuitons, so in future work, it will be important to incorporate a method for categorizing outliers that don't fit into any of the given subpopulations. 
-
 A look at the highest mass events in \ref{fig:ridgeplot} reveals that most of them are characterized about $50/50$ between \contA{} and \contB{}. The spin distributions of these events are largely uninformed, so it is not surprising they are categorized into each component roughly equally. Events with relatively well measured aligned or anti-aligned spins, like GW191109\_010717, are more strongly associated with \contB{}, which may indicate that the spin tilt distribution of \contB{} is an informed isotropic distribution. On the other hand, if the tilt distribution is actually unconstrained, an event like GW191109\_010717 with definitively negative $\cos(\theta)$ is more likely to come from a uniform distribution than one with a preference for positive values, like \contA{}'s tilt distribution. 
 
 % \result{$\macros[ChiEff][Composite][ContinuumA][95percentile]$}
@@ -91,14 +90,14 @@ A look at the highest mass events in \ref{fig:ridgeplot} reveals that most of th
       \multicolumn{1}{c|}{$cos(\theta)_{10\%}$} &
       \multicolumn{1}{c|}{$\chi_\text{eff,peak}$} \\ \hline
     \multicolumn{1}{|l|}{Peak A} &
-      \multicolumn{1}{c|}{$\CIPlusMinusPer{\macros[BranchingRatios][Base][PeakA][Percent]}$} &
+      \multicolumn{1}{c|}{$\CIPlusMinus{\macros[BranchingRatios][Base][PeakA][Frac]}$} &
       \multicolumn{1}{c|}{$\CIPlusMinus{\macros[NumEvents][Base][PeakA]}$} &
       \multicolumn{1}{c|}{$\CIPlusMinus{\macros[SpinMag][Base][PeakA][max]}$} &
       \multicolumn{1}{c|}{$\CIPlusMinus{\macros[CosTilt][Base][PeakA][max]}$} &
       \multicolumn{1}{c|}{$\CIPlusMinus{\macros[CosTilt][Base][PeakA][negfrac]}$} &
       \multicolumn{1}{c|}{$\CIPlusMinus{\macros[ChiEff][Base][PeakA][max]}$} \\ \hline
     \multicolumn{1}{|l|}{Continuum B} &
-      \multicolumn{1}{c|}{$\CIPlusMinusPer{\macros[BranchingRatios][Base][ContinuumB][Percent]}$} &
+      \multicolumn{1}{c|}{$\CIPlusMinus{\macros[BranchingRatios][Base][ContinuumB][Frac]}$} &
       \multicolumn{1}{c|}{$\CIPlusMinus{\macros[NumEvents][Base][ContinuumB]}$} &
       \multicolumn{1}{c|}{$\CIPlusMinus{\macros[SpinMag][Base][ContinuumB][max]}$} &
       \multicolumn{1}{c|}{$\CIPlusMinus{\macros[CosTilt][Base][ContinuumB][max]}$} &
@@ -113,21 +112,21 @@ A look at the highest mass events in \ref{fig:ridgeplot} reveals that most of th
       \multicolumn{1}{c|}{$cos(\theta)_{10\%}$} &
       \multicolumn{1}{c|}{$\chi_\text{eff,peak}$} \\ \hline
     \multicolumn{1}{|l|}{Peak A} &
-      \multicolumn{1}{c|}{$\CIPlusMinusPer{\macros[BranchingRatios][Composite][PeakA][Percent]}$} &
+      \multicolumn{1}{c|}{$\CIPlusMinus{\macros[BranchingRatios][Composite][PeakA][Frac]}$} &
       \multicolumn{1}{c|}{$\CIPlusMinus{\macros[NumEvents][Composite][PeakA]}$} &
       \multicolumn{1}{c|}{\multirow{2}{*}{$\CIPlusMinus{\macros[SpinMag][Composite][PeakAContinuumA][max]}$}} &
       \multicolumn{1}{c|}{\multirow{2}{*}{$\CIPlusMinus{\macros[CosTilt][Composite][PeakAContinuumA][max]}$}} &
       \multicolumn{1}{c|}{\multirow{2}{*}{$\CIPlusMinus{\macros[CosTilt][Composite][PeakAContinuumA][negfrac]}$}} &
       \multicolumn{1}{c|}{\multirow{2}{*}{$\CIPlusMinus{\macros[ChiEff][Composite][PeakAContinuumA][max]}$}} \\ \cline{1-3}
     \multicolumn{1}{|l|}{Continuum A} &
-      \multicolumn{1}{c|}{$\CIPlusMinusPer{\macros[BranchingRatios][Composite][ContinuumA][Percent]}$} &
+      \multicolumn{1}{c|}{$\CIPlusMinus{\macros[BranchingRatios][Composite][ContinuumA][Frac]}$} &
       \multicolumn{1}{c|}{$\CIPlusMinus{\macros[NumEvents][Composite][ContinuumA]}$} &
       \multicolumn{1}{c|}{} &
       \multicolumn{1}{c|}{} &
       \multicolumn{1}{c|}{} &
       \multicolumn{1}{c|}{} \\ \hline
     \multicolumn{1}{|l|}{Continuum B} &
-      \multicolumn{1}{c|}{$\CIPlusMinusPer{\macros[BranchingRatios][Composite][ContinuumB][Percent]}$} &
+      \multicolumn{1}{c|}{$\CIPlusMinus{\macros[BranchingRatios][Composite][ContinuumB][Frac]}$} &
       \multicolumn{1}{c|}{$\CIPlusMinus{\macros[NumEvents][Composite][ContinuumB]}$} &
       \multicolumn{1}{c|}{$\CIPlusMinus{\macros[SpinMag][Composite][ContinuumB][max]}$} &
       \multicolumn{1}{c|}{$\CIPlusMinus{\macros[CosTilt][Composite][ContinuumB][max]}$} &
