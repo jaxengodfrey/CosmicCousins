@@ -6,6 +6,14 @@ import matplotlib.pyplot as plt
 from scipy.stats import gaussian_kde as kde
 import jax.numpy as jnp
 from jax.scipy.special import erf
+from TexSoup import TexSoup
+
+def load_macro(name):
+    soup = TexSoup(open(paths.tex / 'ms.tex'))
+    for cmd in soup.find_all('newcommand'):
+        if cmd.find(name):
+            return cmd.all[-1]
+    raise KeyError
 
 def load_03b_posteriors():
     data = dd.io.load( paths.data / 'posterior_samples_and_injections_spin_magnitude.h5')
@@ -18,8 +26,8 @@ def load_o3b_paper_run_masspdf(filename):
     """
     mass_1 = np.linspace(2, 100, 1000)
     mass_ratio = np.linspace(0.1, 1, 500)
-        
-    # load in the traces. 
+
+    # load in the traces.
     # Each entry in lines is p(m1 | Lambda_i) or p(q | Lambda_i)
     # where Lambda_i is a single draw from the hyperposterior
     # The ppd is a 2D object defined in m1 and q
@@ -55,7 +63,7 @@ def plot_mean_and_90CI(ax, xs, ar, color, label, bounds=True, CI=90, traces=None
         for _ in range(traces):
             idx = np.random.choice(ar.shape[0])
             ax.plot(xs, ar[idx], color=tracecolor, lw=0.025, alpha=0.02)  
-    
+
     return ax
 
 def load_bsplinemass_ppd():

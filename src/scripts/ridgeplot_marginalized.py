@@ -13,6 +13,8 @@ import matplotlib.pyplot as plt
 import matplotlib.gridspec as grid_spec
 from matplotlib.ticker import ScalarFormatter
 
+matplotlib.rcParams['text.usetex'] = True
+
 categories = ['1', '2', '3']
 # categories = ['1', '2']
 dat = az.from_netcdf(paths.data/'b1logpeak_marginalized_50000s_2chains.h5')
@@ -127,7 +129,7 @@ sorted_probs = np.argsort(probs)
 means = np.array([idata[f'mass_1_obs_event_{i}'].mean() for i in range(n_events)])
 sorted_probs = np.argsort(means)
 
-##### infinity in cat frac 
+##### infinity in cat frac
 
 ticks = np.linspace(0,1, n_categories)
 cm = plt.cm.cool(probs)
@@ -206,7 +208,7 @@ for i in range(len(cm)):
     sns.kdeplot(x=x2, ax=ax_obj2[-1], color=hex[num], lw=1, fill=True, multiple = 'stack')
     sns.kdeplot(x=x3, ax=ax_obj3[-1], color=hex[num], lw=1, fill=True, multiple = 'stack')
 
-    
+
     # ax_obj1[-1].set_box_aspect(0.2)
 
 
@@ -229,7 +231,7 @@ for i in range(len(cm)):
         ax_objs[k][-1].set_xlabel('')
         ax_objs[k][-1].set_yticklabels([])
 
-    
+
     #set subplot axes labels
     spines = ["top","right","left"]
     if i == len(hex)-1:
@@ -242,10 +244,10 @@ for i in range(len(cm)):
         ax_obj2[-1].set_xticks([0, 0.2, 0.5, 0.8, 1])
         ax_obj2[-1].set_xticklabels(['0', '0.2', '0.5', '0.8', '1'] , fontsize = 10)
 
-        ax_obj3[-1].set_xlabel(r"$cos(\theta_1)}$", fontsize=12)
+        ax_obj3[-1].set_xlabel(r"$\cos{\theta_1}$", fontsize=12)
         ax_obj3[-1].set_xticks([-1, -0.5, 0, 0.5, 1])
         ax_obj3[-1].set_xticklabels(['-1', '-0.5', '0', '0.5', '1'] , fontsize = 10)
-        
+
 
         for s in spines:
             for ax in ax_objs:
@@ -276,7 +278,7 @@ gs.update(hspace=-0.7)
 # plt.suptitle("Primary Mass and Spin Magnitude Re-Weighed Posteriors")
 fig.subplots_adjust(left = 0.13, right = 0.97, bottom = 0.07, wspace = 0.15, top = 0.995)
 plt.savefig(paths.figures / 'ridgeplot_marginalized.png', bbox_inches = 'tight')
-plt.savefig(paths.figures / 'ridgeplot_marginalized.pdf')
+plt.savefig(paths.figures / 'ridgeplot_marginalized.pdf', bbox_inches = 'tight')
 
 # plt.tight_layout()
 # plt.show()

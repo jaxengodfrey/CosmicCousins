@@ -39,7 +39,7 @@ In both of our model prescriptions, detailed below, the spin magnitude and tilt 
 
 
 
-\subsubsection{Base Model}
+\subsubsection{\base{}}
 In this model prescription, we categorize the BBH population into $M=2$ subpopulations, which we will refer to as \first{} and \contB{}, based on their primary mass distributions (continuum here referring to the non-parametric nature of the B-Spline distributions). The \first{} subpopulation is characterised by a truncated Log-Normal peak in primary mass and B-Spline functions in mass ratio, spin magnitude, and tilt angle. The \contB{} subpopulation is characterized by B-Spline functions in all mass and spin parameters. We infer the mean $\mu_m$ and standard deviation $\sigma_m$ of the LogNormal peak, along with the B-Spline coefficients $\mathbf{c}$ for all other parameters. During inference \first{} is associated with $k_i = 0$ and \contB{} is associated with $k_i = 1$.
 
 \begin{itemize}
@@ -58,10 +58,10 @@ In this model prescription, we categorize the BBH population into $M=2$ subpopul
         \text{log} p_{a,1}(a_j| \Lambda_{a,1}) = B_k(a_j | \mathbf{c}_{a,1}) \\
         \text{log} p_{\theta,1}(cos(\theta_j)| \Lambda_{\theta,1}) = B_k( cos(\theta_j) | \mathbf{c}_{\theta,1})
     \end{eqnarray}
-    
+
 \end{itemize}
 
-\subsubsection{Composite Mass Model}
+\subsubsection{\comp{}}
 
 To investigate whether other parts of the primary mass spectrum may have similar spin characteristics to \first{}, we construct a composite subpopulation model, wherein we include an additional mass component \contA{}, described by a B-Spline in primary mass but force it to have the same spin distributions as \first{}. \contB{} is still included and is described by it's own spin distributions. For this model prescription, we chose to marginalize over the discrete variables $k_i$ during sampling, in order to sample slightly more efficiently. 
 
@@ -81,7 +81,7 @@ To investigate whether other parts of the primary mass spectrum may have similar
         \text{log} p_{a,1}(a_j| \Lambda_{a,1}) = B_k(a_j | \mathbf{c}_{a,0}) \\
         \text{log} p_{\theta,1}(cos(\theta_j)| \Lambda_{\theta,1}) = B_k( cos(\theta_j) | \mathbf{c}_{\theta,0})
     \end{eqnarray}
-    
+
     \item \contB{} (110 parameters), $k_i=2$. Here, all mass and spin properties are fit to B-Splines.
     \begin{eqnarray} \label{eq:contBcomp}
         \text{log} p_{m,2}(m_1| \Lambda_{m,2}) = B_k(m_1 | \mathbf{c}_{m, 2}) \\

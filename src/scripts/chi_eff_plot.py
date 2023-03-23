@@ -2,8 +2,9 @@
 
 import paths
 import numpy as np
+import matplotlib as mpl
 import matplotlib.pyplot as plt
-from utils import plot_mean_and_90CI, load_bsplinemass_ppd, plot_o3b_res, load_subpop_ppds
+from utils import plot_mean_and_90CI, load_bsplinemass_ppd, plot_o3b_res, load_subpop_ppds, load_macro
 from matplotlib.ticker import ScalarFormatter
 import matplotlib.gridspec as gridspec
 import numpy as np
@@ -11,7 +12,12 @@ import seaborn as sns
 from mpl_toolkits.axes_grid1.inset_locator import mark_inset
 import deepdish as dd
 
+mpl.rcParams['text.usetex'] = True
 
+base_label = load_macro('base')
+comp_label = load_macro('comp')
+popA_label = load_macro('popA')
+popB_label = load_macro('popB')
 
 # bspl_ms, bspl_mpdfs, bspl_qs, bspl_qpdfs = load_bsplinemass_ppd()
 subpop_ppds = dd.io.load(paths.data / 'chi_eff_chi_p_ppds.h5')
@@ -46,16 +52,16 @@ fill = 0.2
 # ax[i_0].grid(True, which="major", ls=":")
 
 # ax = plot_mean_and_90CI(ax, subpop_ppds['Composite']['PeakA']['chieffs'], subpop_ppds['Composite']['PeakA']['pchieff'], color ='tab:cyan', label='Peak A', bounds = True, lw = 2, line_style = '--', fill_alpha = fill)
-ax = plot_mean_and_90CI(ax, subpop_ppds['Composite']['ContinuumA']['chieffs'], subpop_ppds['Composite']['ContinuumA']['pchieff'], color ='tab:purple', label='Peak A & Continuum A', bounds = True, lw = 2, line_style = '--', fill_alpha = fill)
-ax = plot_mean_and_90CI(ax, subpop_ppds['Composite']['ContinuumB']['chieffs'], subpop_ppds['Composite']['ContinuumB']['pchieff'], color ='tab:pink', label='Continuum B', bounds = True, lw = 2, line_style = (0, (1, 1)), fill_alpha = fill)
+ax = plot_mean_and_90CI(ax, subpop_ppds['Composite']['ContinuumA']['chieffs'], subpop_ppds['Composite']['ContinuumA']['pchieff'], color ='tab:purple', label=popA_label, bounds = True, lw = 2, line_style = '--', fill_alpha = fill)
+ax = plot_mean_and_90CI(ax, subpop_ppds['Composite']['ContinuumB']['chieffs'], subpop_ppds['Composite']['ContinuumB']['pchieff'], color ='tab:pink', label=popB_label, bounds = True, lw = 2, line_style = (0, (1, 1)), fill_alpha = fill)
 ax.legend(frameon=False, loc = 2, fontsize=legend_text_size);
-ax.set_xlabel(r'$\chi_{eff}$', fontsize=label_text_size)
-ax.set_ylabel(r'$p(\chi_{eff})$', fontsize=label_text_size)
+ax.set_xlabel(r'$\chi_\mathrm{{eff}}$', fontsize=label_text_size)
+ax.set_ylabel(r'$p(\chi_\mathrm{{eff}})$', fontsize=label_text_size)
 ax.grid(True, which="major", ls=":")
 ax.set_xlim(-0.75, 0.75)
 ax.set_ylim(0, 5)
 # ax[i_1].set_yscale('log')
-ax.set_title(r'Composite Model $\chi_{eff}$ Distributions')
+ax.set_title(r'{} $\chi_\mathrm{{eff}}$ Distributions'.format(comp_label))
 ax.get_xaxis().set_major_formatter(ScalarFormatter())
 ax.grid(True, which="major", ls=":")
 
@@ -63,5 +69,5 @@ ax.grid(True, which="major", ls=":")
 
 # plt.title(f'GWTC-3: Spin Tilt Distribution', fontsize=title_text_size);
 fig.tight_layout()
-plt.savefig(paths.figures / 'chi_eff_distribution_plot.pdf', dpi=300);
-plt.savefig(paths.figures / 'chi_eff_distribution_plot.jpeg', dpi=300);
+plt.savefig(paths.figures / 'chi_eff_distribution_plot.pdf', dpi=300, bbox_inches='tight');
+plt.savefig(paths.figures / 'chi_eff_distribution_plot.jpeg', dpi=300, bbox_inches='tight');

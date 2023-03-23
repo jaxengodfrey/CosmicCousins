@@ -2,14 +2,23 @@
 
 import paths
 import numpy as np
+import matplotlib as mpl
 import matplotlib.pyplot as plt
-from utils import plot_mean_and_90CI, load_bsplinemass_ppd, plot_o3b_res, load_subpop_ppds
+from utils import plot_mean_and_90CI, load_bsplinemass_ppd, plot_o3b_res, load_subpop_ppds, load_macro
 from matplotlib.ticker import ScalarFormatter
 import matplotlib.gridspec as gridspec
 import numpy as np
 import seaborn as sns
 from mpl_toolkits.axes_grid1.inset_locator import mark_inset
 
+mpl.rcParams['text.usetex'] = True
+
+base_label = load_macro('base')
+comp_label = load_macro('comp')
+first_label = load_macro('first')
+contA_label = load_macro('contA')
+contB_label = load_macro('contB')
+msun = load_macro('msun')
 
 mmin = 5.0
 mmax = 100
@@ -22,7 +31,7 @@ ax = fig.add_subplot(gs[0])
 ax1 = fig.add_subplot(gs1[0,0])
 axy = fig.add_subplot(gs1[0,1])
 axy0 = fig.add_subplot(gs1[0,2])
-fig.suptitle('Base and Composite Model Mass Distributions', fontsize = 18)
+ax.set_title(r'{} and {} Mass Distributions'.format(base_label, comp_label), fontsize = 18)
 bspl_ms, bspl_mpdfs, bspl_qs, bspl_qpdfs = load_bsplinemass_ppd()
 subpop_ppds = load_subpop_ppds(g1 = True, g1_fname = 'bspline_1logpeak_100000s_ppds.h5')
 tot_subpops = subpop_ppds['peak_1_mass_pdfs'] + subpop_ppds['continuum_mass_pdfs']
@@ -47,12 +56,12 @@ fill = 0.2
 # ax.axvline(20)
 # ax.axvline(35)
 ax = plot_mean_and_90CI(ax, bspl_ms, bspl_mpdfs, color='tab:red', label='Edelman et. al. 2022',bounds=False, mean = False, median = True)
-ax = plot_mean_and_90CI(ax, subpop_ppds['mass_1'], tot_subpops, color ='black', label='Total, Base Model', bounds = False, mean = False, median = True)
-ax = plot_mean_and_90CI(ax, subpop_ppds['mass_1'], subpop_ppds['peak_1_mass_pdfs'], color ='tab:cyan', label='Peak A', bounds = True, alpha = 0.75, line_style = '--', lw = 3, mean = False, median = True, fill_alpha = fill)
-ax = plot_mean_and_90CI(ax, subpop_ppds['mass_1'], subpop_ppds['continuum_mass_pdfs'], color ='tab:pink', label='Continuum B', bounds = True, alpha = 0.75, line_style = (0, (1, 1)), lw = 3, mean = False, median = True, fill_alpha = fill)
+ax = plot_mean_and_90CI(ax, subpop_ppds['mass_1'], tot_subpops, color ='black', label=base_label, bounds = False, mean = False, median = True)
+ax = plot_mean_and_90CI(ax, subpop_ppds['mass_1'], subpop_ppds['peak_1_mass_pdfs'], color ='tab:cyan', label=first_label, bounds = True, alpha = 0.75, line_style = '--', lw = 3, mean = False, median = True, fill_alpha = fill)
+ax = plot_mean_and_90CI(ax, subpop_ppds['mass_1'], subpop_ppds['continuum_mass_pdfs'], color ='tab:pink', label=contB_label, bounds = True, alpha = 0.75, line_style = (0, (1, 1)), lw = 3, mean = False, median = True, fill_alpha = fill)
 ax.legend(frameon=False, fontsize=legendfont, loc = 'upper right');
-ax.set_xlabel(r'$m_1 \,\,[M_\odot]$', fontsize=18)
-ax.set_ylabel(r'$p(m_1) \,\,[M_\odot^{-1}]$', fontsize=18)
+ax.set_xlabel(r'$m_1 \,\,[{}]$'.format(msun), fontsize=18)
+ax.set_ylabel(r'$p(m_1) \,\,[{}^{{-1}}]$'.format(msun), fontsize=18)
 ax.grid(True, which="major", ls=":")
 ax.tick_params(labelsize=14)
 ax.set_yscale('log')
@@ -104,13 +113,13 @@ axy0.tick_params(which = 'both', bottom = False, left = False, labelbottom = Fal
 ax1.axvline(20, color = 'deepskyblue')
 ax1.axvline(35, color = 'royalblue')
 ax1 = plot_mean_and_90CI(ax1, bspl_ms, bspl_mpdfs, color='tab:red', label='Edelman et. al. 2022',bounds=False, mean = False, median = True)
-ax1 = plot_mean_and_90CI(ax1, subpop_ppds['mass_1'], tot_subpops, color ='black', label='Total, Composite Model', bounds = False, mean = False, median = True)
-ax1 = plot_mean_and_90CI(ax1, subpop_ppds['mass_1'], subpop_ppds['peak_1_mass_pdfs'], color ='tab:cyan', label='Peak A', bounds = True, alpha = 0.75, line_style = '--', lw = 3, mean = False, median = True, fill_alpha = fill)
-ax1 = plot_mean_and_90CI(ax1, subpop_ppds['mass_1'], subpop_ppds['continuum_1_mass_pdfs'], color ='tab:purple', label='Continuum A', bounds = True, alpha = 0.75, line_style = '--', lw = 3, mean = False, median = True, fill_alpha = fill)
-ax1 = plot_mean_and_90CI(ax1, subpop_ppds['mass_1'], subpop_ppds['continuum_mass_pdfs'], color ='tab:pink', label='Continuum B', bounds = True, alpha = 0.75, line_style = (0, (1, 1)), lw = 3, mean = False, median = True, fill_alpha = fill)
+ax1 = plot_mean_and_90CI(ax1, subpop_ppds['mass_1'], tot_subpops, color ='black', label=comp_label, bounds = False, mean = False, median = True)
+ax1 = plot_mean_and_90CI(ax1, subpop_ppds['mass_1'], subpop_ppds['peak_1_mass_pdfs'], color ='tab:cyan', label=first_label, bounds = True, alpha = 0.75, line_style = '--', lw = 3, mean = False, median = True, fill_alpha = fill)
+ax1 = plot_mean_and_90CI(ax1, subpop_ppds['mass_1'], subpop_ppds['continuum_1_mass_pdfs'], color ='tab:purple', label=contA_label, bounds = True, alpha = 0.75, line_style = '--', lw = 3, mean = False, median = True, fill_alpha = fill)
+ax1 = plot_mean_and_90CI(ax1, subpop_ppds['mass_1'], subpop_ppds['continuum_mass_pdfs'], color ='tab:pink', label=contB_label, bounds = True, alpha = 0.75, line_style = (0, (1, 1)), lw = 3, mean = False, median = True, fill_alpha = fill)
 ax1.legend(frameon=False, fontsize=legendfont, loc = 'upper right');
-ax1.set_xlabel(r'$m_1 \,\,[M_\odot]$', fontsize=18)
-ax1.set_ylabel(r'$p(m_1) \,\,[M_\odot^{-1}]$', fontsize=18)
+ax1.set_xlabel(r'$m_1 \,\,[{}]$'.format(msun), fontsize=18)
+ax1.set_ylabel(r'$p(m_1) \,\,[{}^{{-1}}]$'.format(msun), fontsize=18)
 ax1.grid(True, which="major", ls=":")
 ax1.tick_params(labelsize=14)
 ax1.set_yscale('log')
@@ -134,6 +143,6 @@ ax1.set_xlim(mmin+0.5, mmax)
 # ax.set_title('Model Group 2: Gaussian Peak + 2 B-Splines')
 # plt.title(f'GWTC-3: BBH Primary Mass Distribution', fontsize=18);
 # fig.tight_layout()
-plt.savefig(paths.figures / 'mass_distribution_g1_plot.pdf', dpi=300);
-plt.savefig(paths.figures / 'mass_distribution_g1_plot.png', dpi=300);
+plt.savefig(paths.figures / 'mass_distribution_g1_plot.pdf', dpi=300, bbox_inches='tight');
+plt.savefig(paths.figures / 'mass_distribution_g1_plot.png', dpi=300, bbox_inches='tight');
 
