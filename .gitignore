@@ -19,3 +19,5 @@ __pycache__
 
 # synctex files
 *.synctex.gz
+
+pnp_comments.md
