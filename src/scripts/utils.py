@@ -63,7 +63,20 @@ def plot_mean_and_90CI(ax, xs, ar, color, label, bounds=True, CI=90, traces=None
         for _ in range(traces):
             idx = np.random.choice(ar.shape[0])
             ax.plot(xs, ar[idx], color=tracecolor, lw=0.025, alpha=0.02)  
+    return ax
 
+def plot_90CI(ax, xs, ar, color, label, bounds=True, CI=90, traces=None, lw = 5, tracecolor='k', alpha = 0.75, line_style = '-'):
+    low = np.percentile(ar, (100-CI)/2., axis=0)
+    high = np.percentile(ar, 100-(100-CI)/2., axis=0)
+        #ax.plot(xs, low, color='k', lw=0.05, alpha=0.05)
+        #ax.plot(xs, high, color='k', lw=0.05, alpha=0.05)
+
+    ax.plot(xs, low, color=color, alpha=alpha, linestyle = line_style, lw = lw)
+    ax.plot(xs, high, color=color, alpha=alpha, linestyle = line_style, lw = lw)
+    if traces is not None:
+        for _ in range(traces):
+            idx = np.random.choice(ar.shape[0])
+            ax.plot(xs, ar[idx], color=tracecolor, lw=0.025, alpha=0.02)  
     return ax
 
 def load_bsplinemass_ppd():

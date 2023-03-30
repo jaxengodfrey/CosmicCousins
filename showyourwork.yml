@@ -38,6 +38,7 @@ dependencies:
   src/scripts/spin_distributions_plot.py: 
     - src/data/bspline_1logpeak_100000s_ppds.h5
     - src/data/bspline_1logpeak_samespin_100000s_2chains.h5
+    - src/data/bspline_1logpeak_ss_prior_marginalized_10000s_ppds.h5
   src/scripts/ridgeplot_marginalized.py:
     - src/data/bspline_1logpeak_samespin_100000s_2chains.h5
     - src/data/b1logpeak_marginalized_50000s_2chains.h5
