@@ -4,6 +4,7 @@
 \usepackage{bm}
 \usepackage{amsmath}
 \usepackage{appendix}
+\usepackage{ifthen}
 \usepackage{array}
 \input{macros.tex}
 \usepackage{multirow}
@@ -13,11 +14,6 @@
 \newcommand{\CIBoundsDash}[1]{{#1[5th percentile]\textendash#1[95th percentile]}}
 
 \newcommand{\msun}{\ensuremath{{\,\rm M}_\odot}}
-\newcommand{\result}[1]{\textcolor{red}{#1}}
-\newcommand{\bruce}[1]{\textcolor{blue}{BE: #1}}
-\newcommand{\jaxen}[1]{\textcolor{purple}{JG: #1}}
-\newcommand{\ben}[1]{\textcolor{green}{BF: #1}}
-\newcommand{\NewChange}[1]{\textcolor{green}{#1}}
 \newcommand{\popA}{\textsc{SpinPop\textsubscript{A}}}
 \newcommand{\popB}{\textsc{SpinPop\textsubscript{B}}}
 \newcommand{\first}{\popA{}\textsc{:Peak}}
@@ -29,6 +25,18 @@
 \newcommand{\second}[1]{\textcolor{red}{DELTE THIS}}
 \newcommand{\base}{\textsc{Isolated Peak Model}}
 \newcommand{\comp}{\textsc{Peak+Continuum Model}}
+
+
+\newcommand{\result}[1]{#1}
+\newcommand{\bruce}[1]{}
+\newcommand{\jaxen}[1]{}
+\newcommand{\ben}[1]{}
+\newcommand{\NewChange}[1]{#1}
+% \newcommand{\result}[1]{\textcolor{red}{#1}}
+% \newcommand{\bruce}[1]{\textcolor{blue}{BE: #1}}
+% \newcommand{\jaxen}[1]{\textcolor{purple}{JG: #1}}
+% \newcommand{\ben}[1]{\textcolor{green}{BF: #1}}
+% \newcommand{\NewChange}[1]{\textcolor{green}{#1}}
 
 \graphicspath{{./}{figures/}}
 
