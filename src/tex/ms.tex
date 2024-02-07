@@ -6,6 +6,7 @@
 \usepackage{appendix}
 \usepackage{ifthen}
 \usepackage{array}
+\usepackage{soul}
 \input{macros.tex}
 \usepackage{multirow}
 \newcommand{\CIPlusMinus}[1]{{#1[median]^{+#1[error plus]}_{-#1[error minus]}}}
@@ -27,16 +28,15 @@
 \newcommand{\comp}{\textsc{Peak+Continuum Model}}
 
 
-\newcommand{\result}[1]{#1}
-\newcommand{\bruce}[1]{}
-\newcommand{\jaxen}[1]{}
-\newcommand{\ben}[1]{}
-\newcommand{\NewChange}[1]{#1}
-% \newcommand{\result}[1]{\textcolor{red}{#1}}
-% \newcommand{\bruce}[1]{\textcolor{blue}{BE: #1}}
-% \newcommand{\jaxen}[1]{\textcolor{purple}{JG: #1}}
-% \newcommand{\ben}[1]{\textcolor{green}{BF: #1}}
-% \newcommand{\NewChange}[1]{\textcolor{green}{#1}}
+\newcommand{\result}[1]{\textcolor{red}{#1}}
+\newcommand{\bruce}[1]{\textcolor{blue}{BE: #1}}
+\newcommand{\jaxen}[1]{\textcolor{purple}{JG: #1}}
+\newcommand{\ben}[1]{\textcolor{orange}{BF: #1}}
+\newcommand{\NewChange}[1]{\textcolor{teal}{#1}}
+\newcommand{\remove}[1]{\textcolor{red}{REMOVE: #1}}
+
+
+
 
 \graphicspath{{./}{figures/}}
 
