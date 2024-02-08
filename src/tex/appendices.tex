@@ -1,0 +1,58 @@
+\appendix
+
+\begin{table*}[b!]
+    \centering
+    \begin{tabular}{|l|l|l|l|}
+    \hline
+    \textbf{Model} & \textbf{Parameter} & \textbf{Description} & \textbf{Prior} \\ \hline \hline
+    \multicolumn{4}{|c|}{\textbf{Primary Mass Model Parameters}} \\ \hline
+
+
+    \first & $\mu_m$ & Mean of Truncated Log Peak & $ \sim \mathrm{N}_{LT}(\ln10,\ln5, \text{a}=5) $ \\ \cline{2-4} 
+    & $\sigma_m$ & Standard Deviation of Truncated Log Peak & $\sim \mathrm{N}_T(0, 0.2, \text{a}=0.01, \text{b}=0.3)$ \\ \hline
+
+    \contA & $\bm{c}$ & Basis coefficients & $\sim \mathrm{Smooth}(\tau_\lambda, \sigma, r, n)$ \\ \cline{2-4} 
+     and & $\tau_\lambda$ & Smoothing Prior Scale & 1 \\ \cline{2-4}
+     \contB & $r$ & order of the difference matrix for the smoothing prior & 1 \\ \cline{2-4} 
+     & $\sigma$ & width of Gaussian priors on coefficients in smoothing prior & 15 \\ \cline{2-4} 
+     & $n$ & number of basis functions in the basis spline & 48 \\ \hline \hline 
+
+     
+
+
+    \multicolumn{4}{|c|}{\textbf{Mass Ratio Model Parameters}} \\ \hline
+    All Mass Ratio & $\bm{c}$ & Basis coefficients & $\sim \mathrm{Smooth}(\tau_\lambda, \sigma, r, n)$ \\ \cline{2-4} 
+    Models & $\tau_\lambda$ & Smoothing Prior Scale & 1 \\ \cline{2-4}
+    & $r$ & order of the difference matrix for the smoothing prior & 1 \\ \cline{2-4} 
+    & $\sigma$ & width of Gaussian priors on coefficients in smoothing prior & 5 \\ \cline{2-4} 
+    & $n$ & number of basis functions in the basis spline & 30 \\ \hline \hline 
+
+
+
+    \multicolumn{4}{|c|}{\textbf{Redshift Evolution Model Parameters}} \\ \hline
+    All Redshift Models & $\lambda$ & slope of redshift evolution power law $(1+z)^\lambda$ &  $\sim \mathcal{N}(0,3)$ \\ \cline{2-4}
+    & $\bm{c}$ & Basis coefficients & $\sim \mathrm{Smooth}(\tau_\lambda, \sigma, r, n)$ \\ \cline{2-4} 
+     & $\tau_\lambda$ & Smoothing Prior Scale & 1 \\ \cline{2-4}
+     & $r$ & order of the difference matrix for the smoothing prior & 2 \\ \cline{2-4} 
+     & $\sigma$ & width of Gaussian priors on coefficients in smoothing prior & 10 \\ \cline{2-4} 
+     & $n$ & number of knots in the basis spline & 20 \\ \hline \hline 
+
+
+
+    \multicolumn{4}{|c|}{\textbf{Spin Distribution Model Parameters}} \\ \hline
+    All Spin Magnitude & $\bm{c}$ &  Basis coefficients & $\sim \mathrm{Smooth}(\tau_\lambda, \sigma, r, n)$  \\ \cline{2-4} 
+    Models & $\tau_\lambda$ & Smoothing Prior Scale & 25\\ \cline{2-4}
+    & $r$ & order of the difference matrix for the smoothing prior & 2 \\ \cline{2-4} 
+    & $\sigma$ & width of Gaussian priors on coefficients in smoothing prior & 5 \\ \cline{2-4} 
+    & $n$ & number of knots in the basis spline & 16 \\ \hline \hline 
+
+
+    All Tilt Models & $\bm{c}$ &  Basis coefficients & $\sim \mathrm{Smooth}(\tau_\lambda, \sigma, r, n)$  \\ \cline{2-4} 
+    & $\tau_\lambda$ & Smoothing Prior Scale & 25 \\ \cline{2-4}
+    & $r$ & order of the difference matrix for the smoothing prior & 2 \\ \cline{2-4} 
+    & $\sigma$ & width of Gaussian priors on coefficients in smoothing prior & 5 \\ \cline{2-4} 
+    & $n$ & number of knots in the basis spline & 16 \\ \hline \hline
+    \end{tabular}
+    \caption{All hyperparameter prior choices for each of the newly introduced basis spline models from this manuscript. See \brucepaper for more detailed description of basis spline or smoothing prior parameters.}
+    \label{tab:model_priors}
+\end{table*} 
