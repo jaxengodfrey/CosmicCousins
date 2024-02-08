@@ -18,7 +18,7 @@
     \script{mass_distribution_g2_plot.py}
 \end{figure*}
 
-With these models and framework in hand, we infer the mass and spin distributions with the most recent LVK catalog of gravitational wave observations, GWTC-3 \citep{2021arXiv211103606T}. We perform the same BBH threshold cuts on the catalog done by the LVK's accompanying population analysis \othreea{}, but additionally choose to remove GW190814, as it is likely an outlier of the total BBH population and is not very well understood \citep{2010.14533,2111.03634, 2109.00418}. For the remaining 69 BBH mergers, we follow what was done in \citet{2021arXiv211103606T}: for events included in GWTC-1 \citep{2019ApJ...882L..24A}, we use the published samples that equally weight samples from analyses with the \textsc{IMRPhenomPv2} \citep{1308.3271} and \textsc{SEOBNRv3} \citep{1307.6232,1311.2544} waveforms; for the events from GWTC-2 \citep{2021ApJ...913L...7A}, we use samples that equally weight all available analyses using higher-order mode waveforms (\textsc{PrecessingIMRPHM}); finally, for new events reported in GWTC-2.1 and GWTC-3 \citep{2021arXiv211103606T,2108.01045}, we use combined samples, equally weighted, from analyses with the \textsc{IMRPhenomXPHM} \citep{2004.06503} and the \textsc{SEOBNRv4PHM} \citep{2004.09442} waveform models.
+With these models and framework in hand, we infer the mass and spin distributions with the most recent LVK catalog of gravitational wave observations, GWTC-3 \citep{2021arXiv211103606T}. We perform the same BBH threshold cuts on the catalog done by the LVK's accompanying population analysis \othreea{}. For the remaining 69 BBH mergers, we follow what was done in \citet{2021arXiv211103606T}: for events included in GWTC-1 \citep{2019ApJ...882L..24A}, we use the published samples that equally weight samples from analyses with the \textsc{IMRPhenomPv2} \citep{1308.3271} and \textsc{SEOBNRv3} \citep{1307.6232,1311.2544} waveforms; for the events from GWTC-2 \citep{2021ApJ...913L...7A}, we use samples that equally weight all available analyses using higher-order mode waveforms (\textsc{PrecessingIMRPHM}); finally, for new events reported in GWTC-2.1 and GWTC-3 \citep{2021arXiv211103606T,2108.01045}, we use combined samples, equally weighted, from analyses with the \textsc{IMRPhenomXPHM} \citep{2004.06503} and the \textsc{SEOBNRv4PHM} \citep{2004.09442} waveform models.
 
 \begin{figure}[ht!]
     \begin{centering}
@@ -63,6 +63,27 @@ The location of \first{} in the mass spectrum is robust against our choice of mo
 \subsection{Astrophysical Branching Ratios and Event Categorization}
 
 Table \ref{tab:table} lists the astrophysical branching ratios and the number of events constraining each subpopulation/component of the \base{} and \comp{}. The branching ratio and number of events of \first{} are consistent between the \base{} and \comp{}. Figure \ref{fig:ridgeplot} provides a visual representation of event categorization for the \comp{} as well as the physical properties of the subpopulations. Within \contA{}, events GW190412 and GW190517\_055101 are likely outliers of the subpopulation due to their visually different spin distributions. This may indicate that while our models can identify subpopulation-level features in the catalog, categorization of an individual event to a particular subpopulation does not guarantee it is truly a member of that subpopulation. GW190412 and GW190517\_055101 were both detections with fairly certain spin properties. GW190412 was the first clearly unequal mass binary detection, which allowed for a measure of definitively non-zero primary spin magnitude \citep{10.3847/2041-8213/aba8ef, 2010.14527}. GW190517\_055101 was highlighted in the GWTC-2 catalog paper \citet{2010.14527} for having the highest $\chi_\text{eff}$ values, which can be seen in Figure 10 of \citet{2010.14527}. The categorization of these potential outliers may have an impact on the resulting subpopulation distributions, so in future work it will be important to incorporate a method for categorizing outliers that don't fit into any of the given subpopulations. A look at the highest mass events in Figure \ref{fig:ridgeplot} reveals that most of them are characterized with about equal posterior odds between \contA{} and \contB{}. The spin distributions of these events are largely uninformed, so it is not surprising they are categorized into each component roughly equally. 
+
+\subsection{Model Comparison}
+
+\begin{table*}[]
+  \centering
+  \begin{tabular}{lc}
+  \hline
+  \multicolumn{1}{|c|}{Model} &
+    \multicolumn{1}{c|}{DIC} \\ \hline\hline
+  \multicolumn{1}{|l|}{\base{}} &
+    \multicolumn{1}{c|}{$\macros[DICs][Base]$}  \\ \hline
+  \multicolumn{1}{|l|}{\comp{}} &
+    \multicolumn{1}{c|}{$\macros[DICs][Composite]$} \\ \hline
+  \multicolumn{1}{|l|}{CYB} &
+    \multicolumn{1}{c|}{$\macros[DICs][CYB]$} \\ \hline
+  \multicolumn{1}{|l|}{\base{} Same Spin} &
+    \multicolumn{1}{c|}{$\macros[DICs][BaseSS]$} \\ \hline
+  \label{tab:table}
+  \end{tabular}
+  \caption{The astrophysical branching ratio $\lambda$ of each subpopulation, the number of events that constrain each subpopulation $N_\text{event}$, and a summary of their spin distributions.}
+  \end{table*}
 
 % \result{$\macros[ChiEff][Composite][ContinuumA][95percentile]$}
 
