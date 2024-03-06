@@ -2,10 +2,9 @@ import json2latex
 import json
 import numpy as np
 from scipy.integrate import cumtrapz
+from scipy.stats import gaussian_kde
 import paths
-from utils import load_subpop_ppds, load_trace
-import arviz as az
-import deepdish as dd
+from gwinfernodata import GWInfernoData
 
 def round_sig(f, sig=2):
     max10exp = np.floor(np.log10(abs(f))) + 1
@@ -94,37 +93,24 @@ def get_branching_ratios(categories, Ps):
         branch_dict[categories[i]] = {'Frac': {'median': round_sig(median[i]), 'error plus': round_sig(higher[i]), 'error minus': round_sig(lower[i])}, 'Percent': {'median': round_sig(median[i]*100), 'error plus': round_sig(higher[i]*100), 'error minus': round_sig(lower[i]*100)}}
     return branch_dict
 
-def get_num_constraining_events(categories, idata, g1 = True):
+def get_num_constraining_events(categories, posteriors):
     num_dict = {}
-    if g1:
-        Qs = idata.posterior['Qs'].values[0]
-        for i in range(len(categories)):
-            sums = np.sum(Qs == i, axis = 1)
-            median = np.median(sums)
-            lower = median - np.percentile(sums, 5)
-            higher = np.percentile(sums, 95) - median
-            num_dict[categories[i]] = {'median': round_sig(median), 'error plus': round_sig(higher), 'error minus': round_sig(lower), 'low': round_sig(median - lower), 'high': round_sig(median + higher)}
-    else:
-        n_categories = len(categories)
-        n_events = 69
-        n_samples = idata['logmp'].shape[0]
-        groups = np.zeros((n_events, n_categories, n_samples))
-        for i in range(n_events):
-            for j in range(n_categories):
-                if i == 44:
-                    if j == 0:
-                        nanidx = np.argwhere(np.isnan(idata[f'cat_frac_subpop_{j+1}_event_{i}'].values))
-                        ps = idata[f'cat_frac_subpop_{j+1}_event_{i}'].values
-                        ps[nanidx] = 0
-                        groups[i][j] = ps
-                    else:
-                        infidx = np.argwhere(np.isinf(idata[f'cat_frac_subpop_{j+1}_event_{i}'].values))
-                        ps = idata[f'cat_frac_subpop_{j+1}_event_{i}'].values
-                        ps[infidx] = 0
-                        groups[i][j] = ps
-
-                else:
-                    groups[i][j] = idata[f'cat_frac_subpop_{j+1}_event_{i}'].values
+    # if g1:
+    #     Qs = idata.posterior['Qs'].values[0]
+    #     for i in range(len(categories)):
+    #         sums = np.sum(Qs == i, axis = 1)
+    #         median = np.median(sums)
+    #         lower = median - np.percentile(sums, 5)
+    #         higher = np.percentile(sums, 95) - median
+    #         num_dict[categories[i]] = {'median': round_sig(median), 'error plus': round_sig(higher), 'error minus': round_sig(lower), 'low': round_sig(median - lower), 'high': round_sig(median + higher)}
+    # else:
+    n_categories = len(categories)
+    n_events = 69
+    n_samples = posteriors['logmp'].values[0].shape[0]
+    groups = np.zeros((n_events, n_categories, n_samples))
+    for i in range(n_events):
+        for j in range(n_categories):
+            groups[i][j] = posteriors[f'cat_frac_subpop_{j+1}_event_{i}'].values[0]
         
         sums = np.sum(groups, axis = 0)
         for i in range(n_categories):
@@ -135,7 +121,19 @@ def get_num_constraining_events(categories, idata, g1 = True):
 
     return num_dict
 
+
+def BFMacros(g1_posterior, g2_posterior):
+
+    g1_kernel = gaussian_kde(g1_posterior['Ps'].values[0][:,0])
+    g2_kernel = gaussian_kde(np.vstack([g2_posterior['Ps'].values[0][:,0],g2_posterior['Ps'].values[0][:,2]]))
+    BF_CYB_PC = g2_kernel((0,0))
+    BF_CYB_IP = g1_kernel(0)
+    BF_IP_PC = BF_CYB_PC / BF_CYB_IP
+
+    return round_sig(-np.log10(BF_CYB_IP)), round_sig(-np.log10(BF_CYB_PC)), round_sig(-np.log10(BF_IP_PC))
+
 def DistMacros(xs, ppds, categories, param_name, tilt = False):
+    
     print('Saving {0} Distribution Macros'.format(param_name))
     categories_dict = {}
     if tilt == False:
@@ -157,68 +155,77 @@ def DistMacros(xs, ppds, categories, param_name, tilt = False):
 
 def MassMacros(categories, ppds, g1 = True):
     if g1:
-        ms, m_ppds = ppds['mass_1'], [ppds['peak_1_mass_pdfs'], ppds['continuum_mass_pdfs']]
+        ms, m_ppds = ppds['mass_1'].values, [ppds['peak_1_mass_pdfs'].values, ppds['continuum_mass_pdfs'].values]
         return DistMacros(ms, m_ppds, categories, 'Mass')
+
     else:
-        ms, m_ppds = ppds['mass_1'], [ppds['peak_1_mass_pdfs'], ppds['continuum_mass_pdfs'], ppds['continuum_1_mass_pdfs']]
+        ms, m_ppds = ppds['mass_1'].values, [ppds['peak_1_mass_pdfs'].values, ppds['continuum_mass_pdfs'].values, ppds['continuum_1_mass_pdfs'].values]
         return DistMacros(ms, m_ppds, categories, 'Mass')
 
 def SpinMagMacros(categories, ppds, g1 = True):
     if g1:
-        aa, a_ppds = ppds['a1'], [ppds['peak_1_a1_pdfs']['unweighted'], ppds['continuum_a1_pdfs']['unweighted']]
+        aa, a_ppds = ppds['a1'].values, [ppds['peak_1_a1_pdfs'].values, ppds['continuum_a1_pdfs'].values]
         return DistMacros(aa, a_ppds, categories, 'SpinMag')
     else:
-        aa, a_ppds = ppds['a1'], [ppds['peak_1_continuum_a1_pdfs']['unweighted'], ppds['continuum_a1_pdfs']['unweighted']]
+        aa, a_ppds = ppds['a1'].values, [ppds['peak_continuum_a1_pdfs'].values, ppds['continuum_a1_pdfs'].values]
         categories = ['PeakAContinuumA', 'ContinuumB']
         return DistMacros(aa, a_ppds, categories, 'SpinMag')
 
 def TiltMacros(categories, ppds, g1 = True):
     if g1:
-        cts, ct_ppds = ppds['cos_tilt_1'], [ppds['peak_1_ct1_pdfs']['unweighted'], ppds['continuum_ct1_pdfs']['unweighted']]
+        cts, ct_ppds = ppds['cos_tilt_1'].values, [ppds['peak_1_ct1_pdfs'].values, ppds['continuum_ct1_pdfs'].values]
         return DistMacros(cts, ct_ppds, categories, 'tilt', tilt = True)
     else:
-        cts, ct_ppds = ppds['cos_tilt_1'], [ppds['peak_1_continuum_ct1_pdfs']['unweighted'], ppds['continuum_ct1_pdfs']['unweighted']]
+        cts, ct_ppds = ppds['cos_tilt_1'].values, [ppds['peak_continuum_ct1_pdfs'].values, ppds['continuum_ct1_pdfs'].values]
         categories = ['PeakAContinuumA', 'ContinuumB']
         return DistMacros(cts, ct_ppds, categories, 'tilt', tilt = True)
-
-def BranchingRatioMacros(categories, idata, g1 = True):
-    if g1:
-        return get_branching_ratios(categories, idata.posterior['Ps'].values[0])
-    else:
-        idata = az.extract(idata, group = 'posterior', combined = True)
-        return get_branching_ratios(categories, np.transpose(idata['Ps'].values))
-
-def NumEventsMacros(categories, idata, g1 = True):
-    if g1:
-        return get_num_constraining_events(categories, idata, g1)
-    else:
-        idata = az.extract(idata, group = 'posterior', combined = True)
-        return get_num_constraining_events(categories, idata, g1)
-
+    
 def ChiEffMacros(categories, ppds, g1 = True):
     if g1:
-        chis, chi_ppds = ppds['Base']['PeakA']['chieffs'], [ppds['Base']['PeakA']['pchieff'], ppds['Base']['ContinuumB']['pchieff']]
-        return DistMacros(chis, chi_ppds, categories, 'ChiEff', tilt = True)
+        cts, ct_ppds = ppds['chi_eff'].values, [ppds['peak_1_chi_eff_pdfs'].values, ppds['continuum_chi_eff_pdfs'].values]
+        return DistMacros(cts, ct_ppds, categories, 'ChiEff')
     else:
-        chis, chi_ppds = ppds['Composite']['PeakA']['chieffs'], [ppds['Composite']['PeakA']['pchieff'], ppds['Composite']['ContinuumB']['pchieff']]
+        cts, ct_ppds = ppds['chi_eff'].values, [ppds['peak_continuum_chi_eff_pdfs'].values, ppds['continuum_chi_eff_pdfs'].values]
         categories = ['PeakAContinuumA', 'ContinuumB']
-        return DistMacros(chis, chi_ppds, categories, 'ChiEff', tilt = True)
+        return DistMacros(cts, ct_ppds, categories, 'ChiEff')
+
+def BranchingRatioMacros(categories, posteriors):
+    return get_branching_ratios(categories, posteriors['Ps'].values[0])
+
+def NumEventsMacros(categories, posteriors):
+    return get_num_constraining_events(categories, posteriors)
+
+# def DICMacros(posteriors):
+#     log_l = np.asarray(posteriors['log_l'])
+#     dic = -2 * (np.mean(log_l) - np.var(log_l))
+#     return round_sig(dic, sig = 4)
 
 def main():
     macro_dict = {'Mass': {}, 'SpinMag': {}, 'CosTilt': {}}
-    g1_ppds = load_subpop_ppds(g1 = True, g1_fname = 'bspline_1logpeak_100000s_ppds.h5')
-    g2_ppds = load_subpop_ppds(g2 = True, g2_fname = 'bspline_1logpeak_samespin_100000s_2chains.h5')
-    g1_idata = load_trace(g1 = True, g1_fname = 'bspline_1logpeak_100000s.h5')
-    g2_idata = load_trace(g2 = True, g2_fname = 'b1logpeak_marginalized_50000s_2chains.h5')
-    chieff = dd.io.load(paths.data / 'chi_eff_chi_p_ppds.h5')
+    g1_ppds =  GWInfernoData.from_netcdf(paths.data / 'bspline_1logpeak_marginalized_fixtau_m1-s25-z1_msig15_qsig5_ssig5_zsig1_sigp3_NeffNobs_downsample_100k_rng1-2_ppds.h5') 
+    g2_ppds = GWInfernoData.from_netcdf(paths.data / 'bspline_composite_marginalized_fixtau_m1-s25-z1_msig15_qsig5_ssig5_zsig1_sigp3_NeffNobs_downsample_100k_rng6-10_ppds.h5')
+    g1_idata = GWInfernoData.from_netcdf(paths.data / 'bspline_1logpeak_marginalized_fixtau_m1-s25-z1_msig15_qsig5_ssig5_zsig1_sigp3_NeffNobs_full_200ks.h5')
+    g2_idata = GWInfernoData.from_netcdf(paths.data / 'bspline_composite_marginalized_fixtau_m1-s25-z1_msig15_qsig5_ssig5_zsig1_sigp3_NeffNobs_full_500ks_rng6-10.h5')
+
     g1_categories = ['PeakA', 'ContinuumB'] 
     g2_categories = ['PeakA', 'ContinuumB', 'ContinuumA']
-    macro_dict['Mass'] = {'Base': MassMacros(g1_categories, g1_ppds), 'Composite': MassMacros(g2_categories, g2_ppds, g1 = False)}
-    macro_dict['SpinMag'] = {'Base': SpinMagMacros(g1_categories, g1_ppds), 'Composite': SpinMagMacros(g2_categories, g2_ppds, g1 = False)}
-    macro_dict['CosTilt'] = {'Base': TiltMacros(g1_categories, g1_ppds), 'Composite': TiltMacros(g2_categories, g2_ppds, g1 = False)}
-    macro_dict['BranchingRatios'] = {'Base': BranchingRatioMacros(g1_categories, g1_idata), 'Composite': BranchingRatioMacros(g2_categories, g2_idata, g1 = False)}
-    macro_dict['NumEvents'] = {'Base': NumEventsMacros(g1_categories, g1_idata, g1 = True), 'Composite': NumEventsMacros(g2_categories, g2_idata, g1 = False)}
-    macro_dict['ChiEff'] = {'Base': ChiEffMacros(g1_categories, chieff), 'Composite': ChiEffMacros(g2_categories, chieff, g1 = False)}
+    BFs = BFMacros(g1_idata.posterior, g2_idata.posterior)
+    macro_dict['LogBayesFactors'] = {'IP_to_CYB': BFs[0], 'PC_to_CYB': BFs[1], 'PC_to_IP': BFs[2]}
+    macro_dict['Mass'] = {'Base': MassMacros(g1_categories, g1_ppds.pdfs), 'Composite': MassMacros(g2_categories, g2_ppds.pdfs, g1 = False)}
+    macro_dict['SpinMag'] = {'Base': SpinMagMacros(g1_categories, g1_ppds.pdfs), 'Composite': SpinMagMacros(g2_categories, g2_ppds.pdfs, g1 = False)}
+    macro_dict['CosTilt'] = {'Base': TiltMacros(g1_categories, g1_ppds.pdfs), 'Composite': TiltMacros(g2_categories, g2_ppds.pdfs, g1 = False)}
+    macro_dict['BranchingRatios'] = {'Base': BranchingRatioMacros(g1_categories, g1_idata.posterior), 'Composite': BranchingRatioMacros(g2_categories, g2_idata.posterior)}
+    macro_dict['NumEvents'] = {'Base': NumEventsMacros(g1_categories, g1_idata.posterior), 'Composite': NumEventsMacros(g2_categories, g2_idata.posterior)}
+    macro_dict['ChiEff'] = {'Base': ChiEffMacros(g1_categories, g1_ppds.pdfs), 'Composite': ChiEffMacros(g2_categories, g2_ppds.pdfs, g1 = False)}
+    sel = g2_ppds.pdfs.coords['sel']
+    sel_1 = g2_idata.posterior['Ps'].values[0][sel,1] < g2_idata.posterior['Ps'].values[0][sel,2] 
+    num_1 = np.mean(sel_1)*100
+    num_2 = np.mean(~sel_1)*100
+    macro_dict['FracCut'] = {'BgreaterA': round_sig(num_1, sig=2), 'BlessA': round_sig(num_2, sig=2)}
+    # cyb = dd.io.load(paths.data / 'updated/cover_your_basis_30000w_20000s_posterior_samples.h5')
+    # peak_ss = dd.io.load(paths.data / 'updated/bspline_1logpeak_samespin_posterior_samples.h5')
+    # macro_dict['DICs'] = {'Base': DICMacros(g1_idata), 'Composite': DICMacros(g2_idata), 'CYB': DICMacros(cyb), 'BaseSS': DICMacros(peak_ss)}
+
 
     print("Saving macros to src/data/macros.json...")
     with open(paths.data / "macros.json", 'w') as f:

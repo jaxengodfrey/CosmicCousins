@@ -12,23 +12,32 @@ import matplotlib
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as grid_spec
 from matplotlib.ticker import ScalarFormatter
-
+from gwinfernodata import GWInfernoData
+import matplotlib
 matplotlib.rcParams['text.usetex'] = True
+
+
+# matplotlib.rcParams['text.usetex'] = True
 
 categories = ['1', '2', '3']
 # categories = ['1', '2']
-dat = az.from_netcdf(paths.data/'b1logpeak_marginalized_50000s_2chains.h5')
-ppds = dd.io.load(paths.data/'bspline_1logpeak_samespin_100000s_2chains.h5')
-posteriors = dd.io.load(paths.data/'composite_model_resampled_single_event_posterior.h5')
-sel = np.ones_like(ppds['continuum_mass_pdfs'][:,127] < 1e-3)#ppds['continuum_mass_pdfs'][:,127] < 1e-3
+idata = GWInfernoData.from_netcdf(paths.data/'bspline_composite_marginalized_fixtau_m1-s25-z1_msig15_qsig5_ssig5_zsig1_sigp3_NeffNobs_full_500ks_rng6-10.h5') #az.from_netcdf(paths.data/'b1logpeak_marginalized_50000s_2chains.h5')
+idata = idata.posterior.isel(draw=np.random.choice(500000,1000, replace=False))
+# ppds = GWInfernoData.from_netcdf(paths.data/'updated/2bspline_1logpeak_30000w_20000s_ppds.h5').pdfs
+# # posteriors = dd.io.load(paths.data/'composite_model_resampled_single_event_posterior.h5')
+# sel = np.ones_like(ppds['continuum_mass_pdfs'][:,127].values < 1e-3)#ppds['continuum_mass_pdfs'][:,127] < 1e-3
 
 data = load_03b_posteriors()
 
-pedata = data['pedata']
-param_map = data['param_map']
+# thin = np.random.choice([0,1], len(idata['log_l']), p = [0.8, 0.2]) == 1
+
+pedict = data.pedata.data.to_dict()
+pedata = pedict['data']
+param_map = pedict['attrs']
 
 
-idata = az.extract(dat, combined = 'True', num_samples = 3500)
+
+# idata = az.extract(dat, combined = 'True', num_samples = 3500)
 
 event_names = ['GW150914',
  'GW151012',
@@ -102,21 +111,15 @@ event_names = ['GW150914',
 
 categories = ['Peak A', 'Continuum A', 'Continuum B']
 
+# sel = idata['Ps'].values[0][:,1] > idata['Ps'].values[0][:,2]
+
 n_categories = len(categories)
 n_events = len(event_names)
 groups = np.zeros((n_events, n_categories))
 probs = np.zeros(n_events)
 for i in range(n_events):
     for j in range(n_categories):
-        if i == 44:
-            if j == 0:
-                nanidx = np.argwhere(np.isnan(idata[f'cat_frac_subpop_{j+1}_event_{i}'].values))
-                groups[i][j] = np.delete(idata[f'cat_frac_subpop_{j+1}_event_{i}'].values, nanidx).mean()
-            else:
-                infidx = np.argwhere(np.isinf(idata[f'cat_frac_subpop_{j+1}_event_{i}'].values))
-                groups[i][j] = np.delete(idata[f'cat_frac_subpop_{j+1}_event_{i}'].values, infidx).mean()
-        else:
-            groups[i][j] = idata[f'cat_frac_subpop_{j+1}_event_{i}'].values.mean()
+        groups[i][j] = idata[f'cat_frac_subpop_{j+1}_event_{i}'].values[0].mean()
         if j == 0:
             probs[i] += groups[i][j] * j
         if j == 1:
@@ -126,7 +129,7 @@ for i in range(n_events):
     probs[i] = probs[i] / (n_categories - 1)
 
 sorted_probs = np.argsort(probs)
-means = np.array([idata[f'mass_1_obs_event_{i}'].mean() for i in range(n_events)])
+means = np.array([idata[f'mass_1_obs_event_{i}'].values[0].mean() for i in range(n_events)])
 sorted_probs = np.argsort(means)
 
 ##### infinity in cat frac
@@ -180,17 +183,21 @@ ax_obj3 = []
 for i in range(len(cm)):
     num = sorted_probs[i]
     event = event_names[num]
-    x1 = posteriors[event]['mass_1']
-    x2 = posteriors[event]['a_1']
-    x3 = posteriors[event]['cos_tilt_1']
+    # x1 = posteriors[event]['mass_1']
+    # x2 = posteriors[event]['a_1']
+    # x3 = posteriors[event]['cos_tilt_1']
+
+    # y1 = pedata[param_map['mass_1']][num]
+    # y2 = pedata[param_map['a_1']][num]
+    # y3 = pedata[param_map['cos_tilt_1']][num]
+
+    x1 = idata[f'mass_1_obs_event_{num}'].values[0]
+    x2 = idata[f'a_1_obs_event_{num}'].values[0]
+    x3 = idata[f'cos_tilt_1_obs_event_{num}'].values[0]
 
     y1 = pedata[param_map['mass_1']][num]
     y2 = pedata[param_map['a_1']][num]
     y3 = pedata[param_map['cos_tilt_1']][num]
-
-    # x1 = idata['mass_1_obs_event_{}'.format(num)][sel]
-    # x2 = idata['a_1_obs_event_{}'.format(num)][sel]
-    # x3 = idata['cos_tilt_1_obs_event_{}'.format(num)][sel]
 
     # creating new axes object
     ax_obj1.append(fig.add_subplot(gs[i:i+1, 1]))
@@ -204,7 +211,7 @@ for i in range(len(cm)):
     sns.kdeplot(x=y2, ax=ax_obj2[-1], color='gray', lw=1, fill=False, multiple = 'stack', ls = ':')
     sns.kdeplot(x=y3, ax=ax_obj3[-1], color='gray', lw=1, fill=False, multiple = 'stack', ls = ':')
 
-    sns.kdeplot(x=x1, ax=ax_obj1[-1], color=hex[num], lw=1, fill=True, multiple = 'stack', log_scale = True)
+    sns.kdeplot(x=x1, ax=ax_obj1[-1], color=hex[num], lw=1, fill=True, multiple = 'stack')
     sns.kdeplot(x=x2, ax=ax_obj2[-1], color=hex[num], lw=1, fill=True, multiple = 'stack')
     sns.kdeplot(x=x3, ax=ax_obj3[-1], color=hex[num], lw=1, fill=True, multiple = 'stack')
 

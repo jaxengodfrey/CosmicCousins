@@ -7,6 +7,7 @@ from scipy.stats import gaussian_kde as kde
 import jax.numpy as jnp
 from jax.scipy.special import erf
 from TexSoup import TexSoup
+from gwinfernodata import GWInfernoData
 
 def load_macro(name):
     soup = TexSoup(open(paths.tex / 'ms.tex'))
@@ -16,7 +17,7 @@ def load_macro(name):
     raise KeyError
 
 def load_03b_posteriors():
-    data = dd.io.load( paths.data / 'posterior_samples_and_injections_spin_magnitude.h5')
+    data = GWInfernoData.from_netcdf( paths.data / 'xarray_posterior_samples_and_injections_spin_magnitude.h5')
     return data
 
 def load_o3b_paper_run_masspdf(filename):

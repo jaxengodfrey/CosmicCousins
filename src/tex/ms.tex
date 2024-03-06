@@ -1,8 +1,10 @@
+\PassOptionsToPackage{prologue,dvipsnames}{xcolor}
 \documentclass[twocolumn]{aastex631}
 
 \usepackage{showyourwork}
 \usepackage{bm}
 \usepackage{amsmath}
+\usepackage{booktabs}
 \usepackage{appendix}
 \usepackage{ifthen}
 \usepackage{array}
@@ -28,12 +30,12 @@
 \newcommand{\comp}{\textsc{Peak+Continuum Model}}
 
 
-\newcommand{\result}[1]{\textcolor{red}{#1}}
+\newcommand{\result}[1]{\textcolor{BurntOrange}{#1}}
 \newcommand{\bruce}[1]{\textcolor{blue}{BE: #1}}
-\newcommand{\jaxen}[1]{\textcolor{purple}{JG: #1}}
+\newcommand{\jaxen}[1]{\textcolor{Cerulean}{JG: #1}}
 \newcommand{\ben}[1]{\textcolor{orange}{BF: #1}}
 \newcommand{\NewChange}[1]{\textcolor{teal}{#1}}
-\newcommand{\remove}[1]{\textcolor{red}{REMOVE: #1}}
+\newcommand{\remove}[1]{\textcolor{WildStrawberry}{REMOVE: #1}}
 
 
 
@@ -62,7 +64,7 @@
 \input{conclusion.tex}
 
 \section{Acknowledgements}\label{sec:acknowledments}
-This material is based upon work supported by the National Science Foundation Graduate Research Fellowship under Grant No. \jaxen{NUMBER}. This research has made use of data, software and/or web tools obtained from the Gravitational Wave Open Science Center 
+This material is based upon work supported by the National Science Foundation Graduate Research Fellowship under Grant No. 2236419. This research has made use of data, software and/or web tools obtained from the Gravitational Wave Open Science Center 
 (\url{https://www.gw-openscience.org/}), a service of LIGO Laboratory, the LIGO Scientific Collaboration and the Virgo Collaboration. 
 The authors are grateful for computational resources provided by the LIGO Laboratory and supported by National Science Foundation Grants PHY-0757058 and PHY-0823459.  
 This work benefited from access to the University of Oregon high performance computer, Talapas. This material is based upon work supported 

@@ -10,8 +10,10 @@ import matplotlib.gridspec as gridspec
 import numpy as np
 import seaborn as sns
 from mpl_toolkits.axes_grid1.inset_locator import mark_inset
+from gwinfernodata import GWInfernoData
+import matplotlib
+matplotlib.rcParams['text.usetex'] = True
 
-mpl.rcParams['text.usetex'] = True
 
 base_label = load_macro('base')
 comp_label = load_macro('comp')
@@ -21,8 +23,8 @@ contB_label = load_macro('contB')
 msun = load_macro('msun')
 
 bspl_ms, bspl_mpdfs, bspl_qs, bspl_qpdfs = load_bsplinemass_ppd()
-subpop_ppds = load_subpop_ppds(g1 = True, g1_fname = 'bspline_1logpeak_100000s_ppds.h5')
-tot_subpops = subpop_ppds['peak_1_mass_ratio_pdfs'] + subpop_ppds['continuum_mass_ratio_pdfs']
+subpop_ppds = GWInfernoData.from_netcdf(paths.data / "bspline_1logpeak_marginalized_fixtau_m1-s25-z1_msig15_qsig5_ssig5_zsig1_sigp3_NeffNobs_downsample_100k_rng1-2_ppds.h5").pdfs
+tot_subpops = subpop_ppds['peak_1_mass_ratio_pdfs'].values + subpop_ppds['continuum_mass_ratio_pdfs'].values
 
 figx, figy = 5, 7
 legend_text_size = 10
@@ -50,8 +52,8 @@ ax[i_0].get_xaxis().set_major_formatter(ScalarFormatter())
 ax[i_0].set_title('{} Mass Ratio Distributions'.format(base_label))
 ax[i_0].grid(True, which="major", ls=":")
 
-subpop_ppds = load_subpop_ppds(g2 = True, g2_fname = 'bspline_1logpeak_samespin_100000s_2chains.h5')
-tot_subpops = subpop_ppds['peak_1_mass_ratio_pdfs'] + subpop_ppds['continuum_mass_ratio_pdfs'] + subpop_ppds['continuum_1_mass_ratio_pdfs']
+subpop_ppds = GWInfernoData.from_netcdf(paths.data / "bspline_composite_marginalized_fixtau_m1-s25-z1_msig15_qsig5_ssig5_zsig1_sigp3_NeffNobs_downsample_100k_rng6-10_ppds.h5").pdfs
+tot_subpops = subpop_ppds['peak_1_mass_ratio_pdfs'].values  + subpop_ppds['continuum_mass_ratio_pdfs'].values + subpop_ppds['continuum_1_mass_ratio_pdfs'].values
 
 ax[i_1] = plot_mean_and_90CI(ax[i_1], bspl_qs, bspl_qpdfs, color ='tab:red', label='Edelman et al 2022', bounds = False, lw = 2)
 ax[i_1] = plot_mean_and_90CI(ax[i_1], subpop_ppds['mass_ratio'], tot_subpops, color ='k', label='Total', bounds = False, lw = 2)

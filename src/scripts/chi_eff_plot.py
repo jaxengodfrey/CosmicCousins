@@ -11,60 +11,48 @@ import numpy as np
 import seaborn as sns
 from mpl_toolkits.axes_grid1.inset_locator import mark_inset
 import deepdish as dd
+from gwinfernodata import GWInfernoData
+import matplotlib
+matplotlib.rcParams['text.usetex'] = True
 
-mpl.rcParams['text.usetex'] = True
 
 base_label = load_macro('base')
 comp_label = load_macro('comp')
 popA_label = load_macro('popA')
 popB_label = load_macro('popB')
 
-# bspl_ms, bspl_mpdfs, bspl_qs, bspl_qpdfs = load_bsplinemass_ppd()
-subpop_ppds = dd.io.load(paths.data / 'chi_eff_chi_p_ppds.h5')
-# tot_subpops = subpop_ppds['peak_1_mass_ratio_pdfs'] + subpop_ppds['continuum_mass_ratio_pdfs']
+subpop_ppds = GWInfernoData.from_netcdf(paths.data / "bspline_composite_marginalized_fixtau_m1-s25-z1_msig15_qsig5_ssig5_zsig1_sigp3_NeffNobs_downsample_100k_rng6-10_ppds.h5").pdfs
 
 figx, figy = 5, 3.5
 legend_text_size = 10
 label_text_size = 14
 title_text_size = 12
 fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(figx,figy))
-# fig.suptitle('Model Group 2 Spin Distributions', fontsize = 20)
 i_0 = 0
 i_1 = 1
 
 fill = 0.2
 
-# # for i in range(samples['Base']['PeakA']['effsamples'].shape[0]):
-# #     ax[i_0].hist(samples['Base']['PeakA']['effsamples'][i], alpha = 0.2, bins = 20)
-# ax[i_0] = plot_mean_and_90CI(ax[i_0], subpop_ppds['Base']['PeakA']['chieffs'], subpop_ppds['Base']['PeakA']['pchieff'], color ='tab:cyan', label='Peak A', line_style = '--', bounds = True, lw = 2, fill_alpha = fill)
-# # ax[i_0] = plot_mean_and_90CI(ax[i_0], subpop_ppds['mass_ratio'], subpop_ppds['peak_1_mass_ratio_pdfs'], color ='tab:cyan', label='Peak A', bounds = True, lw = 2, line_style = '--', fill_alpha = fill)
-# # ax[i_0] = plot_mean_and_90CI(ax[i_0], subpop_ppds['a1'], subpop_ppds['peak_2_a1_pdfs'], color ='tab:purple', label='High-Mass Peak', bounds = True, lw = 3, line_style = '--')
-# ax[i_0] = plot_mean_and_90CI(ax[i_0], subpop_ppds['Base']['ContinuumB']['chieffs'], subpop_ppds['Base']['ContinuumB']['pchieff'], color ='tab:pink', label='Continuum B', bounds = True, lw = 2, line_style = (0, (1, 1)), fill_alpha = fill)
-# ax[i_0].legend(frameon=False, fontsize=legend_text_size);
-# ax[i_0].set_xlabel(r'$\chi_{eff}$', fontsize=label_text_size)
-# ax[i_0].set_ylabel(r'$p(\chi_{eff})$', fontsize=label_text_size)
-# ax[i_0].grid(True, which="major", ls=":")
-# ax[i_0].set_xlim(-0.75, 0.75)
-# ax[i_0].set_ylim(0,5)
-# # ax[i_0].set_yscale('log')
-# ax[i_0].get_xaxis().set_major_formatter(ScalarFormatter())
-# ax[i_0].set_title(r'Base Model $\chi_{eff}$ Distributions')
-# ax[i_0].grid(True, which="major", ls=":")
+q = np.random.uniform(0,1,10000)
+a1 = np.random.uniform(0,1,10000)
+a2 = np.random.uniform(0,1,10000)
+ct1 = np.random.uniform(-1,1,10000)
+ct2 = np.random.uniform(-1,1,10000)
+chi = (a1*ct1 + a2*ct2*q)/(1+q)
 
-# ax = plot_mean_and_90CI(ax, subpop_ppds['Composite']['PeakA']['chieffs'], subpop_ppds['Composite']['PeakA']['pchieff'], color ='tab:cyan', label='Peak A', bounds = True, lw = 2, line_style = '--', fill_alpha = fill)
-ax = plot_mean_and_90CI(ax, subpop_ppds['Composite']['ContinuumA']['chieffs'], subpop_ppds['Composite']['ContinuumA']['pchieff'], color ='tab:purple', label=popA_label, bounds = True, lw = 2, line_style = '--', fill_alpha = fill)
-ax = plot_mean_and_90CI(ax, subpop_ppds['Composite']['ContinuumB']['chieffs'], subpop_ppds['Composite']['ContinuumB']['pchieff'], color ='tab:pink', label=popB_label, bounds = True, lw = 2, line_style = (0, (1, 1)), fill_alpha = fill)
+ax = plot_mean_and_90CI(ax, subpop_ppds['chi_eff'], subpop_ppds['peak_continuum_chi_eff_pdfs'], color ='tab:purple', label=popA_label, bounds = True, lw = 2, line_style = '--', fill_alpha = fill)
+ax = plot_mean_and_90CI(ax, subpop_ppds['chi_eff'], subpop_ppds['continuum_chi_eff_pdfs'], color ='tab:pink', label=popB_label, bounds = True, lw = 2, line_style = (0, (1, 1)), fill_alpha = fill)
+kde1 = sns.kdeplot(x=chi, ax=ax, color='gray', common_norm = True, ls = 'dotted', lw = 1)
 ax.legend(frameon=False, loc = 2, fontsize=legend_text_size);
 ax.set_xlabel(r'$\chi_\mathrm{{eff}}$', fontsize=label_text_size)
 ax.set_ylabel(r'$p(\chi_\mathrm{{eff}})$', fontsize=label_text_size)
 ax.grid(True, which="major", ls=":")
 ax.set_xlim(-0.75, 0.75)
-ax.set_ylim(0, 5)
+ax.set_ylim(0, 5)     
 # ax[i_1].set_yscale('log')
 ax.set_title(r'{} $\chi_\mathrm{{eff}}$ Distributions'.format(comp_label))
 ax.get_xaxis().set_major_formatter(ScalarFormatter())
 ax.grid(True, which="major", ls=":")
-
 
 
 # plt.title(f'GWTC-3: Spin Tilt Distribution', fontsize=title_text_size);
