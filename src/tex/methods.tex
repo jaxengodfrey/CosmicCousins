@@ -2,10 +2,10 @@
 
 \subsection{Statistical Framework} \label{sec:statistical_framework}
 
-We employ the typical hierarchical Bayesian inference framework to infer the properties of the population of merging compact binaries given a catalog of observations. The rate of compact binary mergers is modeled as an inhomogeneous Poisson point process \citep{10.1093/mnras/stz896}, with the merger rate per comoving volume $V_c$ \citep{astro-ph/9905116}, source-frame time $T_\text{src}$ and binary parameters $\theta$ defined as:
+We employ the typical hierarchical Bayesian inference framework to infer the properties of the population of merging compact binaries given a catalog of observations. The rate of compact binary mergers is modeled as an inhomogeneous Poisson point process \citep{10.1093/mnras/stz896}, with the merger rate per comoving volume $V_c$ \citep{astro-ph/9905116}, source-frame time $t_\text{src}$ and binary parameters $\theta$ defined as:
 
 \begin{equation} \label{eq:rate}
-    \frac{dN}{dV_cdt_\mathrm{src}d\theta} = \frac{dN}{dV_cdt_\mathrm{src}} p(\theta | \Lambda) = \mathcal{R} p(\theta | \Lambda)
+    \mathcal{R} = \frac{dN}{dV_cdt_\mathrm{src}d\theta} = \frac{dN}{dV_cdt_\mathrm{src}} p(\theta | \Lambda)
 \end{equation}
 
 \noindent with $p(\theta | \Lambda)$ the population model, $\mathcal{R}$ the merger rate, and $\Lambda$ the set of population hyperparameters. Following other population studies \citep{10.1093/mnras/stz896,2021ApJ...913L...7A,2111.03634,2007.05579}, we use the hierarchical likelihood \citep{10.1063/1.1835214} that incorporates selection effects and marginalizes over the merger rate as: 
@@ -36,72 +36,123 @@ We employ the typical hierarchical Bayesian inference framework to infer the pro
 
 \subsection{Astrophysical Mixture Models} \label{sec:astromodels} 
 
-Given the recent evidence for peaks in the BBH primary mass spectrum at $10 M_{\odot}$, $35 M_{\odot}$, and suggestions of a potential feature at $\sim20 M_{\odot}$ \citep{10.3847/2041-8213/aa9bf6, 10.3847/1538-4357/aab34c, 10.3847/2041-8213/ab3800, 2021ApJ...913L...7A, 2111.03634, 2022ApJ...928..155T,2022arXiv221012834E}, we chose mixture models similar to the \textsc{Multi Spin} model in \cite{2021ApJ...913L...7A}, which is characterized by a power-law plus a Gaussian peak in primary mass, wherein the spin distributions of the two components in mass are allowed to differ from each other. In our case, we replace the power law mass components and parametric spin descriptions with fully data-driven (often called "non-parametric") Basis-Spline functions. We choose to describe peaks as Gaussian in log-mass, i.e., as log-normal components in the mass distribution.
+Given the recent evidence for peaks \citep{10.3847/2041-8213/ab3800, 2021ApJ...913L...7A, 2111.03634, 2022ApJ...928..155T,2022ApJ...924..101E, 2022arXiv221012834E,10.48550/arXiv.2302.07289} in the BBH primary mass spectrum at $10 M_{\odot}$, $35 M_{\odot}$, and suggestions of a potential feature at $\sim20 M_{\odot}$, we chose mixture models similar to the \textsc{Multi Spin} model in \cite{2021ApJ...913L...7A}, which is characterized by a power-law plus a Gaussian peak in primary mass, wherein the spin distributions of the two components in mass are allowed to differ from each other. In our case, we replace the power law mass components and parametric spin descriptions with fully data-driven (often called "non-parametric") Basis-Spline functions. 
 
-We make use of the mass and spin Basis-Spline (B-Spline) models from \cite{2022arXiv221012834E}, with a few modifications. We fix the number of knots $n$ in all B-Spline models used, choosing $n_{m_1}=48$, $n_{q}=30$, $n_a=16$, and $n_{cos(\theta)}=16$. When used in a bayesian inference setting, a prior can be used to place a smoothing requirement on the B-Spline function by penalizing large differences between neighboring coefficients. This penalization allows the user to choose a large number of basis functions (i.e. coefficients) to accurrately fit the data without concern for overfitting. Our coefficient and smoothing priors have the same form as in equations B4 and B5 in \brucepaper{}, though we fix the value of the smoothing prior scale $\tau_\lambda$ for each B-Spline model. 
+We make use of the mass and spin Basis-Spline (B-Spline) models from \cite{2022arXiv221012834E}, with a few modifications. We fix the number of knots $n$ in all B-Spline models used, choosing $n_{m_1}=48$, $n_{q}=30$, $n_a=16$, and $n_{cos(\theta)}=16$. When used in a Bayesian inference setting, a prior can be used to place a smoothing requirement on the B-Spline function by penalizing large differences between neighboring coefficients. This penalization allows the user to choose a large number of basis functions (i.e. coefficients) to accurrately fit the data without concern for overfitting. Our coefficient and smoothing priors have the same form as in equations B4 and B5 in \brucepaper{}, though we fix the value of the smoothing prior scale $\tau_\lambda$ for each B-Spline model. we found that $\tau_\lambda$ consistently railed against boundaries set by the minimum required effective sample size in single-event Monte Carlo integrals, wherein the minimum effective sample size was the main driver of smoothness. We therefore opted to fix $\tau_\lambda$ for each population distribution to reasonable values that produced results consistent with other non-parametric results like \citet{2022ApJ...924..101E}, \brucepaper{}, and \citet{10.48550/arXiv.2302.07289}. We plan to address this issue in a future work by exploring different coefficient and smoothing prior specifications, such as locally adaptive smoothing prior. For a full description of the priors used in each model, see Appendix \ref{sec:priors}.
 
-\remove{We found that fitting $\tau_\lambda$ with the prior specified in Table 3 of \brucepaper{}, namely a Uniform distribution, exhibited railing on the lower bound of the distribution. This indicated a potential issue with how the smoothing penalization should be specified for CBC population inference. Our choice in this work was to fix $\tau_\lambda$ to a value that reasonably produces distributions similar to other works like \brucepaper and \citet{10.48550/arXiv.2302.07289}.} \jaxen{REPLACE WITH: We encountered low effective sample sizes when marginalizing over the smoothing prior scales, $\tau_\lambda$, so we opted to fix $\tau_\lambda$ for each population distribution to values high enough to avoid this issue while still producing results consistent with other non-parametric results like \citet{2022ApJ...924..101E}, \brucepaper{}, and \citet{10.48550/arXiv.2302.07289}.}
+In both of our model prescriptions, detailed below, the spin magnitude and tilt distributions of each binary component are assumed to be independently and identically distributed (IID); i.e. both binary components have spins drawn from the same (inferred) distribution. In both cases we'll describe the overall population as a two-component mixture model, with each component (which we refer to as \popA{} and \popB{}) having a unique spin distribution. We do not fit the mininum and maximum BBH primary mass, instead truncating all the mass distributions below $m_\text{min} = 5.0\msun$ and above $m_\text{max} = 100\msun$; however, estimates of minimum and maximum BBH mass are still possible as B-Splines are able to become arbitarily small in locations where the data requires it, effectively placing upper bounds on merger rate densities in regions without detections, consistent with the observed $VT$. Finally, we estimate the redshift distribution with a modulated powerlaw distribution as in \brucepaper, and assume it is the same for each subpopulation:
 
-We plan to address this issue in a future work by exploring different coefficient and smoothing prior specifications, such as locally adaptive smoothing prio. For a full description of the priors used in each model, see Appendix \ref{sec:priors}.
-
-In both of our model prescriptions, detailed below, the spin magnitude and tilt distributions of each binary component are assumed to be independently and identically distributed (IID); i.e. both binary components have spins drawn from the same (inferred) distribution. We do not fit the mininum and maximum BBH primary mass, instead truncating all the mass distributions below $m_\text{min} = 5.0\msun$ and above $m_\text{max} = 100\msun$; however, estimates of minimum and maximum BBH mass are still possible as B-Splines are able to become arbitarily small in locations where the data requires it, effectively placing upper bounds on merger rate densities in regions without detections, consistent with the observed $VT$. Finally, we estimate the redshift distribution as in \brucepaper, with a modulated powerlaw distribution, and assume it is the same for each subpopulation.
+\begin{equation}
+    p(z|\Lambda_z) = \frac{dV}{dz} (1+z)^{\lambda - 1} \exp \mathcal{B}(\text{log}z).
+\end{equation}
 
 To construct our probabilistic mixture model, we sample $p_{\lambda} \sim \mathcal{D}(M)$, from an M-dimensional Dirichlet distribution of equal weights, representing the astrophysical branching ratios $\lambda_{i}$ of each subpopulation. The total population model $p(\theta | \{\Lambda\})$ is then a weighted sum of each subpopulation model $p_i(\theta|\Lambda_i)$ with $\lambda_i$ as the weights:
 
 \begin{equation} \label{totmixmod}
-p_\text{tot}(\theta|\{\Lambda\}) = \sum_{i=0}^{M} \lambda_i p_i(\theta | \Lambda_i)
+p(\theta|\Lambda) = \sum_{i=0}^{M} \lambda_i p_i(\theta | \Lambda_i)
 \end{equation}
 
 Within the \textsc{NumPyro} \citep{1810.09538,1912.11554} probabilistic programming language, we use the \texttt{NUTS} \citep{1111.4246} sampler to perform our parameter estimation. All the models and formalism used in our analysis are available in the \href{https://github.com/FarrOutLab/GWInferno}{GWInferno} python library, along with the code and data to reproduce this study in this GitHub \href{https://github.com/jaxeng/CosmicCousins}{repository}. 
 
+% \subsubsection{\base{}}
+% In this model prescription, we categorize the BBH population into $M=2$ subpopulations, which we will refer to as \first{} and \contB{} based on their primary mass distributions (continuum here referring to the data-driven nature of the B-Spline distributions). The \first{} subpopulation is characterised by a truncated Log-Normal peak in primary mass and B-Spline functions in mass ratio, spin magnitude, and tilt angle. The \contB{} subpopulation is characterized by B-Spline functions in all mass and spin parameters. We infer the mean $\mu_m$ and standard deviation $\sigma_m$ of the LogNormal peak, along with the B-Spline coefficients $\mathbf{c}$ for all other parameters.
+
+% \begin{itemize}
+%     \item \first{} (64 parameters), i = 0. This category assumes a truncated Log-Normal model in primary mass and B-spline ($B_k$) models in mass ratio $q$, spin magnitude $a_j$, and $cos(\theta_j)$. Note that since we assume the spins to be IID, the B-Spline spin parameters, such as $\mathbf{c}_{a,0}$, are the same for each binary component $j=1$ and $j=2$
+%     \begin{eqnarray} \label{eq:peakAbase}
+%         p_{m,0}(m_1| \Lambda_{m,0}) = \text{Lognormal}_\text{T}(m_1 | \mu_{m}, \sigma_{m}) \\
+%         \text{log} p_{q,0}(q| \Lambda_{q,0}) = B_k(q | \mathbf{c}_{q,0}) \\
+%         \text{log} p_{a,0}(a_j| \Lambda_{a,0}) = B_k(a_j | \mathbf{c}_{a,0}) \\
+%         \text{log} p_{\theta,0}(cos(\theta_j)| \Lambda_{\theta,0}) = B_k( cos(\theta_j) | \mathbf{c}_{\theta,0})
+%     \end{eqnarray}
+
+%     \item \contB{} (110 parameters), $i=1$. The mass ratio and spin models have the same form as \first{}, but here primary mass is fit to a B-spline function. 
+%     \begin{eqnarray} \label{eq:contBbase}
+%         \text{log} p_{m,1}(m_1| \Lambda_{m,1}) = B_k(m_1 | \mathbf{c}_{m}) \\
+%         \text{log} p_{q,1}(q| \Lambda_{q,0}) = B_k(q | \mathbf{c}_{q,1}) \\
+%         \text{log} p_{a,1}(a_j| \Lambda_{a,1}) = B_k(a_j | \mathbf{c}_{a,1}) \\
+%         \text{log} p_{\theta,1}(cos(\theta_j)| \Lambda_{\theta,1}) = B_k( cos(\theta_j) | \mathbf{c}_{\theta,1})
+%     \end{eqnarray}
+
+% \end{itemize}
+
+% \subsubsection{\comp{}}
+
+% To investigate whether other parts of the primary mass spectrum may have similar spin characteristics to \first{}, we construct a composite subpopulation model, wherein we include an additional mass component \contA{}, described by a B-Spline in primary mass but force it to have the same spin distributions as \first{}. \contB{} is still included and is described by it's own spin distributions.
+
+% \begin{itemize}
+%     \item \first{} (64 parameters), $i=0$. This category assumes a truncated Log-Normal model in primary mass, and B-spline models in mass ratio $q$, spin magnitude $a_j$, and $cos(\theta_{j})$. 
+%     \begin{eqnarray} \label{eq:peakAcomp}
+%         p_{m,0}(m_1| \Lambda_{m,0}) = \text{Lognormal}_\text{T}(m_1 | \mu_{m}, \sigma_{m}) \\
+%         \text{log} p_{q,0}(q| \Lambda_{q,0}) = B_k(q | \mathbf{c}_{q,0}) \\
+%         \text{log} p_{a,0}(a_j| \Lambda_{a,0}) = B_k(a_j | \mathbf{c}_{a,0}) \\
+%         \text{log} p_{\theta,0}(cos(\theta_j)| \Lambda_{\theta,0}) = B_k( cos(\theta_j) | \mathbf{c}_{\theta,0})
+%     \end{eqnarray}
+
+%     \item \contA{} (78 parameters), $i=1$ for mass, $i = 0$ for spin. The mass ratio and spin models are the same as the previous category, but here primary mass is fit to a B-spline function. \textit{Note: the branching fraction for this model is $\lambda_1$, which is allowed to differ from $\lambda_0$.}
+%     \begin{eqnarray} \label{eq:contAcomp}
+%         \text{log} p_{m,1}(m_1| \Lambda_{m,1}) = B_k(m_1 | \mathbf{c}_{m, 1}) \\
+%         \text{log} p_{q,1}(q| \Lambda_{q,1}) = B_k(q | \mathbf{c}_{q,1}) \\
+%         \text{log} p_{a,1}(a_j| \Lambda_{a,1}) = B_k(a_j | \mathbf{c}_{a,0}) \\
+%         \text{log} p_{\theta,1}(cos(\theta_j)| \Lambda_{\theta,1}) = B_k( cos(\theta_j) | \mathbf{c}_{\theta,0})
+%     \end{eqnarray}
+
+%     \item \contB{} (110 parameters), $i=2$. Here, all mass and spin properties are fit to B-Splines.
+%     \begin{eqnarray} \label{eq:contBcomp}
+%         \text{log} p_{m,2}(m_1| \Lambda_{m,2}) = B_k(m_1 | \mathbf{c}_{m, 2}) \\
+%         \text{log} p_{q,2}(q| \Lambda_{q,2}) = B_k(q | \mathbf{c}_{q,2}) \\
+%         \text{log} p_{a,2}(a_j| \Lambda_{a,2}) = B_k(a_j | \mathbf{c}_{a,2}) \\
+%         \text{log} p_{\theta,2}(cos(\theta_j)| \Lambda_{\theta,2}) = B_k( cos(\theta_j) | \mathbf{c}_{\theta,2})
+%     \end{eqnarray}
+% \end{itemize}
+
+
+
 \subsubsection{\base{}}
-In this model prescription, we categorize the BBH population into $M=2$ subpopulations, which we will refer to as \first{} and \contB{} based on their primary mass distributions (continuum here referring to the data-driven nature of the B-Spline distributions). The \first{} subpopulation is characterised by a truncated Log-Normal peak in primary mass and B-Spline functions in mass ratio, spin magnitude, and tilt angle. The \contB{} subpopulation is characterized by B-Spline functions in all mass and spin parameters. We infer the mean $\mu_m$ and standard deviation $\sigma_m$ of the LogNormal peak, along with the B-Spline coefficients $\mathbf{c}$ for all other parameters.
+In this model prescription, we categorize the BBH population into $M=2$ subpopulations, which we will refer to as \popA{} and \popB{}. \popA is characterised by a truncated Gaussian peak in log-primary mass and B-Spline functions in mass ratio, spin magnitude, and tilt angle. \popB{} is characterized by B-Spline functions in all mass and spin parameters. We infer the mean $\mu_m$ and standard deviation $\sigma_m$ of the peak, along with the B-Spline coefficients $\mathbf{c}$ for all other parameters.
 
 \begin{itemize}
-    \item \first{} (64 parameters), i = 0. This category assumes a truncated Log-Normal model in primary mass and B-spline ($B_k$) models in mass ratio $q$, spin magnitude $a_j$, and $cos(\theta_j)$. Note that since we assume the spins to be IID, the B-Spline spin parameters, such as $\mathbf{c}_{a,0}$, are the same for each binary component $j=1$ and $j=2$
+    \item \popA{}, $i=0$. This category assumes a truncated Gaussian model ($\mathcal{N}_\text{T}$) in log-primary mass and B-spline models ($\mathcal{B}$) in mass ratio $q$, spin magnitude $a_j$, and tilt $cos(t_j)$. Note that since we assume the spins to be IID, the B-Spline spin parameters, such as $\mathbf{c}_{a,0}$, are the same for each binary component $j=1$ and $j=2$
     \begin{eqnarray} \label{eq:peakAbase}
-        p_{m,0}(m_1| \Lambda_{m,0}) = \text{Lognormal}_\text{T}(m_1 | \mu_{m}, \sigma_{m}) \\
-        \text{log} p_{q,0}(q| \Lambda_{q,0}) = B_k(q | \mathbf{c}_{q,0}) \\
-        \text{log} p_{a,0}(a_j| \Lambda_{a,0}) = B_k(a_j | \mathbf{c}_{a,0}) \\
-        \text{log} p_{\theta,0}(cos(\theta_j)| \Lambda_{\theta,0}) = B_k( cos(\theta_j) | \mathbf{c}_{\theta,0})
+        \text{log} p_{m,0}(\text{log} m_1| \Lambda_{m,0}) = \mathcal{N}_\text{T}(\text{log}m_1 | \mu_{m}, \sigma_{m}) \\
+        \text{log} p_{q,0}(q| \Lambda_{q,0}) = \mathcal{B}(q | \mathbf{c}_{q,0}) \\
+        \text{log} p_{a,0}(a_j| \Lambda_{a,0}) = \mathcal{B}(a_j | \mathbf{c}_{a,0}) \\
+        \text{log} p_{t,0}(cos(t_j)| \Lambda_{t,0}) = \mathcal{B}( cos(t_j) | \mathbf{c}_{t,0})
     \end{eqnarray}
 
-    \item \contB{} (110 parameters), $i=1$. The mass ratio and spin models have the same form as \first{}, but here primary mass is fit to a B-spline function. 
+    \item \popB{}, $i=1$. The mass ratio and spin models have the same form as \popA{}, but here primary mass is fit to a B-spline function. 
     \begin{eqnarray} \label{eq:contBbase}
-        \text{log} p_{m,1}(m_1| \Lambda_{m,1}) = B_k(m_1 | \mathbf{c}_{m}) \\
-        \text{log} p_{q,1}(q| \Lambda_{q,0}) = B_k(q | \mathbf{c}_{q,1}) \\
-        \text{log} p_{a,1}(a_j| \Lambda_{a,1}) = B_k(a_j | \mathbf{c}_{a,1}) \\
-        \text{log} p_{\theta,1}(cos(\theta_j)| \Lambda_{\theta,1}) = B_k( cos(\theta_j) | \mathbf{c}_{\theta,1})
+        \text{log} p_{m,1}(m_1| \Lambda_{m,1}) = \mathcal{B}( \text{log} m_1 | \mathbf{c}_{m}) \\
+        \text{log} p_{q,1}(q| \Lambda_{q,0}) = \mathcal{B}(q | \mathbf{c}_{q,1}) \\
+        \text{log} p_{a,1}(a_j| \Lambda_{a,1}) = \mathcal{B}(a_j | \mathbf{c}_{a,1}) \\
+        \text{log} p_{t,1}(cos(t_j)| \Lambda_{t,1}) = \mathcal{B}( cos(t_j) | \mathbf{c}_{t,1})
     \end{eqnarray}
 
 \end{itemize}
 
 \subsubsection{\comp{}}
 
-To investigate whether other parts of the primary mass spectrum may have similar spin characteristics to \first{}, we construct a composite subpopulation model, wherein we include an additional mass component \contA{}, described by a B-Spline in primary mass but force it to have the same spin distributions as \first{}. \contB{} is still included and is described by it's own spin distributions.
+To investigate if other parts of the primary mass spectrum have similar spin characteristics to \popA{} of the \base{}, we construct a composite subpopulation model whose primary mass is itself a mixture model of a Gaussian peak and a B-Spline, which we'll refer to as \first{} and \contA{}, respectively. 
+
+
+% wherein we include an additional mass component \contA{}, described by a B-Spline in primary mass but force it to have the same spin distributions as \first{}. \contB{} is still included and is described by it's own spin distributions.
 
 \begin{itemize}
-    \item \first{} (64 parameters), $i=0$. This category assumes a truncated Log-Normal model in primary mass, and B-spline models in mass ratio $q$, spin magnitude $a_j$, and $cos(\theta_{j})$. 
+    \item \popA{}, $i=0$ for \first{}, $i=1$ for \contA{}. This category assumes a truncated Gaussian model in primary mass for the \first{} mass component and a B-spline in primary mass for the \contA{} mass component. Both mass components are also fit to their own B-spline mass ratio models. Spin magnitude $a_j$, and $cos(t_{j})$ are described by B-splines. \textit{Note: the branching fraction for \contA{} is $\lambda_1$, which is allowed to differ from $\lambda_0$, the branching fraction for \first{}.}
     \begin{eqnarray} \label{eq:peakAcomp}
-        p_{m,0}(m_1| \Lambda_{m,0}) = \text{Lognormal}_\text{T}(m_1 | \mu_{m}, \sigma_{m}) \\
-        \text{log} p_{q,0}(q| \Lambda_{q,0}) = B_k(q | \mathbf{c}_{q,0}) \\
-        \text{log} p_{a,0}(a_j| \Lambda_{a,0}) = B_k(a_j | \mathbf{c}_{a,0}) \\
-        \text{log} p_{\theta,0}(cos(\theta_j)| \Lambda_{\theta,0}) = B_k( cos(\theta_j) | \mathbf{c}_{\theta,0})
+        \text{log} p_{m,0}(\text{log} m_1| \Lambda_{m,0}) = \mathcal{N}_\text{T}(\text{log}m_1 | \mu_{m}, \sigma_{m}) \\
+        \text{log} p_{m,1}(\text{log} m_1| \Lambda_{m,1}) = \mathcal{B}(\text{log} m_1 | \mathbf{c}_{m, 1}) \\
+        \text{log} p_{q,0}(q| \Lambda_{q,0}) = \mathcal{B}(q | \mathbf{c}_{q,0}) \\
+        \text{log} p_{q,1}(q| \Lambda_{q,1}) = \mathcal{B}(q | \mathbf{c}_{q,1}) \\
+        \text{log} p_{a,0}(a_j| \Lambda_{a,0}) = \mathcal{B}(a_j | \mathbf{c}_{a,0}) \\
+        \text{log} p_{t,0}(cos(t_j)| \Lambda_{ta,0}) = \mathcal{B}( cos(t_j) | \mathbf{c}_{t,0})
     \end{eqnarray}
 
-    \item \contA{} (78 parameters), $i=1$ for mass, $i = 0$ for spin. The mass ratio and spin models are the same as the previous category, but here primary mass is fit to a B-spline function. \textit{Note: the branching fraction for this model is $\lambda_1$, which is allowed to differ from $\lambda_0$.}
-    \begin{eqnarray} \label{eq:contAcomp}
-        \text{log} p_{m,1}(m_1| \Lambda_{m,1}) = B_k(m_1 | \mathbf{c}_{m, 1}) \\
-        \text{log} p_{q,1}(q| \Lambda_{q,1}) = B_k(q | \mathbf{c}_{q,1}) \\
-        \text{log} p_{a,1}(a_j| \Lambda_{a,1}) = B_k(a_j | \mathbf{c}_{a,0}) \\
-        \text{log} p_{\theta,1}(cos(\theta_j)| \Lambda_{\theta,1}) = B_k( cos(\theta_j) | \mathbf{c}_{\theta,0})
-    \end{eqnarray}
-
-    \item \contB{} (110 parameters), $i=2$. Here, all mass and spin properties are fit to B-Splines.
+    \item \popB{}, $i=2$. Here, all mass and spin properties are fit to B-Splines.
     \begin{eqnarray} \label{eq:contBcomp}
-        \text{log} p_{m,2}(m_1| \Lambda_{m,2}) = B_k(m_1 | \mathbf{c}_{m, 2}) \\
-        \text{log} p_{q,2}(q| \Lambda_{q,2}) = B_k(q | \mathbf{c}_{q,2}) \\
-        \text{log} p_{a,2}(a_j| \Lambda_{a,2}) = B_k(a_j | \mathbf{c}_{a,2}) \\
-        \text{log} p_{\theta,2}(cos(\theta_j)| \Lambda_{\theta,2}) = B_k( cos(\theta_j) | \mathbf{c}_{\theta,2})
+        \text{log} p_{m,2}(\text{log}m_1| \Lambda_{m,2}) = \mathcal{B}(\text{log}m_1 | \mathbf{c}_{m, 2}) \\
+        \text{log} p_{q,2}(q| \Lambda_{q,2}) = \mathcal{B}(q | \mathbf{c}_{q,2}) \\
+        \text{log} p_{a,2}(a_j| \Lambda_{a,2}) = \mathcal{B}(a_j | \mathbf{c}_{a,2}) \\
+        \text{log} p_{t,2}(cos(t_j)| \Lambda_{t,2}) = \mathcal{B}( cos(t_j) | \mathbf{c}_{t,2})
     \end{eqnarray}
 \end{itemize}

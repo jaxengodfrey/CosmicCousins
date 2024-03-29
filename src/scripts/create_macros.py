@@ -5,6 +5,7 @@ from scipy.integrate import cumtrapz
 from scipy.stats import gaussian_kde
 import paths
 from gwinfernodata import GWInfernoData
+from utils import load_gwinfernodata_ppds, load_gwinfernodata_idata
 
 def round_sig(f, sig=2):
     max10exp = np.floor(np.log10(abs(f))) + 1
@@ -112,12 +113,12 @@ def get_num_constraining_events(categories, posteriors):
         for j in range(n_categories):
             groups[i][j] = posteriors[f'cat_frac_subpop_{j+1}_event_{i}'].values[0]
         
-        sums = np.sum(groups, axis = 0)
-        for i in range(n_categories):
-            median = np.median(sums, axis = 1)[i]
-            lower = median - np.percentile(sums, 5, axis  = 1)[i]
-            higher = np.percentile(sums, 95, axis = 1)[i] - median
-            num_dict[categories[i]] = {'median': round_sig(median), 'error plus': round_sig(higher), 'error minus': round_sig(lower), 'low': round_sig(median - lower), 'high': round_sig(median + higher)}
+    sums = np.sum(groups, axis = 0)
+    for i in range(n_categories):
+        median = np.nanmedian(sums, axis = 1)[i]
+        lower = median - np.nanpercentile(sums, 5, axis  = 1)[i]
+        higher = np.nanpercentile(sums, 95, axis = 1)[i] - median
+        num_dict[categories[i]] = {'median': round_sig(median), 'error plus': round_sig(higher), 'error minus': round_sig(lower), 'low': round_sig(median - lower), 'high': round_sig(median + higher)}
 
     return num_dict
 
@@ -130,7 +131,7 @@ def BFMacros(g1_posterior, g2_posterior):
     BF_CYB_IP = g1_kernel(0)
     BF_IP_PC = BF_CYB_PC / BF_CYB_IP
 
-    return round_sig(-np.log10(BF_CYB_IP)), round_sig(-np.log10(BF_CYB_PC)), round_sig(-np.log10(BF_IP_PC))
+    return round_sig(-np.log10(BF_CYB_IP), sig=3), round_sig(-np.log10(BF_CYB_PC), sig=3), round_sig(-np.log10(BF_IP_PC), sig=3)
 
 def DistMacros(xs, ppds, categories, param_name, tilt = False):
     
@@ -200,12 +201,12 @@ def NumEventsMacros(categories, posteriors):
 #     dic = -2 * (np.mean(log_l) - np.var(log_l))
 #     return round_sig(dic, sig = 4)
 
-def main():
+def main(): 
     macro_dict = {'Mass': {}, 'SpinMag': {}, 'CosTilt': {}}
-    g1_ppds =  GWInfernoData.from_netcdf(paths.data / 'bspline_1logpeak_marginalized_fixtau_m1-s25-z1_msig15_qsig5_ssig5_zsig1_sigp3_NeffNobs_downsample_100k_rng1-2_ppds.h5') 
-    g2_ppds = GWInfernoData.from_netcdf(paths.data / 'bspline_composite_marginalized_fixtau_m1-s25-z1_msig15_qsig5_ssig5_zsig1_sigp3_NeffNobs_downsample_100k_rng6-10_ppds.h5')
-    g1_idata = GWInfernoData.from_netcdf(paths.data / 'bspline_1logpeak_marginalized_fixtau_m1-s25-z1_msig15_qsig5_ssig5_zsig1_sigp3_NeffNobs_full_200ks.h5')
-    g2_idata = GWInfernoData.from_netcdf(paths.data / 'bspline_composite_marginalized_fixtau_m1-s25-z1_msig15_qsig5_ssig5_zsig1_sigp3_NeffNobs_full_500ks_rng6-10.h5')
+    g1_ppds =  load_gwinfernodata_ppds()
+    g2_ppds = load_gwinfernodata_ppds(IP = False)
+    g1_idata = load_gwinfernodata_idata()
+    g2_idata = load_gwinfernodata_idata(IP = False)
 
     g1_categories = ['PeakA', 'ContinuumB'] 
     g2_categories = ['PeakA', 'ContinuumB', 'ContinuumA']
@@ -216,6 +217,7 @@ def main():
     macro_dict['CosTilt'] = {'Base': TiltMacros(g1_categories, g1_ppds.pdfs), 'Composite': TiltMacros(g2_categories, g2_ppds.pdfs, g1 = False)}
     macro_dict['BranchingRatios'] = {'Base': BranchingRatioMacros(g1_categories, g1_idata.posterior), 'Composite': BranchingRatioMacros(g2_categories, g2_idata.posterior)}
     macro_dict['NumEvents'] = {'Base': NumEventsMacros(g1_categories, g1_idata.posterior), 'Composite': NumEventsMacros(g2_categories, g2_idata.posterior)}
+    print('done')
     macro_dict['ChiEff'] = {'Base': ChiEffMacros(g1_categories, g1_ppds.pdfs), 'Composite': ChiEffMacros(g2_categories, g2_ppds.pdfs, g1 = False)}
     sel = g2_ppds.pdfs.coords['sel']
     sel_1 = g2_idata.posterior['Ps'].values[0][sel,1] < g2_idata.posterior['Ps'].values[0][sel,2] 

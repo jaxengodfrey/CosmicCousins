@@ -4,7 +4,7 @@ import paths
 import numpy as np
 import matplotlib as mpl
 import matplotlib.pyplot as plt
-from utils import plot_mean_and_90CI, load_bsplinemass_ppd, plot_o3b_res, load_subpop_ppds, load_macro
+from utils import plot_mean_and_90CI, load_bsplinemass_ppd, plot_o3b_res, load_subpop_ppds, load_macro, load_gwinfernodata_ppds
 from matplotlib.ticker import ScalarFormatter
 import matplotlib.gridspec as gridspec
 import numpy as np
@@ -21,7 +21,7 @@ comp_label = load_macro('comp')
 popA_label = load_macro('popA')
 popB_label = load_macro('popB')
 
-subpop_ppds = GWInfernoData.from_netcdf(paths.data / "bspline_composite_marginalized_fixtau_m1-s25-z1_msig15_qsig5_ssig5_zsig1_sigp3_NeffNobs_downsample_100k_rng6-10_ppds.h5").pdfs
+subpop_ppds = load_gwinfernodata_ppds(IP=False).pdfs
 
 figx, figy = 5, 3.5
 legend_text_size = 10

@@ -6,7 +6,7 @@ import arviz as az
 import seaborn as sns
 import matplotlib.gridspec as gridspec
 from matplotlib.ticker import ScalarFormatter
-from utils import load_trace, load_03b_posteriors
+from utils import load_trace, load_03b_posteriors, load_gwinfernodata_idata
 import deepdish as dd
 import matplotlib
 import matplotlib.pyplot as plt
@@ -21,7 +21,7 @@ matplotlib.rcParams['text.usetex'] = True
 
 categories = ['1', '2', '3']
 # categories = ['1', '2']
-idata = GWInfernoData.from_netcdf(paths.data/'bspline_composite_marginalized_fixtau_m1-s25-z1_msig15_qsig5_ssig5_zsig1_sigp3_NeffNobs_full_500ks_rng6-10.h5') #az.from_netcdf(paths.data/'b1logpeak_marginalized_50000s_2chains.h5')
+idata = load_gwinfernodata_idata(IP = False) #az.from_netcdf(paths.data/'b1logpeak_marginalized_50000s_2chains.h5')
 idata = idata.posterior.isel(draw=np.random.choice(500000,1000, replace=False))
 # ppds = GWInfernoData.from_netcdf(paths.data/'updated/2bspline_1logpeak_30000w_20000s_ppds.h5').pdfs
 # # posteriors = dd.io.load(paths.data/'composite_model_resampled_single_event_posterior.h5')

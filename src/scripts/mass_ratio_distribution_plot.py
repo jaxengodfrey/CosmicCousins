@@ -4,7 +4,7 @@ import paths
 import numpy as np
 import matplotlib as mpl
 import matplotlib.pyplot as plt
-from utils import plot_mean_and_90CI, load_bsplinemass_ppd, plot_o3b_res, load_subpop_ppds, load_macro
+from utils import plot_mean_and_90CI, load_bsplinemass_ppd, plot_o3b_res, load_subpop_ppds, load_macro, load_gwinfernodata_ppds
 from matplotlib.ticker import ScalarFormatter
 import matplotlib.gridspec as gridspec
 import numpy as np
@@ -23,7 +23,7 @@ contB_label = load_macro('contB')
 msun = load_macro('msun')
 
 bspl_ms, bspl_mpdfs, bspl_qs, bspl_qpdfs = load_bsplinemass_ppd()
-subpop_ppds = GWInfernoData.from_netcdf(paths.data / "bspline_1logpeak_marginalized_fixtau_m1-s25-z1_msig15_qsig5_ssig5_zsig1_sigp3_NeffNobs_downsample_100k_rng1-2_ppds.h5").pdfs
+subpop_ppds = load_gwinfernodata_ppds().pdfs
 tot_subpops = subpop_ppds['peak_1_mass_ratio_pdfs'].values + subpop_ppds['continuum_mass_ratio_pdfs'].values
 
 figx, figy = 5, 7
@@ -52,7 +52,7 @@ ax[i_0].get_xaxis().set_major_formatter(ScalarFormatter())
 ax[i_0].set_title('{} Mass Ratio Distributions'.format(base_label))
 ax[i_0].grid(True, which="major", ls=":")
 
-subpop_ppds = GWInfernoData.from_netcdf(paths.data / "bspline_composite_marginalized_fixtau_m1-s25-z1_msig15_qsig5_ssig5_zsig1_sigp3_NeffNobs_downsample_100k_rng6-10_ppds.h5").pdfs
+subpop_ppds = load_gwinfernodata_ppds(IP = False).pdfs
 tot_subpops = subpop_ppds['peak_1_mass_ratio_pdfs'].values  + subpop_ppds['continuum_mass_ratio_pdfs'].values + subpop_ppds['continuum_1_mass_ratio_pdfs'].values
 
 ax[i_1] = plot_mean_and_90CI(ax[i_1], bspl_qs, bspl_qpdfs, color ='tab:red', label='Edelman et al 2022', bounds = False, lw = 2)

@@ -12,11 +12,26 @@ Spin predictions of binaries formed in the stellar field are dependent on the ma
 While we find that the $10\msun$ subpopulation is consistent with the general characteristics associated with field formation, large uncertainties in both spin measurements and predictions from population synthesis models prevent us from placing informative constraints on the formation physics. If the $10\msun$ subpopulation is indeed a product of isolated binary evolution, then our inferred spin distributions hint at this channel producing binaries with low, modestly misaligned spins. This could indicate that AM transport is efficient in massive stars, as modeled by variations of the Taylor-Spruit magnetic dynamo \citep{1706.07053}, and that natal kicks are a common occurrence during field BBH formation.
 
 
-\jaxen{\textbf{Does this need to be changed}?: Our results are consistent with other analyses that find the data does not require a discontinuous non-spinning subpopulation \citep{arXiv2205.08574,2205.12329, 2209.02206, 2301.01312,10.48550/arXiv.2302.07289, 2210.12287}, though is in tension with other analyses that have claimed its existence \citep{doi.org/10.3847/2041-8213/ac2f3c,2105.10580}; however, we cannot completely rule out a non-spinning population.} The $20\msun$ and $35\msun$ peaks may also be consistent with field formation, as we infer spin properties similar to those of the $10\msun$ peak; though, as we discussed in Section \ref{sec:results} there is a possibility that some events in this mass range are more consistent with field formation spin characteristics. The astrophysical branching ratios we infer in the \comp{} are consistent with the field and dynamical branching ratios inferred by \citet{2011.10057}, $[\beta_{\text{field}}, \beta_{\text{dynamical}}] = [0.86^{+0.11}_{-0.36}, 0.14^{0.36}_{-0.11}]$, under the assumption that \first{} and \contA{} are consistent with field formation and \contB{} is more consistent with dynamical formation.
+Our results are consistent with other analyses that find the data does not require a discontinuous non-spinning subpopulation \citep{arXiv2205.08574,2205.12329, 2209.02206, 2301.01312,10.48550/arXiv.2302.07289, 2210.12287}, though is in tension with other analyses that have claimed its existence \citep{doi.org/10.3847/2041-8213/ac2f3c,2105.10580}; however, we cannot completely rule out a non-spinning population. The $20\msun$ and $35\msun$ peaks may also be consistent with field formation, as we infer spin properties similar to those of the $10\msun$ peak; though, as we discussed in Section \ref{sec:results} there is a possibility that some events in this mass range are more consistent with field formation spin characteristics. The astrophysical branching ratios we infer in the \comp{} are consistent with the field and dynamical branching ratios inferred by \citet{2011.10057}, $[\beta_{\text{field}}, \beta_{\text{dynamical}}] = [0.86^{+0.11}_{-0.36}, 0.14^{0.36}_{-0.11}]$, under the assumption that \popA{} is consistent with field formation and \contB{} is more consistent with dynamical formation.
 
 The sharp fall-off in primary mass of \contA{} in the \comp{} could give an estimate of the lower edge of the PISN mass gap. The 99th percentile of the primary mass distribution of \contA{} is $m_{1,99\%} = $ \result{$\CIPlusMinus{\macros[Mass][Composite][ContinuumA][99percentile]}$ \msun}, which is consistent with predictions that place the lower edge of the gap between $40-70\msun$ \citep{1901.00215,1910.12874v1,2103.07933v1,2104.07783v2}.
 
+
 \section{Conclusion} \label{sec:conclusion}
+
+\begin{table*}[ht!]
+    \centering
+    \begin{tabular}{@{}cccc@{}}
+    \toprule
+    Model & CYB & $\base{}$ & $\comp{}$ \\ \midrule
+    CYB & 0 & $-\macros[LogBayesFactors][IP_to_CYB]$ & $-\macros[LogBayesFactors][PC_to_CYB]$ \\
+    $\base{}$ & \macros[LogBayesFactors][IP_to_CYB] & 0 & $-\macros[LogBayesFactors][PC_to_IP]$ \\
+    $\comp{}$ & \macros[LogBayesFactors][PC_to_CYB] & \macros[LogBayesFactors][PC_to_IP] & 0 \\
+    \bottomrule
+    \end{tabular}
+    \caption{$\log_{10}$ Bayes factors of the \base{}, \comp{}, and the Cover Your Basis (CYB) model (\brucepaper). The values follow the format $\log_{10} \text{BF}_\text{row,col}.$; e.g. the \comp{} row and CYB column shows the $\log_{10}$ Bayes factor of the \comp{} relative to the CYB model.}
+    \label{tab:BF}
+    \end{table*}
 
 As the catalog of compact object mergers continues to grow, we are able to probe the physical properties of these systems with higher fidelity and uncover details in their distributions previously obscured by our lack of data. With these advancements comes the ability to piece together formation histories imprinted in the details of these distributions. Understanding the physical properties of compact binaries and their formation has implications for the broader astrophysics community such as providing constraints on stellar evolution theories and population synthesis simulations, the physics of globular clusters, the impact of stellar metallicity, neutron star equations of state, and much more.
 

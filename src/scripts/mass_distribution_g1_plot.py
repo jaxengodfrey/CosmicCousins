@@ -3,7 +3,7 @@
 import paths
 import numpy as np
 import matplotlib.pyplot as plt
-from utils import plot_mean_and_90CI, load_bsplinemass_ppd, plot_o3b_res, load_subpop_ppds, load_macro
+from utils import plot_mean_and_90CI, load_bsplinemass_ppd, plot_o3b_res, load_subpop_ppds, load_macro, load_gwinfernodata_ppds
 from matplotlib.ticker import ScalarFormatter
 import matplotlib.gridspec as gridspec
 import seaborn as sns
@@ -16,10 +16,14 @@ matplotlib.rcParams['text.usetex'] = True
 
 base_label = load_macro('base')
 comp_label = load_macro('comp')
+popA_label = load_macro('popA')
+popB_label = load_macro('popB')
 first_label = load_macro('first')
 contA_label = load_macro('contA')
 contB_label = load_macro('contB')
 msun = load_macro('msun')
+
+print(contB_label)
 
 mmin = 5.0
 mmax = 100
@@ -34,17 +38,17 @@ ax1 = fig.add_subplot(gs[1])#fig.add_subplot(gs1[0,0])
 # axy0 = fig.add_subplot(gs1[0,2])
 ax.set_title(r'{} and {} Mass Distributions'.format(base_label, comp_label), fontsize = 18)
 bspl_ms, bspl_mpdfs, bspl_qs, bspl_qpdfs = load_bsplinemass_ppd()
-subpop_ppds = GWInfernoData.from_netcdf(paths.data / "bspline_1logpeak_marginalized_fixtau_m1-s25-z1_msig15_qsig5_ssig5_zsig1_sigp3_NeffNobs_downsample_100k_rng1-2_ppds.h5").pdfs
+subpop_ppds = load_gwinfernodata_ppds().pdfs
 tot_subpops = subpop_ppds['peak_1_mass_pdfs'].values + subpop_ppds['continuum_mass_pdfs'].values
 
 idx20 = np.sum(subpop_ppds['mass_1'].values < 20)
 idx35 = np.sum(subpop_ppds['mass_1'] < 35)
 
 fill = 0.2
-ax = plot_mean_and_90CI(ax, bspl_ms, bspl_mpdfs, color='tab:red', label='Edelman et. al. 2022',bounds=False, mean = False, median = True)
+ax = plot_mean_and_90CI(ax, bspl_ms, bspl_mpdfs, color='tab:red', label='Edelman et. al. 2023',bounds=False, mean = False, median = True)
 ax = plot_mean_and_90CI(ax, subpop_ppds['mass_1'], tot_subpops, color ='black', label=base_label, bounds = False, mean = False, median = True)
-ax = plot_mean_and_90CI(ax, subpop_ppds['mass_1'], subpop_ppds['peak_1_mass_pdfs'], color ='tab:cyan', label=first_label, bounds = True, alpha = 0.75, line_style = '--', lw = 3, mean = False, median = True, fill_alpha = fill)
-ax = plot_mean_and_90CI(ax, subpop_ppds['mass_1'], subpop_ppds['continuum_mass_pdfs'], color ='tab:pink', label=contB_label, bounds = True, alpha = 0.75, line_style = (0, (1, 1)), lw = 3, mean = False, median = True, fill_alpha = fill)
+ax = plot_mean_and_90CI(ax, subpop_ppds['mass_1'], subpop_ppds['peak_1_mass_pdfs'], color ='tab:cyan', label=rf'{popA_label}{first_label}', bounds = True, alpha = 0.75, line_style = '--', lw = 3, mean = False, median = True, fill_alpha = fill)
+ax = plot_mean_and_90CI(ax, subpop_ppds['mass_1'], subpop_ppds['continuum_mass_pdfs'], color ='tab:pink', label=rf'{popB_label}{contB_label}', bounds = True, alpha = 0.75, line_style = (0, (1, 1)), lw = 3, mean = False, median = True, fill_alpha = fill)
 ax.legend(frameon=False, fontsize=legendfont, loc = 'upper right');
 ax.grid(True, which="major", ls=":")
 ax.tick_params(labelsize=14)
@@ -56,9 +60,11 @@ ax.set_xticks(logticks)
 ax.get_xaxis().set_major_formatter(ScalarFormatter())
 ax.grid(True, which="major", ls=":")
 ax.set_xlim(mmin+0.5, mmax)
+ax.set_xlabel(r'$m_1 \,\,[M_\odot]$', fontsize=18)
+ax.set_ylabel(r'$p(m_1) \,\,[M_\odot^{-1}]$', fontsize=18)
 
 
-subpop_ppds = GWInfernoData.from_netcdf(paths.data / "bspline_composite_marginalized_fixtau_m1-s25-z1_msig15_qsig5_ssig5_zsig1_sigp3_NeffNobs_downsample_100k_rng6-10_ppds.h5").pdfs
+subpop_ppds = load_gwinfernodata_ppds(IP = False).pdfs
 tot_subpops = subpop_ppds['peak_1_mass_pdfs'].values  + subpop_ppds['continuum_mass_pdfs'].values + subpop_ppds['continuum_1_mass_pdfs'].values
 
 # sns.kdeplot(y=subpop_ppds['continuum_mass_pdfs'][:,idx20], ax=axy, color='tab:pink', lw=0, common_norm = True, log_scale = True, fill = True, alpha = 0.5)
@@ -83,11 +89,11 @@ tot_subpops = subpop_ppds['peak_1_mass_pdfs'].values  + subpop_ppds['continuum_m
 # # axy0.tick_params(which = 'both', bottom = False, left = False, labelbottom = False, labelleft = False, right = True, labelright = True, color = 'royalblue', labelsize = 14)
 # ax1.axvline(20, color = 'deepskyblue')
 # ax1.axvline(35, color = 'royalblue')
-ax1 = plot_mean_and_90CI(ax1, bspl_ms, bspl_mpdfs, color='tab:red', label='Edelman et. al. 2022',bounds=False, mean = False, median = True)
+ax1 = plot_mean_and_90CI(ax1, bspl_ms, bspl_mpdfs, color='tab:red', label='Edelman et. al. 2023',bounds=False, mean = False, median = True)
 ax1 = plot_mean_and_90CI(ax1, subpop_ppds['mass_1'], tot_subpops, color ='black', label=comp_label, bounds = False, mean = False, median = True)
-ax1 = plot_mean_and_90CI(ax1, subpop_ppds['mass_1'], subpop_ppds['peak_1_mass_pdfs'], color ='tab:cyan', label=first_label, bounds = True, alpha = 0.75, line_style = '--', lw = 3, mean = False, median = True, fill_alpha = fill)
-ax1 = plot_mean_and_90CI(ax1, subpop_ppds['mass_1'], subpop_ppds['continuum_1_mass_pdfs'], color ='tab:purple', label=contA_label, bounds = True, alpha = 0.75, line_style = '--', lw = 3, mean = False, median = True, fill_alpha = fill)
-ax1 = plot_mean_and_90CI(ax1, subpop_ppds['mass_1'], subpop_ppds['continuum_mass_pdfs'], color ='tab:pink', label=contB_label, bounds = True, alpha = 0.75, line_style = (0, (1, 1)), lw = 3, mean = False, median = True, fill_alpha = fill)
+ax1 = plot_mean_and_90CI(ax1, subpop_ppds['mass_1'], subpop_ppds['peak_1_mass_pdfs'], color ='tab:cyan', label=rf'{popA_label}{first_label}', bounds = True, alpha = 0.75, line_style = '--', lw = 3, mean = False, median = True, fill_alpha = fill)
+ax1 = plot_mean_and_90CI(ax1, subpop_ppds['mass_1'], subpop_ppds['continuum_1_mass_pdfs'], color ='tab:purple', label=rf'{popA_label}{contA_label}', bounds = True, alpha = 0.75, line_style = '--', lw = 3, mean = False, median = True, fill_alpha = fill)
+ax1 = plot_mean_and_90CI(ax1, subpop_ppds['mass_1'], subpop_ppds['continuum_mass_pdfs'], color ='tab:pink', label=rf'{popB_label}{contB_label}', bounds = True, alpha = 0.75, line_style = (0, (1, 1)), lw = 3, mean = False, median = True, fill_alpha = fill)
 ax1.legend(frameon=False, fontsize=legendfont, loc = 'upper right');
 ax1.grid(True, which="major", ls=":")
 ax1.tick_params(labelsize=14)
@@ -99,6 +105,8 @@ ax1.set_xticks(logticks)
 ax1.get_xaxis().set_major_formatter(ScalarFormatter())
 ax1.grid(True, which="major", ls=":")
 ax1.set_xlim(mmin+0.5, mmax)
+ax1.set_xlabel(r'$m_1 \,\,[M_\odot]$', fontsize=18)
+ax1.set_ylabel(r'$p(m_1) \,\,[M_\odot^{-1}]$', fontsize=18)
 
 plt.savefig(paths.figures / 'mass_distribution_g1_plot.pdf', dpi=300, bbox_inches='tight');
 plt.savefig(paths.figures / 'mass_distribution_g1_plot.png', dpi=300, bbox_inches='tight');

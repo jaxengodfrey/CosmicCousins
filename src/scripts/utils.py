@@ -9,6 +9,19 @@ from jax.scipy.special import erf
 from TexSoup import TexSoup
 from gwinfernodata import GWInfernoData
 
+
+def load_gwinfernodata_ppds(IP = True):
+    if IP:
+        return GWInfernoData.from_netcdf(paths.data / 'bspline_1logpeak_marginalized_fixtau_m1-s25-z1_msig15_qsig5_ssig5_zsig1_sigp3_NeffNobs_100k_rng5-6_ppds.h5')
+    else:
+        return GWInfernoData.from_netcdf(paths.data / 'bspline_composite_marginalized_fixtau_m1-s25-z1_msig15_qsig5_ssig5_zsig1_sigp3_NeffNobs_downsample_100k_rng11-15_ppds.h5')
+
+def load_gwinfernodata_idata(IP = True):
+    if IP:
+        return GWInfernoData.from_netcdf(paths.data / 'bspline_1logpeak_marginalized_fixtau_m1-s25-z1_msig15_qsig5_ssig5_zsig1_sigp3_NeffNobs_full_100ks.h5')
+    else:
+        return GWInfernoData.from_netcdf(paths.data / 'bspline_composite_marginalized_fixtau_m1-s25-z1_msig15_qsig5_ssig5_zsig1_sigp3_NeffNobs_full_500ks_rng11-15.h5')
+
 def load_macro(name):
     soup = TexSoup(open(paths.tex / 'ms.tex'))
     for cmd in soup.find_all('newcommand'):

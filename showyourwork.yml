@@ -12,35 +12,43 @@ dependencies:
     - src/scripts/create_macros.py
   src/tex/macros.tex:
     - src/scripts/create_macros.py
-    - src/data/bspline_1logpeak_marginalized_fixtau_m1-s25-z1_msig15_qsig5_ssig5_zsig1_sigp3_NeffNobs_downsample_100k_rng1-2_ppds.h5
-    - src/data/bspline_composite_marginalized_fixtau_m1-s25-z1_msig15_qsig5_ssig5_zsig1_sigp3_NeffNobs_downsample_100k_rng6-10_ppds.h5
-    - src/data/bspline_1logpeak_marginalized_fixtau_m1-s25-z1_msig15_qsig5_ssig5_zsig1_sigp3_NeffNobs_full_200ks.h5
-    - src/data/bspline_composite_marginalized_fixtau_m1-s25-z1_msig15_qsig5_ssig5_zsig1_sigp3_NeffNobs_full_500ks_rng6-10.h5
+    - src/scripts/utils.py
+    - src/data/bspline_1logpeak_marginalized_fixtau_m1-s25-z1_msig15_qsig5_ssig5_zsig1_sigp3_NeffNobs_100k_rng5-6_ppds.h5
+    - src/data/bspline_composite_marginalized_fixtau_m1-s25-z1_msig15_qsig5_ssig5_zsig1_sigp3_NeffNobs_downsample_100k_rng11-15_ppds.h5
+    - src/data/bspline_1logpeak_marginalized_fixtau_m1-s25-z1_msig15_qsig5_ssig5_zsig1_sigp3_NeffNobs_full_100ks.h5
+    - src/data/bspline_composite_marginalized_fixtau_m1-s25-z1_msig15_qsig5_ssig5_zsig1_sigp3_NeffNobs_full_500ks_rng11-15.h5
   src/scripts/create_macros.py:
-    - src/data/bspline_1logpeak_marginalized_fixtau_m1-s25-z1_msig15_qsig5_ssig5_zsig1_sigp3_NeffNobs_downsample_100k_rng1-2_ppds.h5
-    - src/data/bspline_composite_marginalized_fixtau_m1-s25-z1_msig15_qsig5_ssig5_zsig1_sigp3_NeffNobs_downsample_100k_rng6-10_ppds.h5
-    - src/data/bspline_1logpeak_marginalized_fixtau_m1-s25-z1_msig15_qsig5_ssig5_zsig1_sigp3_NeffNobs_full_200ks.h5
-    - src/data/bspline_composite_marginalized_fixtau_m1-s25-z1_msig15_qsig5_ssig5_zsig1_sigp3_NeffNobs_full_500ks_rng6-10.h5
+    - src/scripts/utils.py
+    - src/data/bspline_1logpeak_marginalized_fixtau_m1-s25-z1_msig15_qsig5_ssig5_zsig1_sigp3_NeffNobs_100k_rng5-6_ppds.h5
+    - src/data/bspline_composite_marginalized_fixtau_m1-s25-z1_msig15_qsig5_ssig5_zsig1_sigp3_NeffNobs_downsample_100k_rng11-15_ppds.h5
+    - src/data/bspline_1logpeak_marginalized_fixtau_m1-s25-z1_msig15_qsig5_ssig5_zsig1_sigp3_NeffNobs_full_100ks.h5
+    - src/data/bspline_composite_marginalized_fixtau_m1-s25-z1_msig15_qsig5_ssig5_zsig1_sigp3_NeffNobs_full_500ks_rng11-15.h5
   src/scripts/mass_distribution_g1_plot.py: 
+    - src/scripts/utils.py
     - src/data/bsplines_64m1_18q_iid18mag_iid18tilt_pl18z_ppds.h5
-    - src/data/bspline_1logpeak_marginalized_fixtau_m1-s25-z1_msig15_qsig5_ssig5_zsig1_sigp3_NeffNobs_downsample_100k_rng1-2_ppds.h5
-    - src/data/bspline_composite_marginalized_fixtau_m1-s25-z1_msig15_qsig5_ssig5_zsig1_sigp3_NeffNobs_downsample_100k_rng6-10_ppds.h5
+    - src/data/bspline_1logpeak_marginalized_fixtau_m1-s25-z1_msig15_qsig5_ssig5_zsig1_sigp3_NeffNobs_100k_rng5-6_ppds.h5
+    - src/data/bspline_composite_marginalized_fixtau_m1-s25-z1_msig15_qsig5_ssig5_zsig1_sigp3_NeffNobs_downsample_100k_rng11-15_ppds.h5
   src/scripts/mass_distribution_g2_plot.py: 
+    - src/scripts/utils.py
     - src/data/bsplines_64m1_18q_iid18mag_iid18tilt_pl18z_ppds.h5
-    - src/data/bspline_1logpeak_marginalized_fixtau_m1-s25-z1_msig15_qsig5_ssig5_zsig1_sigp3_NeffNobs_downsample_100k_rng1-2_ppds.h5
-    - src/data/bspline_composite_marginalized_fixtau_m1-s25-z1_msig15_qsig5_ssig5_zsig1_sigp3_NeffNobs_downsample_100k_rng6-10_ppds.h5
+    - src/data/bspline_1logpeak_marginalized_fixtau_m1-s25-z1_msig15_qsig5_ssig5_zsig1_sigp3_NeffNobs_100k_rng5-6_ppds.h5
+    - src/data/bspline_composite_marginalized_fixtau_m1-s25-z1_msig15_qsig5_ssig5_zsig1_sigp3_NeffNobs_downsample_100k_rng11-15_ppds.h5
   src/scripts/mass_ratio_distribution_plot.py: 
+    - src/scripts/utils.py
     - src/data/bsplines_64m1_18q_iid18mag_iid18tilt_pl18z_ppds.h5
-    - src/data/bspline_1logpeak_marginalized_fixtau_m1-s25-z1_msig15_qsig5_ssig5_zsig1_sigp3_NeffNobs_downsample_100k_rng1-2_ppds.h5
-    - src/data/bspline_composite_marginalized_fixtau_m1-s25-z1_msig15_qsig5_ssig5_zsig1_sigp3_NeffNobs_downsample_100k_rng6-10_ppds.h5
+    - src/data/bspline_1logpeak_marginalized_fixtau_m1-s25-z1_msig15_qsig5_ssig5_zsig1_sigp3_NeffNobs_100k_rng5-6_ppds.h5
+    - src/data/bspline_composite_marginalized_fixtau_m1-s25-z1_msig15_qsig5_ssig5_zsig1_sigp3_NeffNobs_downsample_100k_rng11-15_ppds.h5
   src/scripts/spin_distributions_plot.py: 
-    - src/data/bspline_1logpeak_marginalized_fixtau_m1-s25-z1_msig15_qsig5_ssig5_zsig1_sigp3_NeffNobs_downsample_100k_rng1-2_ppds.h5
-    - src/data/bspline_composite_marginalized_fixtau_m1-s25-z1_msig15_qsig5_ssig5_zsig1_sigp3_NeffNobs_downsample_100k_rng6-10_ppds.h5
+    - src/scripts/utils.py
+    - src/data/bspline_1logpeak_marginalized_fixtau_m1-s25-z1_msig15_qsig5_ssig5_zsig1_sigp3_NeffNobs_100k_rng5-6_ppds.h5
+    - src/data/bspline_composite_marginalized_fixtau_m1-s25-z1_msig15_qsig5_ssig5_zsig1_sigp3_NeffNobs_downsample_100k_rng11-15_ppds.h5
   src/scripts/ridgeplot_marginalized.py:
-    - src/data/bspline_composite_marginalized_fixtau_m1-s25-z1_msig15_qsig5_ssig5_zsig1_sigp3_NeffNobs_full_500ks_rng6-10.h5
+    - src/scripts/utils.py
+    - src/data/bspline_composite_marginalized_fixtau_m1-s25-z1_msig15_qsig5_ssig5_zsig1_sigp3_NeffNobs_full_500ks_rng11-15.h5
     - src/data/posterior_samples_and_injections_spin_magnitude.h5
   src/scripts/chi_eff_plot.py:
-    - src/data/bspline_composite_marginalized_fixtau_m1-s25-z1_msig15_qsig5_ssig5_zsig1_sigp3_NeffNobs_downsample_100k_rng6-10_ppds.h5
+    - src/scripts/utils.py
+    - src/data/bspline_composite_marginalized_fixtau_m1-s25-z1_msig15_qsig5_ssig5_zsig1_sigp3_NeffNobs_downsample_100k_rng11-15_ppds.h5
 datasets:
   10.5281/zenodo.7566301:
     contents:
@@ -52,6 +60,15 @@ datasets:
       bsplines_64m1_18q_ind18mag_ind18tilt_pl18z_prior_samples.h5: src/data/bsplines_64m1_18q_ind18mag_ind18tilt_pl18z_prior_samples.h5
       bsplines_64m1_18q_iid18mag_iid18tilt_pl18z_prior_ppds.h5: src/data/bsplines_64m1_18q_iid18mag_iid18tilt_pl18z_prior_ppds.h5
       bsplines_64m1_18q_ind18mag_ind18tilt_pl18z_prior_ppds.h5: src/data/bsplines_64m1_18q_ind18mag_ind18tilt_pl18z_prior_ppds.h5
+
+  # 10.5281/zenodo.10892979:
+  #   contents:
+  #     bspline_1logpeak_marginalized_fixtau_m1-s25-z1_msig15_qsig5_ssig5_zsig1_sigp3_NeffNobs_100k_rng5-6_ppds.h5: src/data/bspline_1logpeak_marginalized_fixtau_m1-s25-z1_msig15_qsig5_ssig5_zsig1_sigp3_NeffNobs_100k_rng5-6_ppds.h5
+  #     bspline_composite_marginalized_fixtau_m1-s25-z1_msig15_qsig5_ssig5_zsig1_sigp3_NeffNobs_downsample_100k_rng11-15_ppds.h5: src/data/bspline_composite_marginalized_fixtau_m1-s25-z1_msig15_qsig5_ssig5_zsig1_sigp3_NeffNobs_downsample_100k_rng11-15_ppds.h5
+  #     bspline_composite_marginalized_fixtau_m1-s25-z1_msig15_qsig5_ssig5_zsig1_sigp3_NeffNobs_full_500ks_rng11-15.h5: src/data/bspline_composite_marginalized_fixtau_m1-s25-z1_msig15_qsig5_ssig5_zsig1_sigp3_NeffNobs_full_500ks_rng11-15.h5
+  #     bspline_1logpeak_marginalized_fixtau_m1-s25-z1_msig15_qsig5_ssig5_zsig1_sigp3_NeffNobs_full_100ks.h5: src/data/bspline_1logpeak_marginalized_fixtau_m1-s25-z1_msig15_qsig5_ssig5_zsig1_sigp3_NeffNobs_full_100ks.h5
+  #     posterior_samples_and_injections_spin_magnitude.h5: src/data/posterior_samples_and_injections_spin_magnitude.h5
+
 
   # 10.5072/zenodo.31271:
   #   contents:
