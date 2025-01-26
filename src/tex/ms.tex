@@ -24,7 +24,7 @@
 \newcommand{\contB}{\popB{}\textsc{:Continuum}}
 \newcommand{\contA}{\popA{}\textsc{:Continuum}}
 \newcommand{\brucepaper}{\citet{2022arXiv221012834E}}
-\newcommand{\othreea}{\citet{2010.14533}}
+\newcommand{\othreea}{\citet{2021ApJ...913L...7A}}
 \newcommand{\cont}[1]{\textcolor{red}{DELTE THIS}}
 \newcommand{\second}[1]{\textcolor{red}{DELTE THIS}}
 \newcommand{\base}{\textsc{Isolated Peak Model}}
@@ -35,7 +35,7 @@
 \newcommand{\bruce}[1]{\textcolor{blue}{BE: #1}}
 \newcommand{\jaxen}[1]{\textcolor{Cerulean}{JG: #1}}
 \newcommand{\ben}[1]{\textcolor{orange}{BF: #1}}
-\newcommand{\NewChange}[1]{\textcolor{teal}{#1}}
+\newcommand{\NewChange}[1]{\textcolor{BrickRed}{#1}}
 \newcommand{\remove}[1]{\textcolor{WildStrawberry}{REMOVE: #1}}
 
 
@@ -56,7 +56,7 @@
 
 % Abstract with filler text
 \begin{abstract}
-    Observations of gravitational waves (GWs) from merging compact binaries have become a regular occurrence. The continued advancement of the LIGO-Virgo-KAGRA (LVK) detectors have now produced a catalog of over 90 such mergers, from which we can begin to uncover the formation history of merging compact binaries. In this work, we search for subpopulations in the LVK's third gravitational wave transient catalog through the use of data-driven mixture models in a hierarchal Bayesian inference framework. By allowing for unique correlations between mass and spin in each subpopulation, we find an over density of mergers with a primary mass of $\sim10\msun$, consistent with isolated binary formation. This low-mass subpopulation has a spin magnitude distribution peaking at $a_\mathrm{peak}=$ \result{$\CIPlusMinus{\macros[SpinMag][Base][PeakA][max]}$}, exhibits spins preferentially aligned with the binary's orbital angular momentum, is constrained by \result{$\CIPlusMinus{\macros[NumEvents][Base][PeakA]}$} of our observations, and contributes \result{$\CIPlusMinusPer{\macros[BranchingRatios][Base][PeakA][Percent]}$} to the overall population of BBHs. We find a $\sim\macros[FracCut][BgreaterA]\%$ chance that the bulk of the events in the $15-55\msun$ range share a spin distribution with the $10\msun$ peak, with $99\%$ of these events possessing primary masses less than $m_{1,99\%} = $ \result{$\CIPlusMinus{\macros[Mass][Composite][ContinuumA][99percentile]}\msun$}, providing an estimate of the lower edge of the theorized pair instability mass gap. Additionally, we find mild evidence for a subpopulation of high mass BBHs near $60\msun$. This work is a first step in gaining a deeper understanding of compact binary formation and evolution with data-driven models, and will provide more robust conclusions as the catalog of observations becomes larger. 
+    Observations of gravitational waves (GWs) from merging compact binaries have become a regular occurrence. The continued advancement of the LIGO-Virgo-KAGRA (LVK) detectors have now produced a catalog of over 90 such mergers, from which we can begin to uncover the formation history of merging compact binaries. In this work, we search for subpopulations in the LVK's third gravitational wave transient catalog through the use of data-driven mixture models in a hierarchal Bayesian inference framework. By allowing for unique correlations between mass and spin in each subpopulation, we find an over density of mergers with a primary mass of $\result{\CIPlusMinus{\macros[Mass][Base][PeakA][max]}\msun}$, consistent with isolated binary formation \NewChange{and stable mass transfer}. This low-mass subpopulation has a spin magnitude distribution peaking at $a_\mathrm{peak}=$ \result{$\CIPlusMinus{\macros[SpinMag][Base][PeakA][max]}$}, exhibits spins preferentially aligned with the binary's orbital angular momentum, is constrained by \result{$\CIPlusMinus{\macros[NumEvents][Base][PeakA]}$} of our observations, and contributes \result{$\CIPlusMinusPer{\macros[BranchingRatios][Base][PeakA][Percent]}$} to the overall population of BBHs. We find a $\sim\macros[FracCut][BgreaterA]\%$ chance that the bulk of the events in the $15-55\msun$ range share a spin distribution with the $10\msun$ peak, with $99\%$ of these events possessing primary masses less than $m_{1,99\%} = $ \result{$\CIPlusMinus{\macros[Mass][Composite][ContinuumA][99percentile]}\msun$}, providing an estimate of the lower edge of the theorized pair instability mass gap. Additionally, we find mild evidence for a subpopulation of high mass BBHs near $60\msun$. This work is a first step in gaining a deeper understanding of compact binary formation and evolution with data-driven models, and will provide more robust conclusions as the catalog of observations becomes larger. 
 \end{abstract}
 
 \input{intro.tex}

@@ -12,7 +12,8 @@ from gwinfernodata import GWInfernoData
 import matplotlib
 matplotlib.rcParams['text.usetex'] = True
 
-
+import os 
+print(os.environ["CONDA_PREFIX"])
 
 base_label = load_macro('base')
 comp_label = load_macro('comp')
@@ -22,8 +23,6 @@ first_label = load_macro('first')
 contA_label = load_macro('contA')
 contB_label = load_macro('contB')
 msun = load_macro('msun')
-
-print(contB_label)
 
 mmin = 5.0
 mmax = 100
