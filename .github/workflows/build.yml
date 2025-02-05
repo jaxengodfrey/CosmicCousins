@@ -23,7 +23,7 @@ jobs:
 
       - name: Build the article PDF
         id: build
-        uses: showyourwork/showyourwork-action@v1
+        uses: showyourwork/showyourwork-action@202dc7105b319bea583f0e406d42a0f8a6c0fa5a
         with:
           showyourwork-spec: git+https://github.com/showyourwork/showyourwork.git
         env:
